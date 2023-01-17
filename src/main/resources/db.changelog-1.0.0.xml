@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet author="vodai (generated)" id="1674563226619-1">
+        <createTable tableName="bottle">
+            <column autoIncrement="true" name="bottle_id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name_bottle" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="volume_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="soda" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="plastic" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="create_date" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="reserved" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="producer" type="VARCHAR(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="storage_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="vodai (generated)" id="1674563226619-2">
+        <createTable tableName="customer">
+            <column autoIncrement="true" name="customer_id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name_company" type="VARCHAR(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address" type="VARCHAR(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="phone_number" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="vodai (generated)" id="1674563226619-3">
+        <createTable tableName="customer_profile">
+            <column autoIncrement="true" name="customer_profile_id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="user_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="customer_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="vodai (generated)" id="1674563226619-4">
+        <createTable tableName="manager_profile">
+            <column autoIncrement="true" name="manager_profile_id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="user_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="vodai (generated)" id="1674563226619-5">
+        <createTable tableName="order_bottle">
+            <column autoIncrement="true" name="order_bottle_id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="bottle_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="order_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="amount_bottle" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="vodai (generated)" id="1674563226619-6">
+        <createTable tableName="orders">
+            <column autoIncrement="true" name="order_id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="customer_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="delivery_address" type="VARCHAR(40)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="curent_date" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="vodai (generated)" id="1674563226619-7">
+        <createTable tableName="price">
+            <column autoIncrement="true" name="price_id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="price" type="DOUBLE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="vodai (generated)" id="1674563226619-8">
+        <createTable tableName="status">
+            <column autoIncrement="true" name="status_id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="status" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="vodai (generated)" id="1674563226619-9">
+        <createTable tableName="storage">
+            <column autoIncrement="true" name="storage_id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="storage_section" type="VARCHAR(3)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="vodai (generated)" id="1674563226619-10">
+        <createTable tableName="storeman_profile">
+            <column autoIncrement="true" name="storeman_profile_id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="user_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="vodai (generated)" id="1674563226619-11">
+        <createTable tableName="user_profile">
+            <column autoIncrement="true" name="user_id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="first_name" type="VARCHAR(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="VARCHAR(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="customer_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="phone_number" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="vodai (generated)" id="1674563226619-12">
+        <createTable tableName="user_role">
+            <column autoIncrement="true" name="role_id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="user_role" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="vodai (generated)" id="1674563226619-13">
+        <createTable tableName="volume">
+            <column autoIncrement="true" name="volume_id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="bottle_volume" type="DOUBLE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="vodai (generated)" id="1674563226619-14">
+        <createIndex indexName="bottle_FK" tableName="bottle">
+            <column name="price_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="vodai (generated)" id="1674563226619-15">
+        <createIndex indexName="bottle_FK_1" tableName="bottle">
+            <column name="storage_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="vodai (generated)" id="1674563226619-16">
+        <createIndex indexName="bottle_FK_2" tableName="bottle">
+            <column name="volume_id"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>

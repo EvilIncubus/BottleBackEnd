@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet author="vodai (generated)" id="1674563226619-8">
+        <sql>
+            insert into orders (customer_id, delivery_address, curent_date, status_id) values
+            (1, 'str. Nicolae Dimo 15', '2022-12-20 12:20:43',1 ),
+            (4, 'str. Dmitrie Cantemir 84', '2022-12-20 13:15:11', 1),
+            (5, 'str. Onisifor Ghibu 35', '2022-12-20 13:20:10', 1),
+            (6, 'str. Mesteru Manole 73', '2022-12-20 13:45:16', 1),
+            (8, 'str. Gheorghe Asachi 63', '2022-12-20 13:55:46', 1),
+            (9, 'str. Mircea cel Batrin 53', '2022-12-20 14:05:16', 1),
+            (7, 'str. Reansterii 92', '2022-12-20 14:10:16', 1),
+            (5, 'str. Gradina Botanica 113', '2022-12-20 14:15:36', 1),
+            (2, 'str. 31 August 24', '2022-12-20 14:25:46', 1),
+            (4, 'str. Bucuresti 3', '2022-12-20 14:33:56', 1),
+            (1, 'str. Columna 16', '2022-12-20 15:13:46', 1),
+            (2, 'str. Ismail 28', '2022-12-20 15:45:13', 1),
+            (3, 'str. Alba-Iulia 39', '2022-12-20 16:45:24', 1),
+            (5, 'str. Nicolae Dimo 40', '2022-12-21 12:02:26', 1),
+            (6, 'str. Alexandru cel Bun 83', '2022-12-21 12:52:42', 1),
+            (7, 'str. Pentru Rares 72', '2022-12-21 13:16:26', 1),
+            (9, 'str.  Sfatul Tarii 38', '2022-12-21 13:18:24', 1),
+            (1, 'str. Mihail Cogalniceanu 94', '2022-12-21 13:25:37', 1),
+            (13, 'str. Alexei mateevici 33', '2022-12-21 13:35:46', 1),
+            (12, 'str. Ion Calimachi 72', '2022-12-21 13:55:25', 1),
+            (11, 'str. Sucevita 50', '2022-12-21 14:24:26', 1),
+            (16, 'str. Onisifor Ghibu 95','2022-12-21 14:35:37', 1),
+            (15, 'str. Nicolae Costin 48','2022-12-21 14:46:24', 1),
+            (8, 'str. Doinea si Ion Aldea-Teodorovici 37', '2022-12-21 15:03:24', 1),
+            (12, 'str. Mihai Eminescu 62', '2022-12-21 15:12:16', 1),
+            (15, 'str. Vasilie Alecsndri 52', '2022-12-21 15:37:52', 1),
+            (3, 'str. Veronica Miclea 48', '2022-12-21 15:53:35', 1),
+            (7, 'str. Tighina 94', '2022-12-21 16:16:13', 1),
+            (1, 'str. Nicolae Dimo 35', '2022-12-22 11:23:24', 1),
+            (4, 'str. Mitropolit Dosoftei 84', '2022-12-22 11:43:24', 1),
+            (8, 'str. Alexandru cel Bun 74', '2022-12-22 12:03:25', 1),
+            (9, 'str. Bucuresti 37', '2022-12-22 12:29:35', 1),
+            (6, 'str. 31 August 63', '2022-12-22 12:32:24', 1),
+            (5, 'str. Armeneasca 43', '2022-12-22 12:42:35', 1),
+            (7, 'str. Kiev 32', '2022-12-22 12:53:24', 1),
+            (14, 'str. Moscova 45', '2022-12-22 13:03:38', 1),
+            (10, 'str. Doina 67', '2022-12-22 13:16:37', 1),
+            (4, 'str. Florilor 78','2022-12-22 13:25:27', 1),
+            (13, 'str. Calea Iesilor 56', '2022-12-22 13:55:37', 1),
+            (3, 'str. Ismail 55', '2022-12-22 14:36:28', 1),
+            (2, 'str. Dacia 34', '2022-12-22 14:37:34', 1),
+            (4, 'str. Decebal 73','2022-12-23 12:39:38', 1),
+            (1, 'str. Muncesti 62', '2022-12-23 12:40:29', 1),
+            (5, 'str. Albisoara 37', '2022-12-23 12:55:39', 1),
+            (6, 'str. Industriala 48', '2022-12-23 13:01:48', 1),
+            (8, 'str. Dmitrie Cantemir 26', '2022-12-23 13:15:36', 1),
+            (2, 'str. Aleco Russo 15', '2022-12-23 13:33:34', 1),
+            (3, 'str. Ginta Latina 134', '2022-12-23 13:45:39', 1),
+            (9, 'str. Mihail Sadoveanu 45', '2022-12-23 14:44:24', 1),
+            (6, 'str. Mesterul Manole 5', '2022-12-23 15:55:13', 1);
+        </sql>
+    </changeSet>
+</databaseChangeLog>
