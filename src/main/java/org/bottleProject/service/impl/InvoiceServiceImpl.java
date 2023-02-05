@@ -2,27 +2,92 @@ package org.bottleProject.service.impl;
 
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.bottleProject.dao.CustomerDao;
+import org.bottleProject.dao.InvoiceDao;
+import org.bottleProject.dao.OrderDao;
 import org.bottleProject.dto.BottleListWrapper;
 import org.bottleProject.dto.InvoiceWrapper;
+import org.bottleProject.entity.Customer;
+import org.bottleProject.entity.Invoice;
+import org.bottleProject.entity.Order;
+import org.bottleProject.service.GoogleApiService;
 import org.bottleProject.service.InvoicingService;
 import org.bottleProject.util.FileManager;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class InvoicingServiceImpl implements InvoicingService {
+public class InvoiceServiceImpl implements InvoicingService {
+
+    private final OrderDao orderDao;
+    private final InvoiceDao invoiceDao;
+    private final CustomerDao customerDao;
+
+    public InvoiceServiceImpl(OrderDao orderDao, InvoiceDao invoiceDao, CustomerDao customerDao) {
+        this.orderDao = orderDao;
+        this.invoiceDao = invoiceDao;
+        this.customerDao = customerDao;
+    }
+
+    Invoice invoice = new Invoice();
+
     @Override
-    public FileManager invoicing(InvoiceWrapper invoiceWrapper) {
+    public void prepareInvoice(Order order) {
+        InvoiceWrapper invoiceWrapper = orderDao.getOrderInvoice(order);
+        LocalDateTime localDateTime = invoicing(invoiceWrapper);
+        FileManager fileManager = new FileManager();
+        File file;
+        try {
+            file = fileManager.getExcelFile(invoiceWrapper.getEmail(), "Invoice" + localDateTime.toLocalDate() + ".xlsx");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        GoogleApiService googleApiService = new GoogleApiServiceImpl();
+        String fileId = googleApiService.uploadFileIntoDrive("Invoice" + localDateTime.toLocalDate()+ ".xlsx", file);
+
+        invoice.setOrderId((int) order.getOrderID());
+        invoice.setFileId(fileId);
+        invoice.setFileName(invoiceWrapper.getEmail() + "\\Invoice" + localDateTime.toLocalDate() + ".xlsx");
+        invoiceDao.create(invoice);
+
+
+    }
+
+    @Override
+    public File getInvoiceContents(long customerId, long orderId) {
+        invoice = invoiceDao.findByOrderId(orderId);
+        Customer customer = customerDao.findById(customerId);
+        FileManager fileManager = new FileManager();
+        File file;
+        try {
+            file = fileManager.getExcelFile(customer.getEmail(), invoice.getFileName());
+        } catch (IOException e) {
+            GoogleApiService googleApiService = new GoogleApiServiceImpl();
+            try {
+                fileManager.saveFileFromDrive(googleApiService.downloadFile(invoice.getFileId()));
+                file = fileManager.getExcelFile(customer.getEmail(), invoice.getFileName());
+            } catch (IOException exception) {
+                throw new RuntimeException(exception);
+            }
+        }
+        return file;
+    }
+
+    @Override
+    public LocalDateTime invoicing(InvoiceWrapper invoiceWrapper) {
         Workbook workbook = new XSSFWorkbook();
         LocalDateTime localDateTime = LocalDateTime.now();
-        Sheet sheet = workbook.createSheet("Invoice");;
+        Sheet sheet = workbook.createSheet("Invoice");
+        ;
         createHeader(workbook, sheet);
         createCustomerAndCompanyRows(workbook, sheet, invoiceWrapper);
 
-        double totalSum =0;
+        double totalSum = 0;
         int column = 7;
         for (BottleListWrapper bottleListWrapper : invoiceWrapper.getBottleListDtoList()) {
             createBottleOrderRows(workbook, sheet, bottleListWrapper, column);
@@ -34,47 +99,10 @@ public class InvoicingServiceImpl implements InvoicingService {
         for (int i = 0; i < 11; i++) {
             sheet.autoSizeColumn(i);
         }
-        FileManager fileManager = new FileManager(invoiceWrapper.getNameCompany(), "Invoicing" + localDateTime.toLocalDate(), "xlsx");
+        FileManager fileManager = new FileManager(invoiceWrapper.getEmail(), "Invoice" + localDateTime.toLocalDate(), "xlsx");
         fileManager.writeExcelFile(workbook);
-        return fileManager;
-
+        return localDateTime;
     }
-
-//    public void writeSheetData(Object[][] data, Sheet sheet) {
-//        CellStyle headerStyle = getCellStyle(sheet, true, true, (short) 300, HorizontalAlignment.CENTER);
-//        CellStyle dataStyle = getCellStyle(sheet, false, false, (short) 240, HorizontalAlignment.CENTER);
-//
-//        int rows = data.length;
-//        int columns = data[0].length;
-//        for (int i = 0; i < rows; i++) {
-//            Row row = sheet.createRow(i);
-//
-//            for (int j = 0; j < columns; j++) {
-//                Cell cell = row.createCell(j);
-//
-//                if (i == 0) {
-//                    cell.setCellStyle(headerStyle);
-//                } else {
-//                    cell.setCellStyle(dataStyle);
-//                }
-//
-//                Object value = data[i][j];
-//
-//                if (value instanceof String) {
-//                    cell.setCellValue((String) value);
-//                } else if (value instanceof Long) {
-//                    cell.setCellValue((Long) value);
-//                } else if (value instanceof Float) {
-//                    cell.setCellValue((Float) value);
-//                } else if (value instanceof Integer) {
-//                    cell.setCellValue((Integer) value);
-//                } else if (value instanceof LocalDate) {
-//                    cell.setCellValue((LocalDate) value);
-//                }
-//            }
-//        }
-//    }
-
 
     private void createHeader(Workbook workbook, Sheet sheet) {
         CellStyle headerCellStyle = workbook.createCellStyle();
@@ -153,7 +181,7 @@ public class InvoicingServiceImpl implements InvoicingService {
 
         List<String> valuesToWrite = new ArrayList<>();
         valuesToWrite.add(String.valueOf(orderDto.getOrderID()));
-        valuesToWrite.add(orderDto.getNameCompany());
+        valuesToWrite.add(orderDto.getEmail());
         valuesToWrite.add(orderDto.getDeliveryAddress());
         setAddValues(sheet, valuesToWrite, headerCellStyle, 2, 1);
 
@@ -174,20 +202,18 @@ public class InvoicingServiceImpl implements InvoicingService {
         headerCellStyle.setBorderLeft(BorderStyle.THIN);
         headerCellStyle.setLeftBorderColor(IndexedColors.BLACK.index);
 
-        List<String>valuesToWrite = new ArrayList<>();
+        List<String> valuesToWrite = new ArrayList<>();
         valuesToWrite.add(String.valueOf(finalOrderDto.getBottleID()));
         valuesToWrite.add(finalOrderDto.getNameBottle());
         valuesToWrite.add(String.valueOf(finalOrderDto.getSize()));
         if (finalOrderDto.isCO2()) {
             valuesToWrite.add("Yes");
-        }
-        else {
+        } else {
             valuesToWrite.add("No");
         }
         if (finalOrderDto.isPlastic()) {
             valuesToWrite.add("Plastic");
-        }
-        else {
+        } else {
             valuesToWrite.add("Glass");
         }
         valuesToWrite.add(String.valueOf(finalOrderDto.getAmountBottle()));
@@ -199,7 +225,8 @@ public class InvoicingServiceImpl implements InvoicingService {
         cell7.setCellStyle(headerCellStyle);
 
     }
-    private void calcTotalSum(double totalSum, int count, Workbook workbook, Sheet sheet){
+
+    private void calcTotalSum(double totalSum, int count, Workbook workbook, Sheet sheet) {
         CellStyle headerCellStyle = workbook.createCellStyle();
         headerCellStyle.setBorderTop(BorderStyle.THIN);
         headerCellStyle.setTopBorderColor(IndexedColors.BLACK.index);
@@ -210,8 +237,43 @@ public class InvoicingServiceImpl implements InvoicingService {
         headerCellStyle.setBorderLeft(BorderStyle.THIN);
         headerCellStyle.setLeftBorderColor(IndexedColors.BLACK.index);
 
-        Cell cell = sheet.createRow(count+1).createCell(8);
+        Cell cell = sheet.createRow(count + 1).createCell(8);
         cell.setCellValue(totalSum);
         cell.setCellStyle(headerCellStyle);
     }
 }
+
+//    public void writeSheetData(Object[][] data, Sheet sheet) {
+//        CellStyle headerStyle = getCellStyle(sheet, true, true, (short) 300, HorizontalAlignment.CENTER);
+//        CellStyle dataStyle = getCellStyle(sheet, false, false, (short) 240, HorizontalAlignment.CENTER);
+//
+//        int rows = data.length;
+//        int columns = data[0].length;
+//        for (int i = 0; i < rows; i++) {
+//            Row row = sheet.createRow(i);
+//
+//            for (int j = 0; j < columns; j++) {
+//                Cell cell = row.createCell(j);
+//
+//                if (i == 0) {
+//                    cell.setCellStyle(headerStyle);
+//                } else {
+//                    cell.setCellStyle(dataStyle);
+//                }
+//
+//                Object value = data[i][j];
+//
+//                if (value instanceof String) {
+//                    cell.setCellValue((String) value);
+//                } else if (value instanceof Long) {
+//                    cell.setCellValue((Long) value);
+//                } else if (value instanceof Float) {
+//                    cell.setCellValue((Float) value);
+//                } else if (value instanceof Integer) {
+//                    cell.setCellValue((Integer) value);
+//                } else if (value instanceof LocalDate) {
+//                    cell.setCellValue((LocalDate) value);
+//                }
+//            }
+//        }
+//    }

@@ -3,13 +3,20 @@ package org.bottleProject.dao.impl;
 import org.bottleProject.dao.OrderDao;
 import org.bottleProject.dto.BottleListWrapper;
 import org.bottleProject.dto.InvoiceWrapper;
+import org.bottleProject.dto.SearchOrderDto;
 import org.bottleProject.entity.Order;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 public class OrderDaoImpl extends AbstractDaoImpl<Order> implements OrderDao {
@@ -25,23 +32,19 @@ public class OrderDaoImpl extends AbstractDaoImpl<Order> implements OrderDao {
 
     @Override
     public Long create(Order entity) {
-        getJdbcTemplate().update("INSERT INTO orders (customer_id, delivery_address, curent_date, status_id) VALUES(?,?,?,?);",
-                entity.getCustomerID(),
-                entity.getDeliveryAddress(),
-                entity.getLocalDateTime(),
-                entity.getStatusID()
-        );
-        return findMaxId();
-    }
+        KeyHolder keyHolder = new GeneratedKeyHolder();
 
-    private Long findMaxId() {
-        try {
-            return getJdbcTemplate().queryForObject("SELECT max(order_id) FROM orders;",
-                    Long.class);
-        } catch (
-                IncorrectResultSizeDataAccessException e) {
-            return null;
-        }
+        String sql = "INSERT INTO orders (customer_id, delivery_address, curent_date, status_id) VALUES(?,?,?,?);";
+
+        getJdbcTemplate().update(con -> {
+            PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            stmt.setLong(1, entity.getCustomerID());
+            stmt.setString(2, entity.getDeliveryAddress());
+            stmt.setTimestamp(3, Timestamp.valueOf(entity.getLocalDateTime()));
+            stmt.setInt(4, entity.getStatusID());
+            return stmt;
+        }, keyHolder);
+        return findById(Objects.requireNonNull(keyHolder.getKey()).longValue()).getOrderID();
     }
 
     @Override
@@ -68,7 +71,7 @@ public class OrderDaoImpl extends AbstractDaoImpl<Order> implements OrderDao {
     }
 
     @Override
-    public List<Order> allCustomerOrder(long id){
+    public List<Order> allCustomerOrder(long id) {
         return getJdbcTemplate().query("SELECT * FROM orders Where customer_id=?;", BeanPropertyRowMapper.newInstance(Order.class), id);
     }
 
@@ -76,7 +79,7 @@ public class OrderDaoImpl extends AbstractDaoImpl<Order> implements OrderDao {
     @Override
     public String setOrderBottles(long order, long bottle) {
         int amountBottle = 1;
-        getJdbcTemplate().update("INSERT INTO orderbottle (bottle_id, order_id,amount_bottle) VALUES(?,?,?);",
+        getJdbcTemplate().update("INSERT INTO order_bottle (bottle_id, order_id,amount_bottle) VALUES(?,?,?);",
                 bottle, order, amountBottle);
         return "Success Create";
     }
@@ -85,7 +88,7 @@ public class OrderDaoImpl extends AbstractDaoImpl<Order> implements OrderDao {
     public String updateOrderBottles(long id) {
         Integer amount = 1;
         try {
-            amount += getJdbcTemplate().queryForObject("SELECT AmountBottle FROM order_bottle WHERE order_bottle_id = ? ",
+            amount += getJdbcTemplate().queryForObject("SELECT amount_bottle FROM order_bottle WHERE order_bottle_id = ? ",
                     Integer.class, id);
         } catch (
                 IncorrectResultSizeDataAccessException e) {
@@ -125,7 +128,7 @@ public class OrderDaoImpl extends AbstractDaoImpl<Order> implements OrderDao {
     @Override
     public InvoiceWrapper getOrderInvoice(Order order) {
         InvoiceWrapper orderDto;
-        orderDto = getJdbcTemplate().queryForObject("select o.order_id, c.name_company, o.delivery_address, o.curent_date, b.producer \n" +
+        orderDto = getJdbcTemplate().queryForObject("select o.order_id, c.email, o.delivery_address, o.curent_date, b.producer \n" +
                 "from orders as o \n" +
                 "inner join order_bottle as ob on o.order_id = ob.order_id \n" +
                 "inner join customer c on c.customer_id = o.customer_id \n" +
@@ -135,5 +138,19 @@ public class OrderDaoImpl extends AbstractDaoImpl<Order> implements OrderDao {
         assert orderDto != null;
         orderDto.setBottleListDtoList(getFinalOrder(order));
         return orderDto;
+    }
+
+    @Override
+    public List<Order> searchOrder(SearchOrderDto searchOrderDto) {
+        List<Order> orders = null;
+        for (String deliveryAddress : searchOrderDto.getDeliveryAddress()) {
+            orders = getJdbcTemplate().query("SELECT * FROM orders WHERE customer_id = ? delivery_address = ? AND cuernt_date BETWEEN ? AND ?;",
+                    BeanPropertyRowMapper.newInstance(Order.class),
+                    searchOrderDto.getCustomerId(),
+                    deliveryAddress,
+                    searchOrderDto.getStartDate(),
+                    searchOrderDto.getEndDate());
+        }
+        return orders;
     }
 }

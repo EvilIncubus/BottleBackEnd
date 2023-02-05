@@ -1,6 +1,7 @@
 package org.bottleProject.service;
 
-import org.bottleProject.dto.BottleListWrapper;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.bottleProject.dto.SearchOrderDto;
 import org.bottleProject.entity.Bottle;
 import org.bottleProject.entity.Order;
 
@@ -8,15 +9,13 @@ import java.util.List;
 
 public interface OrderService {
 
-    public List<Order> getAllOrder(Order order);
+    public List<Order> getAllOrder(int customerId);
 
-    Order addBottlesToOrder(Order order);
+    void createOrder(Order order);
 
-    void removeBottlesFromOrder(Order order);
+    void addItemToOrder(List<Bottle> bottles, long orderId);
 
-    void removeOrder(Order order);
+    Order getOrderById(long orderId);
 
-    void prepareInvoice(Order order);
-
-
+    List<Order> searchOrder(SearchOrderDto searchOrderDto);
 }

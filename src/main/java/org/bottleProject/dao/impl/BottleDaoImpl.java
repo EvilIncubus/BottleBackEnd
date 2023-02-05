@@ -1,15 +1,10 @@
 package org.bottleProject.dao.impl;
 
-import io.swagger.models.auth.In;
 import org.bottleProject.dao.BottleDao;
 import org.bottleProject.dto.BottleFilterDto;
-import org.bottleProject.dto.enums.BottleSortBy;
 import org.bottleProject.entity.Bottle;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.core.PreparedStatementCreatorFactory;
-import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -18,7 +13,6 @@ import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.sql.Types;
 import java.util.List;
 import java.util.Objects;
 

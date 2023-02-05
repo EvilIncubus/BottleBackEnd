@@ -5,9 +5,7 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
     <changeSet author="vodai (generated)" id="1674563226619-8">
         <sql>
-            insert into user_profile(first_name, last_name, email, role_id, phone_number) values
-            ('Igor', 'Cimpoi', 'igorcimpoi@gmail.com', 2,'060000020'),
-            ('Alexei', 'Beregoi', 'alexeiberegoi@gmail.com', 1,'060002020');
+            insert into invoice (order_id, file_name, file_id) values (1, 'Invoicing2023-02-02.xlsx', '1iZi7r9Fl5-ApUXCjrea41of48QODyuSZ');
         </sql>
     </changeSet>
 </databaseChangeLog>

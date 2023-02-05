@@ -4,10 +4,15 @@ import org.bottleProject.dao.CustomerDao;
 import org.bottleProject.entity.Customer;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 public class CustomerDaoImpl extends AbstractDaoImpl<Customer> implements CustomerDao {
@@ -23,23 +28,19 @@ public class CustomerDaoImpl extends AbstractDaoImpl<Customer> implements Custom
 
     @Override
     public Long create(Customer customer) {
-        getJdbcTemplate().update(" INSERT INTO customer (name_company, email, address, phone_number) VALUES(?,?,?,?);",
-                customer.getNameCompany(),
-                customer.getEmail(),
-                customer.getAddress(),
-                customer.getPhoneNumber()
-        );
-        return findMaxId();
-    }
+        KeyHolder keyHolder = new GeneratedKeyHolder();
 
-    private Long findMaxId() {
-        try {
-            return getJdbcTemplate().queryForObject("SELECT max(customer_id) FROM customer;",
-                    Long.class);
-        } catch (
-                IncorrectResultSizeDataAccessException e) {
-            return null;
-        }
+        String sql = "INSERT INTO customer (name_company, email, address, phone_number) VALUES(?,?,?,?);";
+
+        getJdbcTemplate().update(con -> {
+            PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            stmt.setString(1,customer.getNameCompany());
+            stmt.setString(2,customer.getEmail());
+            stmt.setString(3, customer.getAddress());
+            stmt.setString(4,customer.getPhoneNumber());
+            return stmt;
+        }, keyHolder);
+        return findById(Objects.requireNonNull(keyHolder.getKey()).longValue()).getCustomerID();
     }
 
     @Override
@@ -64,5 +65,11 @@ public class CustomerDaoImpl extends AbstractDaoImpl<Customer> implements Custom
                 IncorrectResultSizeDataAccessException e) {
             return null;
         }
+    }
+
+    @Override
+    public Customer findByEmail(String email) {
+        return getJdbcTemplate().queryForObject("SELECT * FROM customer WHERE email=?",
+                BeanPropertyRowMapper.newInstance(Customer.class), email);
     }
 }

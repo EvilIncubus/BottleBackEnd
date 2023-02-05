@@ -1,20 +1,25 @@
 package org.bottleProject.service.impl;
 
+import org.bottleProject.dao.CustomerDao;
 import org.bottleProject.entity.Customer;
 import org.bottleProject.service.CustomerService;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
+
+    private final CustomerDao customerDao;
+
+    public CustomerServiceImpl(CustomerDao customerDao){
+        this.customerDao = customerDao;
+    }
     @Override
-    public Customer addCustomer(Customer customer) {
-        //TODO implement Create Customer
-        return null;
+    public long addCustomer(Customer customer) {
+        return customerDao.create(customer);
     }
 
     @Override
-    public Customer editCustomer(Customer customer) {
-        //TODO implement Edit Customer
-        return null;
+    public Customer getCustomerByEmail(String email) {
+        return customerDao.findByEmail(email);
     }
 }

@@ -1,9 +1,16 @@
 package org.bottleProject.service;
 
 import org.bottleProject.dto.InvoiceWrapper;
-import org.bottleProject.util.FileManager;
+import org.bottleProject.entity.Order;
+
+import java.io.File;
+import java.time.LocalDateTime;
 
 public interface InvoicingService {
 
-    FileManager invoicing(InvoiceWrapper invoiceDto);
+    public void prepareInvoice(Order order);
+
+    LocalDateTime invoicing(InvoiceWrapper invoiceDto);
+
+    File getInvoiceContents(long customerId, long orderId);
 }

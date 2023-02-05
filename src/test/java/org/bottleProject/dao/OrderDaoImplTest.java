@@ -1,27 +1,29 @@
 package org.bottleProject.dao;
 
-import org.bottleProject.connectionDB.DBConfig;
 import org.bottleProject.dao.impl.OrderDaoImpl;
 import org.bottleProject.dto.BottleListWrapper;
 import org.bottleProject.dto.InvoiceWrapper;
 import org.bottleProject.entity.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
+@ActiveProfiles("integration_test")
 public class OrderDaoImplTest {
 
     @Autowired
     private OrderDaoImpl orderImplementDao;
 
-    Order order = new Order();
-
     @Test
     public void testCreateAndDelete() {
+        Order order = new Order();
         order.setDeliveryAddress("str. Mesterul Manole 15");
         order.setLocalDateTime(LocalDateTime.now());
         order.setStatusID(1);
@@ -44,14 +46,14 @@ public class OrderDaoImplTest {
 
     @Test
     public void testFindById() {
-        order = orderImplementDao.findById(50L);
+        Order order = orderImplementDao.findById(50L);
 
         assertNotNull(order);
     }
 
     @Test
     public void testUpdate() {
-        order = orderImplementDao.findById(50L);
+        Order order = orderImplementDao.findById(50L);
         String oldDeliveryAddress = order.getDeliveryAddress();
         order.setDeliveryAddress("str. Mihail Cogalniceanu 12");
         Order order1 = orderImplementDao.update(order, 50L);
@@ -88,7 +90,7 @@ public class OrderDaoImplTest {
     }
 
     @Test
-    public void testGetOrder() {
+    public void testGetOrderInvoice() {
         InvoiceWrapper orderDto = orderImplementDao.getOrderInvoice(orderImplementDao.findById(1L));
         assertNotNull(orderDto);
     }

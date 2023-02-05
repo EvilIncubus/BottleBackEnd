@@ -5,7 +5,7 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
     <changeSet author="vodai (generated)" id="1674563226619-8">
         <sql>
-            insert into storage(storage_section) values ('A1');
+            insert into storage(storage_section) values ('A1'),('A2'),('A3'),('A4'),('B1'),('B2'),('B3'),('B4'),('C1');
         </sql>
     </changeSet>
 </databaseChangeLog>

@@ -5,7 +5,7 @@ import java.util.List;
 
 public class InvoiceWrapper {
     private long orderID;
-    private String nameCompany;
+    private String email;
     private String deliveryAddress;
     private LocalDateTime curentDate;
     private String producer;
@@ -19,12 +19,12 @@ public class InvoiceWrapper {
         this.orderID = orderID;
     }
 
-    public String getNameCompany() {
-        return nameCompany;
+    public String getEmail() {
+        return email;
     }
 
-    public void setNameCompany(String nameCompany) {
-        this.nameCompany = nameCompany;
+    public void setEmail(String nameCompany) {
+        this.email = nameCompany;
     }
 
     public String getDeliveryAddress() {

@@ -2,7 +2,10 @@ package org.bottleProject.util;
 
 import org.apache.poi.ss.usermodel.Workbook;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class FileManager {
 
@@ -16,13 +19,17 @@ public class FileManager {
         this.fileExtension = fileExtension;
     }
 
-    public void writeExcelFile(Workbook workbook) {
+    public FileManager() {
+
+    }
+
+    public void writeExcelFile(Workbook xssfWorkbook) {
         StringBuilder filePath = new StringBuilder();
         filePath.append("C:\\Users\\VODAI\\Documents");
         filePath.append("\\");
         filePath.append(folderName);
 
-        try{
+        try {
             boolean isCreated = new File(filePath.toString()).mkdir();
 
             filePath.append("\\");
@@ -31,12 +38,19 @@ public class FileManager {
             filePath.append(fileExtension);
 
             FileOutputStream outputStream = new FileOutputStream(filePath.toString());
-            workbook.write(outputStream);
-        }
-        catch (IOException e) {
+            xssfWorkbook.write(outputStream);
+        } catch (IOException e) {
             System.out.println(e);
         }
     }
 
+    public File getExcelFile(String userEmail, String file) throws IOException {
+        String path = "C:\\Users\\VODAI\\Documents\\" + userEmail + "\\" + file;
+        return new File(path);
+    }
 
+    public void saveFileFromDrive(InputStream inputStream){
+
+    }
 }
+

@@ -5,20 +5,24 @@ import org.bottleProject.dao.impl.CustomerDaoImpl;
 import org.bottleProject.entity.Customer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
+@ActiveProfiles("integration_test")
 public class CustomerDaoImplTest {
 
     @Autowired
     private CustomerDaoImpl costumerImplementDao;
-    private Customer customer = new Customer();
 
     //Test to check if customer is created and deleted successful
     @Test
     public void testCreateAndDelete() {
+        Customer customer = new Customer();
         customer.setNameCompany("SushiMushi");
         customer.setEmail("celentanocontact@gmail.com");
         customer.setAddress("str. Mesterul Manole 51");
@@ -43,7 +47,7 @@ public class CustomerDaoImplTest {
     //Test to check if function correct find customer by id
     @Test
     public void testFindById() {
-        customer = costumerImplementDao.findById(1L);
+        Customer customer = costumerImplementDao.findById(1L);
 
         assertNotNull(customer);
     }
@@ -51,7 +55,7 @@ public class CustomerDaoImplTest {
     //Test to check in function make correct update for customer phone number
     @Test
     public void testUpdate() {
-        customer = costumerImplementDao.findById(1L);
+        Customer customer = costumerImplementDao.findById(1L);
         String oldPhone = customer.getPhoneNumber();
         customer.setPhoneNumber("06098765");
         Customer customer1 = costumerImplementDao.update(customer, 1L);

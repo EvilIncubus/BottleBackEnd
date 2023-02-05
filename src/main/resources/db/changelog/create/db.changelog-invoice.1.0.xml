@@ -3,15 +3,18 @@
                    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
-    <changeSet author="vodai (generated)" id="1674563226619-3">
-        <createTable tableName="customer_profile">
-            <column autoIncrement="true" name="customer_profile_id" type="INT">
+    <changeSet author="vodai (generated)" id="1674563226619-1">
+        <createTable tableName="invoice">
+            <column autoIncrement="true" name="invoice_id" type="INT">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="user_id" type="INT">
+            <column name="order_id" type="INT">
                 <constraints nullable="false"/>
             </column>
-            <column name="customer_id" type="INT">
+            <column name="file_name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="file_id" type="VARCHAR(100)">
                 <constraints nullable="false"/>
             </column>
         </createTable>

@@ -1,19 +1,20 @@
 package org.bottleProject.service;
 
-import org.bottleProject.service.impl.GoogleApiServiceImpl;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.io.File;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 
+@SpringBootTest
+@ActiveProfiles("integration_test")
 public class GoogleApiServiceImplTest {
 
+    @Autowired
     private GoogleApiService googleApiService;
-
-    public GoogleApiServiceImplTest() {
-        this.googleApiService = new GoogleApiServiceImpl("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-    }
 
     @Test
     public void getAllFilesFromDrive() throws GeneralSecurityException, IOException {
@@ -22,7 +23,7 @@ public class GoogleApiServiceImplTest {
 
     @Test
     public void uploadFileToDrive() throws GeneralSecurityException, IOException {
-        String id = googleApiService.uploadFileIntoDrive("Invoice.xlsx", new File("C:\\Users\\VODAI\\Documents\\Yapona Mama\\Invoicing2023-01-09.xlsx"));
+        String id = googleApiService.uploadFileIntoDrive("Invoice2023-01-09.xlsx", new File("C:\\Users\\VODAI\\Documents\\sushiline@yaponamama.md\\Invoicing2023-01-09.xlsx"));
         System.out.println(id);
     }
 

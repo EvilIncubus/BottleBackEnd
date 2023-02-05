@@ -6,6 +6,7 @@ import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.http.FileContent;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
@@ -24,6 +25,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
 import java.util.*;
+@Service
 public class GoogleApiServiceImpl implements GoogleApiService {
     private static final String APPLICATION_NAME = "ExcelSave";
     /**
@@ -44,10 +46,9 @@ public class GoogleApiServiceImpl implements GoogleApiService {
 
     private final NetHttpTransport HTTP_TRANSPORT;
     private final Drive DRIVE;
-    private final String MIME_TYPE;
 
-    public GoogleApiServiceImpl(String MIME_TYPE) {
-        this.MIME_TYPE = MIME_TYPE;
+
+    public GoogleApiServiceImpl() {
         try {
             this.HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
             this.DRIVE = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT)).setApplicationName(APPLICATION_NAME).build();
@@ -88,6 +89,7 @@ public class GoogleApiServiceImpl implements GoogleApiService {
         return credential;
     }
 
+    @Override
     public List<File> getAllFilesFromDrive() {
         FileList result = null;
         try {
@@ -99,6 +101,7 @@ public class GoogleApiServiceImpl implements GoogleApiService {
         return result.getFiles();
     }
 
+    @Override
     public String uploadFileIntoDrive(String fileName, java.io.File fileToInsert) {
         File uploadedFile = null;
         Boolean fileDoesNotExist = getAllFilesByName(fileName) == null;
@@ -108,7 +111,7 @@ public class GoogleApiServiceImpl implements GoogleApiService {
                 File file = new File();
                 file.setName(fileName);
                 // File's new content.
-                FileContent mediaContent = new FileContent(MIME_TYPE, fileToInsert);
+                FileContent mediaContent = new FileContent("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileToInsert);
 
                 uploadedFile = DRIVE.files().update(fileId, file, mediaContent).execute();
 
@@ -120,7 +123,7 @@ public class GoogleApiServiceImpl implements GoogleApiService {
             file.setName(fileName);
 
             //mime type and file like new java.io.File(PathToFileFromComputer)
-            FileContent fileContent = new FileContent(MIME_TYPE, fileToInsert);
+            FileContent fileContent = new FileContent("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileToInsert);
 
             //uploading
             try {
@@ -135,11 +138,28 @@ public class GoogleApiServiceImpl implements GoogleApiService {
 
     }
 
+    @Override
+    public InputStream downloadFile(String realFileId) throws GoogleJsonResponseException {
+        try {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+            DRIVE.files().get(realFileId)
+                    .executeMediaAndDownloadTo(outputStream);
+
+            return new ByteArrayInputStream(outputStream.toByteArray());
+        } catch (GoogleJsonResponseException e) {
+            System.err.println("Unable to move file: " + e.getDetails());
+            throw e;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private List<File> getAllFilesByName(String fileName) {
         FileList result = null;
         try {
             result = DRIVE.files().list()
-                    .setQ("mimeType='" + MIME_TYPE + "'")
+                    .setQ("mimeType='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'")
                     .setQ("name = '" + fileName + "'")
                     .setSpaces("drive")
                     .setFields("files(id, name)")
