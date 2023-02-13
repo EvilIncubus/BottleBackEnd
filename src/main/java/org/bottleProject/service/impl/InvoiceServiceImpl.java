@@ -16,6 +16,7 @@ import org.bottleProject.util.FileManager;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -27,37 +28,36 @@ public class InvoiceServiceImpl implements InvoicingService {
     private final OrderDao orderDao;
     private final InvoiceDao invoiceDao;
     private final CustomerDao customerDao;
+    private final GoogleApiService googleApiService;
 
-    public InvoiceServiceImpl(OrderDao orderDao, InvoiceDao invoiceDao, CustomerDao customerDao) {
+    public InvoiceServiceImpl(OrderDao orderDao, InvoiceDao invoiceDao, CustomerDao customerDao, GoogleApiService googleApiService) {
         this.orderDao = orderDao;
         this.invoiceDao = invoiceDao;
         this.customerDao = customerDao;
+        this.googleApiService = googleApiService;
     }
 
     Invoice invoice = new Invoice();
 
     @Override
-    public void prepareInvoice(Order order) {
+    public Workbook prepareInvoice(Order order) {
         InvoiceWrapper invoiceWrapper = orderDao.getOrderInvoice(order);
-        LocalDateTime localDateTime = invoicing(invoiceWrapper);
-        FileManager fileManager = new FileManager();
-        File file;
-        try {
-            file = fileManager.getExcelFile(invoiceWrapper.getEmail(), "Invoice" + localDateTime.toLocalDate() + ".xlsx");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        GoogleApiService googleApiService = new GoogleApiServiceImpl();
-        String fileId = googleApiService.uploadFileIntoDrive("Invoice" + localDateTime.toLocalDate()+ ".xlsx", file);
-
-        invoice.setOrderId((int) order.getOrderID());
-        invoice.setFileId(fileId);
-        invoice.setFileName(invoiceWrapper.getEmail() + "\\Invoice" + localDateTime.toLocalDate() + ".xlsx");
-        invoiceDao.create(invoice);
-
-
+        LocalDateTime localDateTime = LocalDateTime.now();
+        return invoicing(invoiceWrapper, localDateTime);
+//        FileManager fileManager = new FileManager();
+//        File file;
+//        try {
+//            file = fileManager.getExcelFile(invoiceWrapper.getEmail(), "Invoice" + localDateTime.toLocalDate() + ".xlsx");
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//        String fileId = googleApiService.uploadFileIntoDrive("Invoice" + localDateTime.toLocalDate()+ ".xlsx", file);
+//
+//        invoice.setOrderId((int) order.getOrderId());
+//        invoice.setFileId(fileId);
+//        invoice.setFileName(invoiceWrapper.getEmail() + "\\Invoice" + localDateTime.toLocalDate() + ".xlsx");
+//        invoiceDao.create(invoice);
     }
-
     @Override
     public File getInvoiceContents(long customerId, long orderId) {
         invoice = invoiceDao.findByOrderId(orderId);
@@ -67,9 +67,8 @@ public class InvoiceServiceImpl implements InvoicingService {
         try {
             file = fileManager.getExcelFile(customer.getEmail(), invoice.getFileName());
         } catch (IOException e) {
-            GoogleApiService googleApiService = new GoogleApiServiceImpl();
             try {
-                fileManager.saveFileFromDrive(googleApiService.downloadFile(invoice.getFileId()));
+                fileManager.saveFileFromDrive(googleApiService.downloadFile(invoice.getFileId()), customer.getEmail(),invoice.getFileName());
                 file = fileManager.getExcelFile(customer.getEmail(), invoice.getFileName());
             } catch (IOException exception) {
                 throw new RuntimeException(exception);
@@ -79,11 +78,9 @@ public class InvoiceServiceImpl implements InvoicingService {
     }
 
     @Override
-    public LocalDateTime invoicing(InvoiceWrapper invoiceWrapper) {
+    public Workbook invoicing(InvoiceWrapper invoiceWrapper, LocalDateTime localDateTime) {
         Workbook workbook = new XSSFWorkbook();
-        LocalDateTime localDateTime = LocalDateTime.now();
         Sheet sheet = workbook.createSheet("Invoice");
-        ;
         createHeader(workbook, sheet);
         createCustomerAndCompanyRows(workbook, sheet, invoiceWrapper);
 
@@ -101,7 +98,7 @@ public class InvoiceServiceImpl implements InvoicingService {
         }
         FileManager fileManager = new FileManager(invoiceWrapper.getEmail(), "Invoice" + localDateTime.toLocalDate(), "xlsx");
         fileManager.writeExcelFile(workbook);
-        return localDateTime;
+        return workbook;
     }
 
     private void createHeader(Workbook workbook, Sheet sheet) {

@@ -17,10 +17,10 @@ public class CustomerController {
     }
 
     @PostMapping("/createCustomer")
-    public ResponseEntity<Long> createBottle(@RequestBody Customer customer) {
+    public ResponseEntity<Customer> createCustomer(@RequestBody Customer customer) {
         try {
-            long customerId = customerService.addCustomer(customer);
-            return new ResponseEntity<>(customerId, HttpStatus.CREATED);
+            Customer customerResponse = customerService.addCustomer(customer);
+            return new ResponseEntity<>(customerResponse, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }

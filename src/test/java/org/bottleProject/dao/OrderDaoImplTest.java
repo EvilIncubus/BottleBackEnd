@@ -1,9 +1,9 @@
 package org.bottleProject.dao;
 
-import org.bottleProject.dao.impl.OrderDaoImpl;
 import org.bottleProject.dto.BottleListWrapper;
 import org.bottleProject.dto.InvoiceWrapper;
 import org.bottleProject.entity.Order;
+import org.bottleProject.entity.OrderBottle;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,80 +19,91 @@ import static org.junit.jupiter.api.Assertions.*;
 public class OrderDaoImplTest {
 
     @Autowired
-    private OrderDaoImpl orderImplementDao;
+    private OrderDao orderDao;
 
     @Test
     public void testCreateAndDelete() {
         Order order = new Order();
         order.setDeliveryAddress("str. Mesterul Manole 15");
-        order.setLocalDateTime(LocalDateTime.now());
-        order.setStatusID(1);
-        long id = orderImplementDao.create(order);
-        order.setOrderID(id);
-
-        Order order1 = orderImplementDao.findById(id);
+        order.setCurentDate(LocalDateTime.now());
+        order.setStatusId(1);
+        order = orderDao.create(order);
+        Order order1 = orderDao.findById(order.getOrderId());
+        order.setOrderId(order1.getOrderId());
         assertNotNull(order1);
         assertEquals(order1, order);
-        orderImplementDao.removeById(id);
-        assertNull(orderImplementDao.findById(id));
+        System.out.println(order);
+        System.out.println(order1);
+        orderDao.removeById(order.getOrderId());
+        assertNull(orderDao.findById(order.getOrderId()));
     }
 
     @Test
     public void testGetAll() {
-        List<Order> orders = orderImplementDao.getAll();
+        List<Order> orders = orderDao.getAll();
 
         assertNotNull(orders);
     }
 
     @Test
     public void testFindById() {
-        Order order = orderImplementDao.findById(50L);
+        Order order = orderDao.findById(50L);
 
         assertNotNull(order);
     }
 
     @Test
     public void testUpdate() {
-        Order order = orderImplementDao.findById(50L);
+        Order order = orderDao.findById(50L);
         String oldDeliveryAddress = order.getDeliveryAddress();
         order.setDeliveryAddress("str. Mihail Cogalniceanu 12");
-        Order order1 = orderImplementDao.update(order, 50L);
+        Order order1 = orderDao.update(order, 50L);
 
         assertNotNull(order1);
         assertEquals(order, order1);
         order.setDeliveryAddress(oldDeliveryAddress);
-        orderImplementDao.update(order, 50L);
+        orderDao.update(order, 50L);
     }
 
     @Test
     public void testFindOrderBottles() {
-        long id = orderImplementDao.findOrderBottles(1L, 1L);
-        assertEquals(1 , id);
+        long id = orderDao.findOrderBottles(1L, 1L);
+        assertEquals(1L , id);
     }
 
     @Test
     public void testSetOrderBottles() {
-        String answer = orderImplementDao.setOrderBottles(2L, 2L);
+        OrderBottle orderBottle = new OrderBottle();
+        orderBottle.setBottleId(2);
+        orderBottle.setOrderId(2);
+        orderBottle.setAmountBottle(15);
+        String answer = orderDao.setOrderBottles(orderBottle);
         assertNotNull(answer);
-        orderImplementDao.findOrderBottles(2L, 2L);
-    }
-
-    @Test
-    public void testUpdateOrderBottles() {
-        String answer = orderImplementDao.updateOrderBottles(1L);
-        assertNotNull(answer);
+        orderDao.findOrderBottles(1L, 1L);
     }
 
     @Test
     public void testGetFinalOrder() {
-        List<BottleListWrapper> finalOrderDtoList = orderImplementDao.getFinalOrder(orderImplementDao.findById(1L));
+        List<BottleListWrapper> finalOrderDtoList = orderDao.getFinalOrder(orderDao.findById(1L));
         assertNotNull(finalOrderDtoList);
     }
 
     @Test
     public void testGetOrderInvoice() {
-        InvoiceWrapper orderDto = orderImplementDao.getOrderInvoice(orderImplementDao.findById(1L));
+        InvoiceWrapper orderDto = orderDao.getOrderInvoice(orderDao.findById(1L));
         assertNotNull(orderDto);
     }
 
+    @Test
+    public void testCountOrders() {
+        int count = orderDao.countFilterOrders("Yap");
+        assertNotEquals(0, count);
+    }
+
+    @Test
+    public void testGetAllFilterOrder() {
+        List<Order> orderList = orderDao.getAllFilterOrder("Yapona Mama", 1,0);
+        System.out.println(orderList);
+        assertNotNull(orderList);
+    }
 }

@@ -6,7 +6,7 @@ import java.util.Objects;
 //Entity
 public class Customer {
 
-    private long customerID;
+    private long customerId;
 
     private String nameCompany;
 
@@ -16,19 +16,19 @@ public class Customer {
 
     private String phoneNumber;
 
-    public Customer(long customerID, String contactPerson, String email, String address, String phoneNumber, int userID) {
+    public Customer(long customerId, String contactPerson, String email, String address, String phoneNumber, int userID) {
     }
 
     public Customer() {
 
     }
 
-    public long getCustomerID() {
-        return customerID;
+    public long getCustomerId() {
+        return customerId;
     }
 
-    public void setCustomerID(long customerID) {
-        this.customerID = customerID;
+    public void setCustomerId(long customerId) {
+        this.customerId = customerId;
     }
 
     public String getEmail() {
@@ -66,7 +66,7 @@ public class Customer {
     @Override
     public String toString() {
         return "Customer{" +
-                "customerID=" + customerID +
+                "customerId=" + customerId +
                 ", email=" + email +
                 ", address=" + address +
                 ", phoneNumber=" + phoneNumber +
@@ -79,7 +79,7 @@ public class Customer {
         if (obj == null || getClass() != obj.getClass()) return false;
         Customer customer = (org.bottleProject.entity.Customer) obj;
 
-        boolean idMatches = Objects.equals(customerID,customer.customerID);
+        boolean idMatches = Objects.equals(customerId,customer.customerId);
         boolean allFieldsMach = phoneNumber.equals(customer.phoneNumber);
 
         return idMatches && allFieldsMach;

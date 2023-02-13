@@ -3,10 +3,10 @@ package org.bottleProject.service.impl;
 import org.bottleProject.dao.BottleDao;
 import org.bottleProject.dto.BottleFilterDto;
 import org.bottleProject.entity.Bottle;
+import org.bottleProject.entity.Page;
 import org.bottleProject.service.BottleService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 public class BottleServiceImpl implements BottleService {
@@ -18,8 +18,8 @@ public class BottleServiceImpl implements BottleService {
     }
 
     @Override
-    public void createOrder(Bottle bottle) {
-        bottleDao.create(bottle);
+    public Bottle createBottle(Bottle bottle) {
+        return bottleDao.create(bottle);
     }
 
     @Override
@@ -28,7 +28,7 @@ public class BottleServiceImpl implements BottleService {
     }
 
     @Override
-    public List<Bottle> getListOfBottleByCategory(BottleFilterDto bottleFilterDto) {
-        return bottleDao.filterBy(bottleFilterDto);
+    public Page<Bottle> getListOfBottleByCategory(BottleFilterDto bottleFilterDto) {
+        return new Page<>(bottleDao.filterBy(bottleFilterDto), bottleDao.countAllFilterBottle(bottleFilterDto), bottleFilterDto.getPage(), bottleFilterDto.getSize());
     }
 }

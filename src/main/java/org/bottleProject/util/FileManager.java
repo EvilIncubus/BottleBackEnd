@@ -1,6 +1,7 @@
 package org.bottleProject.util;
 
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -49,8 +50,15 @@ public class FileManager {
         return new File(path);
     }
 
-    public void saveFileFromDrive(InputStream inputStream){
-
+    public void saveFileFromDrive(InputStream inputStream, String email, String fileName){
+        try {
+            Workbook book = WorkbookFactory.create(inputStream);
+            String path = "C:\\Users\\VODAI\\Documents\\" + email + "\\" + fileName;
+            FileOutputStream outputStream = new FileOutputStream(path);
+            book.write(outputStream);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
 

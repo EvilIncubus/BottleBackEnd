@@ -5,26 +5,24 @@ import org.bottleProject.dao.OrderDao;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 public class InvoicingServiceTest {
-    @Mock
+    @MockBean
     private OrderDao orderDao;
 
-    private AutoCloseable autoCloseable;
+    @Autowired
+    private InvoicingService invoicingService;
 
+    @Test
+    public void shouldPrepareInvoice(){
 
-    public void init() {
-         autoCloseable = MockitoAnnotations.openMocks(this);
-    }
-
-
-    public void close() throws Exception {
-        autoCloseable.close();
     }
 
     @Test
-    public void shouldCreateAndSave(){
-
+    public void shouldGetInvoiceContent(){
 
     }
+
 }

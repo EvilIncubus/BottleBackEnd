@@ -1,7 +1,10 @@
 package org.bottleProject.controller;
 
+import org.apache.poi.ss.usermodel.Workbook;
+import org.bottleProject.entity.Configuration;
 import org.bottleProject.entity.Order;
 import org.bottleProject.service.InvoicingService;
+import org.bottleProject.service.InvoiceFileOperationsService;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -18,25 +21,28 @@ import java.nio.file.Paths;
 @RestController
 @RequestMapping("/rest/api/customer/invoice")
 public class InvoiceController {
-    private final InvoicingService invoiceService;
+    private final InvoiceFileOperationsService operationInvoiceService;
+    private final InvoicingService invoicingService;
 
-    public InvoiceController(InvoicingService invoiceService) {
-        this.invoiceService = invoiceService;
+    public InvoiceController(InvoiceFileOperationsService operationInvoiceService, InvoicingService invoicingService) {
+        this.operationInvoiceService = operationInvoiceService;
+        this.invoicingService = invoicingService;
     }
 
     @PostMapping("/generateInvoice")
-    public ResponseEntity<String> createInvoiceByOrder(@RequestBody Order order) {
+    public ResponseEntity<String> createInvoiceByOrder(@RequestBody Order order, @RequestBody Configuration configuration, @PathVariable String saveType) {
         try {
-            invoiceService.prepareInvoice(order);
+            Workbook workbook = invoicingService.prepareInvoice(order);
+            operationInvoiceService.fileSaveSelect(saveType, workbook);
             return new ResponseEntity<>("invoice was created successfully.", HttpStatus.CREATED);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("error creating invoice", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/downloadInvoiceByOrderId/{customerId}/{orderId}")
     public ResponseEntity<Resource> download( @PathVariable Long customerId, @PathVariable Long orderId) throws IOException {
-        File foundFile = invoiceService.getInvoiceContents(customerId, orderId);
+        File foundFile = invoicingService.getInvoiceContents(customerId, orderId);
         ByteArrayInputStream resource = new ByteArrayInputStream(Files.readAllBytes(Paths.get(foundFile.getAbsolutePath())));
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", "attachment; filename=" + foundFile.getName());

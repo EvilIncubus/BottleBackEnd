@@ -26,7 +26,7 @@ public class InvoiceDaoImpl extends AbstractDaoImpl<Invoice> implements InvoiceD
     }
 
     @Override
-    public Long create(Invoice invoice) {
+    public Invoice create(Invoice invoice) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         String sql = "INSERT INTO invoice (order_id, file_name, file_id) VALUES(?,?,?);";
@@ -38,12 +38,12 @@ public class InvoiceDaoImpl extends AbstractDaoImpl<Invoice> implements InvoiceD
             stmt.setString(3,invoice.getFileId());
             return stmt;
         }, keyHolder);
-        return findById(Objects.requireNonNull(keyHolder.getKey()).longValue()).getInvoiceId();
+        return findById(Objects.requireNonNull(keyHolder.getKey()).longValue());
     }
 
     @Override
     public Invoice update(Invoice invoice, Long id) {
-        getJdbcTemplate().update("UPDATE invoice SET file_name_id=? WHERE invoice_id=?",
+        getJdbcTemplate().update("UPDATE invoice SET file_name=? WHERE invoice_id=?",
                 invoice.getFileName(), invoice.getInvoiceId() );
         return findById(id);
     }

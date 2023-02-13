@@ -1,21 +1,23 @@
 package org.bottleProject.service;
 
-import org.apache.poi.ss.usermodel.Workbook;
-import org.bottleProject.dto.SearchOrderDto;
+import org.bottleProject.dto.ListOrderDto;
+import org.bottleProject.dto.OrderSearchDto;
 import org.bottleProject.entity.Bottle;
 import org.bottleProject.entity.Order;
+import org.bottleProject.entity.OrderBottle;
+import org.bottleProject.entity.Page;
 
 import java.util.List;
 
 public interface OrderService {
 
-    public List<Order> getAllOrder(int customerId);
+    public Page<Order> getAllOrder(ListOrderDto listOrderDto);
 
-    void createOrder(Order order);
+    Order createOrder(Order order);
 
-    void addItemToOrder(List<Bottle> bottles, long orderId);
+    String addItemToOrder(OrderBottle orderBottle);
 
     Order getOrderById(long orderId);
 
-    List<Order> searchOrder(SearchOrderDto searchOrderDto);
+    Page<Order> searchOrder(OrderSearchDto orderSearchDto);
 }

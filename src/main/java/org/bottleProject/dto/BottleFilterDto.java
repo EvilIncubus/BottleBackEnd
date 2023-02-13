@@ -4,13 +4,13 @@ import org.bottleProject.dto.enums.BottleSortBy;
 
 public class BottleFilterDto {
     private int page;
-    private int volumeId;
+    private int size;
     private BottleSortBy sortBy;
 
-    public BottleFilterDto(int page, int volumeId, BottleSortBy sortBy) {
+    public BottleFilterDto(int page,int size, BottleSortBy sortBy) {
         this.page = page;
-        this.volumeId = volumeId;
         this.sortBy = sortBy;
+        this.size = size;
     }
 
     public int getPage() {
@@ -21,14 +21,6 @@ public class BottleFilterDto {
         this.page = page;
     }
 
-    public int getVolumeId() {
-        return volumeId;
-    }
-
-    public void setVolumeId(int volumeId) {
-        this.volumeId = volumeId;
-    }
-
     public BottleSortBy getSortBy() {
         return sortBy;
     }
@@ -37,7 +29,15 @@ public class BottleFilterDto {
         this.sortBy = sortBy;
     }
 
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
     public int getOffset() {
-        return (page - 1) * volumeId;
+        return (page - 1) * size;
     }
 }

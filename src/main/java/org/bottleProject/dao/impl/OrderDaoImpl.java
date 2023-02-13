@@ -3,8 +3,9 @@ package org.bottleProject.dao.impl;
 import org.bottleProject.dao.OrderDao;
 import org.bottleProject.dto.BottleListWrapper;
 import org.bottleProject.dto.InvoiceWrapper;
-import org.bottleProject.dto.SearchOrderDto;
+import org.bottleProject.dto.OrderSearchDto;
 import org.bottleProject.entity.Order;
+import org.bottleProject.entity.OrderBottle;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -15,8 +16,8 @@ import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Repository
 public class OrderDaoImpl extends AbstractDaoImpl<Order> implements OrderDao {
@@ -31,20 +32,20 @@ public class OrderDaoImpl extends AbstractDaoImpl<Order> implements OrderDao {
     }
 
     @Override
-    public Long create(Order entity) {
+    public Order create(Order entity) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         String sql = "INSERT INTO orders (customer_id, delivery_address, curent_date, status_id) VALUES(?,?,?,?);";
 
         getJdbcTemplate().update(con -> {
             PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            stmt.setLong(1, entity.getCustomerID());
+            stmt.setLong(1, entity.getCustomerId());
             stmt.setString(2, entity.getDeliveryAddress());
-            stmt.setTimestamp(3, Timestamp.valueOf(entity.getLocalDateTime()));
-            stmt.setInt(4, entity.getStatusID());
+            stmt.setTimestamp(3, Timestamp.valueOf(entity.getCurentDate()));
+            stmt.setInt(4, entity.getStatusId());
             return stmt;
         }, keyHolder);
-        return findById(Objects.requireNonNull(keyHolder.getKey()).longValue()).getOrderID();
+        return findById(keyHolder.getKey().longValue());
     }
 
     @Override
@@ -61,7 +62,7 @@ public class OrderDaoImpl extends AbstractDaoImpl<Order> implements OrderDao {
     @Override
     public Order update(Order entity, Long id) {
         getJdbcTemplate().update("UPDATE orders SET delivery_address = ? WHERE order_id=?",
-                entity.getDeliveryAddress(), entity.getOrderID());
+                entity.getDeliveryAddress(), entity.getOrderId());
         return findById(id);
     }
 
@@ -75,30 +76,13 @@ public class OrderDaoImpl extends AbstractDaoImpl<Order> implements OrderDao {
         return getJdbcTemplate().query("SELECT * FROM orders Where customer_id=?;", BeanPropertyRowMapper.newInstance(Order.class), id);
     }
 
-
+    //todo add constrain key
     @Override
-    public String setOrderBottles(long order, long bottle) {
+    public String setOrderBottles(OrderBottle orderBottle) {
         int amountBottle = 1;
-        getJdbcTemplate().update("INSERT INTO order_bottle (bottle_id, order_id,amount_bottle) VALUES(?,?,?);",
-                bottle, order, amountBottle);
+        getJdbcTemplate().update("INSERT INTO order_bottle (bottle_id, order_id,amount_bottle) VALUES(?,?,?) ON DUPLICATE KEY UPDATE amount_bottle = ?;",
+                orderBottle.getBottleId(), orderBottle.getOrderId(), orderBottle.getAmountBottle(), orderBottle.getAmountBottle());
         return "Success Create";
-    }
-
-    @Override
-    public String updateOrderBottles(long id) {
-        Integer amount = 1;
-        try {
-            amount += getJdbcTemplate().queryForObject("SELECT amount_bottle FROM order_bottle WHERE order_bottle_id = ? ",
-                    Integer.class, id);
-        } catch (
-                IncorrectResultSizeDataAccessException e) {
-            return "Order Bottle not found";
-        }
-
-        getJdbcTemplate().update("UPDATE order_bottle SET amount_bottle = ? WHERE order_bottle_id=?",
-                amount, id);
-
-        return "Success Update";
     }
 
     @Override
@@ -122,7 +106,7 @@ public class OrderDaoImpl extends AbstractDaoImpl<Order> implements OrderDao {
                 "inner join bottle as b on b.bottle_id = ob.bottle_id \n" +
                 "inner join price p on p.price_id = b.price_id \n" +
                 "inner join volume v on v.volume_id = b.volume_id \n" +
-                "where o.order_id = ? ;", BeanPropertyRowMapper.newInstance(BottleListWrapper.class), order.getOrderID());
+                "where o.order_id = ? ;", BeanPropertyRowMapper.newInstance(BottleListWrapper.class), order.getOrderId());
     }
 
     @Override
@@ -133,7 +117,7 @@ public class OrderDaoImpl extends AbstractDaoImpl<Order> implements OrderDao {
                 "inner join order_bottle as ob on o.order_id = ob.order_id \n" +
                 "inner join customer c on c.customer_id = o.customer_id \n" +
                 "inner join bottle as b on b.bottle_id = ob.bottle_id \n" +
-                "where o.order_id = ? limit 1;", BeanPropertyRowMapper.newInstance(InvoiceWrapper.class), order.getOrderID());
+                "where o.order_id = ? limit 1;", BeanPropertyRowMapper.newInstance(InvoiceWrapper.class), order.getOrderId());
 
         assert orderDto != null;
         orderDto.setBottleListDtoList(getFinalOrder(order));
@@ -141,16 +125,124 @@ public class OrderDaoImpl extends AbstractDaoImpl<Order> implements OrderDao {
     }
 
     @Override
-    public List<Order> searchOrder(SearchOrderDto searchOrderDto) {
-        List<Order> orders = null;
-        for (String deliveryAddress : searchOrderDto.getDeliveryAddress()) {
-            orders = getJdbcTemplate().query("SELECT * FROM orders WHERE customer_id = ? delivery_address = ? AND cuernt_date BETWEEN ? AND ?;",
-                    BeanPropertyRowMapper.newInstance(Order.class),
-                    searchOrderDto.getCustomerId(),
-                    deliveryAddress,
-                    searchOrderDto.getStartDate(),
-                    searchOrderDto.getEndDate());
+    public List<Order> searchOrder(OrderSearchDto orderSearchDto) {
+        List<Object> argsList = new ArrayList<>();
+        String queryString = "";
+        boolean containsCondition = false;
+        queryString += "Select * From orders inner join status on order.status_id = status.status_id";
+        if (!orderSearchDto.getDeliveryAddress().isEmpty()){
+            queryString += " Where delivery_address Like Concat(? ,'%')";
+            argsList.add(orderSearchDto.getDeliveryAddress());
+            containsCondition =true;
         }
-        return orders;
+        if (orderSearchDto.getStatus() != null){
+            if(containsCondition){
+                queryString += " And";
+            } else {
+                queryString += " Where";
+                containsCondition = true;
+            }
+
+            queryString += " status_id = ?";
+            argsList.add(orderSearchDto.getStatus());
+        }
+
+        if(orderSearchDto.getFromDate()!=null){
+
+            if (containsCondition) {
+                queryString += " AND";
+            } else {
+                queryString += " WHERE";
+                containsCondition = true;
+            }
+
+            queryString += " curent_date AFTER ?";
+            argsList.add(orderSearchDto.getFromDate());
+        }
+
+        if(orderSearchDto.getToDate() != null){
+
+            if (containsCondition) {
+                queryString += " AND";
+            } else {
+                queryString += " WHERE";
+            }
+
+            queryString += " curent_date BEFORE ?";
+            argsList.add(orderSearchDto.getToDate());
+        }
+
+        queryString += ";";
+        return getJdbcTemplate().query(queryString, BeanPropertyRowMapper.newInstance(Order.class), argsList.toArray());
+    }
+
+    @Override
+    public Integer countFilterOrders(String nameCompany) {
+        return getJdbcTemplate().queryForObject("select count(*) from orders Inner Join customer on orders.customer_id = customer.customer_id where customer.name_company Like Concat('%', ? ,'%')",
+                Integer.class,
+                nameCompany
+        );
+    }
+
+    @Override
+    public List<Order> getAllFilterOrder(String nameCompany, int page, int size) {
+        return getJdbcTemplate().query("SELECT orders.order_id, customer.name_company, orders.delivery_address, orders.curent_date, status.status FROM orders Inner Join customer on orders.customer_id = customer.customer_id Inner Join Status on orders.status_id = status.status_id WHERE customer.name_company Like Concat('%', ? ,'%') LIMIT ? OFFSET ?;",
+                BeanPropertyRowMapper.newInstance(Order.class),
+                nameCompany,
+                size,
+                page);
+    }
+
+    @Override
+    public Integer countSearchOrder(OrderSearchDto orderSearchDto) {
+        List<Object> argsList = new ArrayList<>();
+        String queryString = "";
+        boolean containsCondition = false;
+        queryString += "Select count(*) From orders inner join status on order.status_id = status.status_id";
+        if (!orderSearchDto.getDeliveryAddress().isEmpty()){
+            queryString += " Where delivery_address Like ?%";
+            containsCondition =true;
+        }
+        if (orderSearchDto.getStatus() != null){
+            if(containsCondition){
+                queryString += " And";
+            } else {
+                queryString += " Where";
+                containsCondition = true;
+            }
+
+            queryString += " status_id = ?";
+            argsList.add(orderSearchDto.getStatus());
+        }
+
+        if(orderSearchDto.getFromDate()!=null){
+
+            if (containsCondition) {
+                queryString += " AND";
+            } else {
+                queryString += " WHERE";
+                containsCondition = true;
+            }
+
+            queryString += " curent_date AFTER ?";
+            argsList.add(orderSearchDto.getFromDate());
+        }
+
+        if(orderSearchDto.getToDate() != null){
+
+            if (containsCondition) {
+                queryString += " AND";
+            } else {
+                queryString += " WHERE";
+            }
+
+            queryString += " curent_date BEFORE ?";
+            argsList.add(orderSearchDto.getToDate());
+        }
+        queryString += ";";
+        return getJdbcTemplate().queryForObject(queryString,
+                Integer.class,
+                argsList.toArray()
+        );
     }
 }

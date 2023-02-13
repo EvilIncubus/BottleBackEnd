@@ -1,9 +1,11 @@
 package org.bottleProject.service.impl;
 
 import org.bottleProject.dao.OrderDao;
-import org.bottleProject.dto.SearchOrderDto;
-import org.bottleProject.entity.Bottle;
+import org.bottleProject.dto.ListOrderDto;
+import org.bottleProject.dto.OrderSearchDto;
 import org.bottleProject.entity.Order;
+import org.bottleProject.entity.OrderBottle;
+import org.bottleProject.entity.Page;
 import org.bottleProject.service.OrderService;
 import org.springframework.stereotype.Service;
 
@@ -19,25 +21,19 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getAllOrder(int customerId){
-        return orderDao.allCustomerOrder(customerId);
+    public Page<Order> getAllOrder(ListOrderDto listOrderDto){
+        List<Order> orderList = orderDao.getAllFilterOrder(listOrderDto.getNameCompany(), listOrderDto.getOffset(), listOrderDto.getSize());
+        return new Page<>(orderList, orderDao.countFilterOrders(listOrderDto.getNameCompany()), listOrderDto.getPage(), listOrderDto.getSize());
     }
 
     @Override
-    public void createOrder(Order order) {
-        orderDao.create(order);
+    public Order createOrder(Order order) {
+        return orderDao.create(order);
     }
 
     @Override
-    public void addItemToOrder(List<Bottle> bottles, long orderId) {
-        for (Bottle bottle : bottles) {
-            long id = orderDao.findOrderBottles(orderId, bottle.getBottleId());
-            if (id == 0) {
-                orderDao.setOrderBottles(orderId, bottle.getBottleId());
-            } else {
-                orderDao.updateOrderBottles(id);
-            }
-        }
+    public String addItemToOrder(OrderBottle orderBottle) {
+        return orderDao.setOrderBottles(orderBottle);
     }
 
     @Override
@@ -46,8 +42,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> searchOrder(SearchOrderDto searchOrderDto) {
-        return orderDao.searchOrder(searchOrderDto);
+    public Page<Order> searchOrder(OrderSearchDto orderSearchDto) {
+        return new Page<>(orderDao.searchOrder(orderSearchDto),orderDao.countSearchOrder(orderSearchDto), orderSearchDto.getPage(), orderSearchDto.getSize());
     }
 
 

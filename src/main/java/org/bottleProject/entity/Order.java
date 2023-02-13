@@ -6,34 +6,33 @@ import java.util.Objects;
 
 public class Order {
 
-    private long orderID;
+    private long orderId;
 
-     private int customerID;
+    private int customerId;
 
     private String deliveryAddress;
 
-    private LocalDateTime localDateTime;
+    private LocalDateTime curentDate;
 
-    private int statusID;
+    private int statusId;
 
-    private List<Bottle> bottles;
 
-    public Order(long orderID, int customerID, String deliveryAddress, LocalDateTime localDateTime, int statusID, List<Bottle> bottles) {
+    public Order(long orderId, int customerId, String deliveryAddress, LocalDateTime curentDate, int statusId, List<Bottle> bottles) {
     }
 
     public  Order(){
     }
 
-    public long getOrderID() {
-        return orderID;
+    public long getOrderId() {
+        return orderId;
     }
 
-    public void setOrderID(long orderID) {
-        this.orderID = orderID;
+    public void setOrderId(long orderID) {
+        this.orderId = orderID;
     }
 
-    public int getCustomerID() {
-        return customerID;
+    public int getCustomerId() {
+        return customerId;
     }
 
     public String getDeliveryAddress() {
@@ -44,46 +43,34 @@ public class Order {
         this.deliveryAddress = deliveryAddress;
     }
 
-    public LocalDateTime getLocalDateTime() {
-        return localDateTime;
+    public LocalDateTime getCurentDate() {
+        return curentDate;
     }
 
-    public void setLocalDateTime(LocalDateTime localDateTime) {
-        this.localDateTime = localDateTime;
+    public void setCurentDate(LocalDateTime curentDate) {
+        this.curentDate = curentDate;
     }
 
-    public void setCustomerID(int customerID) {
-        this.customerID = customerID;
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
     }
 
-    public List<Bottle> getBottles() {
-        return bottles;
+    public int getStatusId() {
+        return statusId;
     }
 
-    public void setBottles(List<Bottle> bottles) {
-        this.bottles = bottles;
-    }
-
-    public void extendBottles(List<Bottle> bottles) {
-        this.bottles.addAll(bottles);
-    }
-
-    public int getStatusID() {
-        return statusID;
-    }
-
-    public void setStatusID(int statusID) {
-        this.statusID = statusID;
+    public void setStatusId(int statusId) {
+        this.statusId = statusId;
     }
 
     @Override
     public String toString() {
         return "Bottle{" +
-                "orderID=" + orderID +
-                ", Customer=" + customerID +
+                "orderId=" + orderId +
+                ", customerId=" + customerId +
                 ", deliveryAddress=" + deliveryAddress +
-                ", localDateTime=" + localDateTime +
-                ", StatusID=" + statusID +
+                ", localDateTime=" + curentDate +
+                ", statusId=" + statusId +
                 '}';
     }
 
@@ -93,8 +80,8 @@ public class Order {
         if (obj == null || getClass() != obj.getClass()) return false;
         Order order = (org.bottleProject.entity.Order) obj;
 
-        boolean idMatches = Objects.equals(orderID,order.orderID);
-        boolean allFieldsMach = customerID == order.customerID;
+        boolean idMatches = Objects.equals(orderId,order.orderId);
+        boolean allFieldsMach = customerId == order.customerId;
 
         return idMatches && allFieldsMach;
     }

@@ -24,29 +24,22 @@ public class BottleDaoImplTest {
     //Test to check if bottle is created successful
     @Test
     public void testCreateAndDelete() {
+
         Bottle bottle =new Bottle();
         bottle.setNameBottle("Peace");
         bottle.setVolumeId(4);
         bottle.setSoda(true);
         bottle.setPlastic(true);
         bottle.setPriceId(2);
-        bottle.setNameBottle("Peace");
-        bottle.setVolumeId(4);
-        bottle.setSoda(true);
-        bottle.setPlastic(true);
-        bottle.setPriceId(2);
-        bottle.setCreateDate(LocalDateTime.now());
+        bottle.setCreateDate(LocalDateTime.now().withNano(0));
         bottle.setReserved(true);
         bottle.setProducer("Drink water SRL");
         bottle.setStorageId(4);
-         long id = bottleImplementDao.create(bottle);
-
-        System.out.println(bottle);
-        Bottle bottle1 = bottleImplementDao.findById(id);
-        System.out.println(bottle1);
-        assertNotEquals(bottle1, bottle);
-        bottleImplementDao.removeById(id);
-        assertNull(bottleImplementDao.findById(id));
+        Bottle bottle1 = bottleImplementDao.create(bottle);
+        bottle.setBottleId(bottle1.getBottleId());
+        assertEquals(bottle1, bottle);
+        bottleImplementDao.removeById(bottle.getBottleId());
+        assertNull(bottleImplementDao.findById(bottle.getBottleId()));
     }
 
     //Test to check if bottles is getting all in correct form
@@ -75,13 +68,13 @@ public class BottleDaoImplTest {
 
         assertNotNull(bottle1);
         assertEquals(bottle, bottle1);
-        bottle1.setBottleId(oldPrice);
+        bottle.setBottleId(oldPrice);
         bottleImplementDao.update(bottle, 1L);
     }
 
     @Test
     public void testFilter() {
-        BottleFilterDto bottleFilterDto = new BottleFilterDto(1, 4, BottleSortBy.VOLUME_ID);
+        BottleFilterDto bottleFilterDto = new BottleFilterDto(1, 5, BottleSortBy.VOLUME_ID);
         List<Bottle> bottles = bottleImplementDao.filterBy(bottleFilterDto);
         System.out.println(bottles);
         assertNotNull(bottles);

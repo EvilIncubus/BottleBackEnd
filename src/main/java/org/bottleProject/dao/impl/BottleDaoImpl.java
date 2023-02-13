@@ -29,7 +29,7 @@ public class BottleDaoImpl extends AbstractDaoImpl<Bottle> implements BottleDao 
     }
 
     @Override
-    public Long create(Bottle entity) {
+    public Bottle create(Bottle entity) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         String sql = "INSERT INTO bottle (name_bottle, volume_id, soda, plastic, create_date , reserved, producer, storage_id, price_id) VALUES(?,?,?,?,?,?,?,?,?);";
@@ -47,7 +47,7 @@ public class BottleDaoImpl extends AbstractDaoImpl<Bottle> implements BottleDao 
             stmt.setInt(9,entity.getPriceId());
             return stmt;
         }, keyHolder);
-        return findById(Objects.requireNonNull(keyHolder.getKey()).longValue()).getBottleId();
+        return findById(keyHolder.getKey().longValue());
     }
 
     @Override
@@ -79,6 +79,16 @@ public class BottleDaoImpl extends AbstractDaoImpl<Bottle> implements BottleDao 
     public List<Bottle> filterBy(BottleFilterDto bottleFilterDto) {
         return getJdbcTemplate().query("SELECT * FROM bottle ORDER BY "+bottleFilterDto.getSortBy().toString().toLowerCase()+" LIMIT ? OFFSET ? ;",
                 BeanPropertyRowMapper.newInstance(Bottle.class),
-                bottleFilterDto.getVolumeId(), bottleFilterDto.getOffset());
+                bottleFilterDto.getSize(), bottleFilterDto.getOffset());
+    }
+
+    @Override
+    public Integer countAllFilterBottle(BottleFilterDto bottleFilterDto) {
+        return getJdbcTemplate().queryForObject("select count(*) from bottle ORDER BY ? LIMIT ? OFFSET ? ;",
+                Integer.class,
+                bottleFilterDto.getSortBy().toString().toLowerCase(),
+                bottleFilterDto.getSize(),
+                bottleFilterDto.getOffset()
+        );
     }
 }

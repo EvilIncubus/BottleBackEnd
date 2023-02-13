@@ -6,7 +6,7 @@ public interface Dao<T> {
 
     List<T> getAll();
 
-    Long create(T t);
+    T create(T t);
 
     T update(T t, Long id);
 

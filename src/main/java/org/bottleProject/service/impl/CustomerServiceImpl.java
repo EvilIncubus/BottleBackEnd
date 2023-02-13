@@ -14,7 +14,7 @@ public class CustomerServiceImpl implements CustomerService {
         this.customerDao = customerDao;
     }
     @Override
-    public long addCustomer(Customer customer) {
+    public Customer addCustomer(Customer customer) {
         return customerDao.create(customer);
     }
 

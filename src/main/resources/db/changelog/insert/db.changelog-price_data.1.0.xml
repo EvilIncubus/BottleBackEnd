@@ -5,7 +5,20 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
     <changeSet author="vodai (generated)" id="1674563226619-8">
         <sql>
-            insert into price(price) values (7.00),(8.30),(7.30),(7.90),(7.40),(7.50),(10.00),(9.00),(8.00);
+            insert into price(price) values
+            (7.00),(7.10),(7.30),(7.50),
+            (7.20),(7.40),(7.60),(7.80),
+            (7.40),(7.60),(7.80),(8.00),
+            (7.80),(8.10),(8.50),(8.90),
+            (8.20),(8.50),(8.90),(9.40),
+            (8.80),(9.50),(10.00),(10.50),
+            (9.40),(10.10),(10.70),(11.00),
+            (10.40),(11.50),(12.00),(13.00),
+            (11.40),(12.50),(13.00),(18.00),
+            (13.40),(14.50),(15.00),(20.00),
+            (16.40),(17.50),(18.00),(22.00),
+            (19.40),(21.50),(24.00),(29.00),
+            (7.10),(7.20);
         </sql>
     </changeSet>
 </databaseChangeLog>

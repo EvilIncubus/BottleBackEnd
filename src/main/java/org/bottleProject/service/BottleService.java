@@ -2,13 +2,14 @@ package org.bottleProject.service;
 
 import org.bottleProject.dto.BottleFilterDto;
 import org.bottleProject.entity.Bottle;
+import org.bottleProject.entity.Page;
 
 import java.util.List;
 
 public interface BottleService {
-    void createOrder(Bottle bottle);
+    Bottle createBottle(Bottle bottle);
 
     Bottle getBottleById(long bottleId);
 
-    List<Bottle> getListOfBottleByCategory(BottleFilterDto bottleFilterDto);
+    Page<Bottle> getListOfBottleByCategory(BottleFilterDto bottleFilterDto);
 }

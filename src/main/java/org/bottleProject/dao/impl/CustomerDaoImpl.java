@@ -27,7 +27,7 @@ public class CustomerDaoImpl extends AbstractDaoImpl<Customer> implements Custom
     }
 
     @Override
-    public Long create(Customer customer) {
+    public Customer create(Customer customer) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         String sql = "INSERT INTO customer (name_company, email, address, phone_number) VALUES(?,?,?,?);";
@@ -40,13 +40,13 @@ public class CustomerDaoImpl extends AbstractDaoImpl<Customer> implements Custom
             stmt.setString(4,customer.getPhoneNumber());
             return stmt;
         }, keyHolder);
-        return findById(Objects.requireNonNull(keyHolder.getKey()).longValue()).getCustomerID();
+        return findById((keyHolder.getKey().longValue()));
     }
 
     @Override
     public Customer update(Customer customer, Long id) {
         getJdbcTemplate().update("UPDATE customer SET phone_number = ? WHERE customer_id = ? ;",
-                customer.getPhoneNumber(), customer.getCustomerID());
+                customer.getPhoneNumber(), customer.getCustomerId());
         return findById(id);
     }
 

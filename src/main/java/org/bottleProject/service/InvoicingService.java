@@ -1,5 +1,6 @@
 package org.bottleProject.service;
 
+import org.apache.poi.ss.usermodel.Workbook;
 import org.bottleProject.dto.InvoiceWrapper;
 import org.bottleProject.entity.Order;
 
@@ -8,9 +9,9 @@ import java.time.LocalDateTime;
 
 public interface InvoicingService {
 
-    public void prepareInvoice(Order order);
+    Workbook prepareInvoice(Order order);
 
-    LocalDateTime invoicing(InvoiceWrapper invoiceDto);
+    Workbook invoicing(InvoiceWrapper invoiceDto, LocalDateTime localDateTime);
 
     File getInvoiceContents(long customerId, long orderId);
 }

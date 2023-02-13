@@ -1,16 +1,16 @@
 package org.bottleProject.controller;
 
-import org.bottleProject.dto.SearchOrderDto;
+import org.bottleProject.dto.ListOrderDto;
+import org.bottleProject.dto.OrderSearchDto;
 import org.bottleProject.entity.Bottle;
-import org.bottleProject.entity.Customer;
 import org.bottleProject.entity.Order;
+import org.bottleProject.entity.OrderBottle;
+import org.bottleProject.entity.Page;
 import org.bottleProject.service.OrderService;
-import org.bottleProject.service.impl.OrderServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -23,22 +23,22 @@ public class OrderController {
     }
 
     @PostMapping("/createOrder")
-    public ResponseEntity<String> createOrderByCustomerId(@RequestBody Order order) {
+    public ResponseEntity<Order> createOrderByCustomerId(@RequestBody Order order) {
         try {
-            orderService.createOrder(order);
-            return new ResponseEntity<>("Order was created successfully.", HttpStatus.CREATED);
+            Order orderResponse = orderService.createOrder(order);
+            return new ResponseEntity<>(orderResponse, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PostMapping("/addItemToOrder")
-    public ResponseEntity<String> addItemToOrder(@RequestBody List<Bottle> bottles, long orderId) {
+    public ResponseEntity<String> addItemToOrder(@RequestBody OrderBottle orderBottle) {
         try {
-            orderService.addItemToOrder(bottles, orderId);
-            return new ResponseEntity<>("invoice was created successfully.", HttpStatus.CREATED);
+            String info = orderService.addItemToOrder(orderBottle);
+            return new ResponseEntity<>(info, HttpStatus.CREATED);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("error invoice creating.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -58,12 +58,12 @@ public class OrderController {
         }
     }
 
-    @GetMapping("/getListOfOrders/{customerId}")
-    public ResponseEntity<List<Order>> getListOfOrders(@PathVariable int customerId) {
+    @PostMapping("/getListOfOrders")
+    public ResponseEntity<Page<Order>> getListOfOrders(@RequestBody ListOrderDto listOrderDto) {
         try {
-            List<Order> orders = orderService.getAllOrder(customerId);
+            Page<Order> orders = orderService.getAllOrder(listOrderDto);
 
-            if (orders.isEmpty()) {
+            if (orders == null) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             return new ResponseEntity<>(orders, HttpStatus.OK);
@@ -72,12 +72,12 @@ public class OrderController {
         }
     }
 
-    @GetMapping("/searchOrder/{customerId}")
-    public ResponseEntity<List<Order>> searchOrder(@PathVariable SearchOrderDto searchOrderDto) {
+    @PostMapping("/searchOrder")
+    public ResponseEntity<Page<Order>> searchOrder(@RequestBody OrderSearchDto searchOrderDto) {
         try {
-            List<Order> orders = orderService.searchOrder(searchOrderDto);
+            Page<Order> orders = orderService.searchOrder(searchOrderDto);
 
-            if (orders.isEmpty()) {
+            if (orders == null) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             return new ResponseEntity<>(orders, HttpStatus.OK);

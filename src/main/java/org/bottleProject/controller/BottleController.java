@@ -2,6 +2,7 @@ package org.bottleProject.controller;
 
 import org.bottleProject.dto.BottleFilterDto;
 import org.bottleProject.entity.Bottle;
+import org.bottleProject.entity.Page;
 import org.bottleProject.service.BottleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,17 +21,17 @@ public class BottleController {
     }
 
     @PostMapping("/createBottle")
-    public ResponseEntity<String> createBottle(@RequestBody Bottle bottle) {
+    public ResponseEntity<Bottle> createBottle(@RequestBody Bottle bottle) {
         try {
-            bottleService.createOrder(bottle);
-            return new ResponseEntity<>("Bottle was created successfully.", HttpStatus.CREATED);
+            Bottle bottleResponse = bottleService.createBottle(bottle);
+            return new ResponseEntity<>(bottleResponse, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @GetMapping("/getBottleById/{bottleID}")
-    public ResponseEntity<Bottle> getListOfOrders(@PathVariable int bottleId) {
+    @GetMapping("/getBottleById/{bottleId}")
+    public ResponseEntity<Bottle> getBottleById(@PathVariable int bottleId) {
         try {
             Bottle bottle = bottleService.getBottleById(bottleId);
 
@@ -42,13 +43,12 @@ public class BottleController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-    @GetMapping("/getListOfBottlesByCategory/{customerId}")
-    public ResponseEntity<List<Bottle>> getListOfOrders(@PathVariable BottleFilterDto bottleFilterDto) {
+    @PostMapping("/getListOfBottlesByCategory")
+    public ResponseEntity<Page<Bottle>> getListOfBottles(@RequestBody BottleFilterDto bottleFilterDto) {
         try {
-            List<Bottle> bottles = bottleService.getListOfBottleByCategory(bottleFilterDto);
+            Page<Bottle> bottles = bottleService.getListOfBottleByCategory(bottleFilterDto);
 
-            if (bottles.isEmpty()) {
+            if (bottles == null) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             return new ResponseEntity<>(bottles, HttpStatus.OK);

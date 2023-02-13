@@ -1,6 +1,5 @@
 package org.bottleProject.dao;
 
-import org.bottleProject.connectionDB.DBConfig;
 import org.bottleProject.dao.impl.CustomerDaoImpl;
 import org.bottleProject.entity.Customer;
 import org.junit.jupiter.api.Test;
@@ -27,13 +26,11 @@ public class CustomerDaoImplTest {
         customer.setEmail("celentanocontact@gmail.com");
         customer.setAddress("str. Mesterul Manole 51");
         customer.setPhoneNumber("060123456");
-        long id = costumerImplementDao.create(customer);
-        customer.setCustomerID(id);
-
-        Customer customer1 = costumerImplementDao.findById(id);
-        assertEquals(customer1, customer);
-        costumerImplementDao.removeById(id);
-        assertNull(costumerImplementDao.findById(id));
+        Customer customer1 = costumerImplementDao.create(customer);
+        customer.setCustomerId(customer1.getCustomerId());
+        assertEquals(customer, customer1);
+        costumerImplementDao.removeById(customer.getCustomerId());
+        assertNull(costumerImplementDao.findById(customer.getCustomerId()));
     }
 
     //Test to check if customers is getting all in correct form
@@ -62,7 +59,13 @@ public class CustomerDaoImplTest {
 
         assertNotNull(customer1);
         assertEquals(customer, customer1);
-        customer1.setPhoneNumber(oldPhone);
+        customer.setPhoneNumber(oldPhone);
         costumerImplementDao.update(customer, 1L);
+    }
+
+    @Test
+    public void testFindByEmail() {
+        Customer customer = costumerImplementDao.findByEmail("sushiline@yaponamama.md");
+        assertNotNull(customer);
     }
 }

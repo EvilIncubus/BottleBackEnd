@@ -9,4 +9,5 @@ public interface BottleDao extends Dao<Bottle> {
 
     List<Bottle> filterBy(BottleFilterDto bottleFilterDto);
 
+    Integer countAllFilterBottle(BottleFilterDto bottleFilterDto);
 }
