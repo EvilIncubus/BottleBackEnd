@@ -17,6 +17,9 @@
             <column name="soda" type="boolean">
                 <constraints nullable="false"/>
             </column>
+            <column name="sugar" type="boolean">
+                <constraints nullable="false"/>
+            </column>
             <column name="plastic" type="boolean">
                 <constraints nullable="false"/>
             </column>
@@ -30,9 +33,6 @@
                 <constraints nullable="false"/>
             </column>
             <column name="storage_id" type="INT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="price_id" type="INT">
                 <constraints nullable="false"/>
             </column>
         </createTable>

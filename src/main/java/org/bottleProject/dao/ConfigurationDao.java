@@ -4,6 +4,7 @@ import org.bottleProject.entity.Configuration;
 
 public interface ConfigurationDao extends Dao<Configuration> {
 
-    Configuration getConfigurationByRequestType(String saveType);
+    String getEnableStatus();
 
+    Configuration findConfigByType(String configType);
 }

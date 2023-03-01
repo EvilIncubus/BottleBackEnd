@@ -1,6 +1,5 @@
 package org.bottleProject.dao;
 
-import org.bottleProject.entity.Customer;
 import org.bottleProject.entity.Invoice;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -13,6 +13,7 @@ import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -32,7 +33,7 @@ public class BottleDaoImpl extends AbstractDaoImpl<Bottle> implements BottleDao 
     public Bottle create(Bottle entity) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        String sql = "INSERT INTO bottle (name_bottle, volume_id, soda, plastic, create_date , reserved, producer, storage_id, price_id) VALUES(?,?,?,?,?,?,?,?,?);";
+        String sql = "INSERT INTO bottle (name_bottle, volume_id, soda, plastic, create_date , reserved, producer, storage_id) VALUES(?,?,?,?,?,?,?,?);";
 
         getJdbcTemplate().update(con -> {
             PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -44,16 +45,14 @@ public class BottleDaoImpl extends AbstractDaoImpl<Bottle> implements BottleDao 
             stmt.setBoolean(6,entity.isReserved());
             stmt.setString(7,entity.getProducer());
             stmt.setInt(8,entity.getStorageId());
-            stmt.setInt(9,entity.getPriceId());
             return stmt;
         }, keyHolder);
-        return findById(keyHolder.getKey().longValue());
+        return findById(Objects.requireNonNull(keyHolder.getKey()).longValue());
     }
 
     @Override
     public Bottle findById(Long id) {
         try {
-
             return getJdbcTemplate().queryForObject("SELECT * FROM bottle WHERE bottle_id=?",
                     BeanPropertyRowMapper.newInstance(Bottle.class), id);
         } catch (
@@ -65,8 +64,8 @@ public class BottleDaoImpl extends AbstractDaoImpl<Bottle> implements BottleDao 
 
     @Override
     public Bottle update(Bottle entity, Long id) {
-        getJdbcTemplate().update("UPDATE bottle SET price_id=? WHERE bottle_id=?",
-                entity.getPriceId(), entity.getBottleId() );
+        getJdbcTemplate().update("UPDATE bottle SET name_bottle= ? WHERE bottle_id= ? ",
+                entity.getNameBottle(), entity.getBottleId() );
         return findById(id);
     }
 
@@ -75,20 +74,39 @@ public class BottleDaoImpl extends AbstractDaoImpl<Bottle> implements BottleDao 
         getJdbcTemplate().update("DELETE FROM bottle WHERE bottle_id=?", id);
     }
 
+
     @Override
     public List<Bottle> filterBy(BottleFilterDto bottleFilterDto) {
-        return getJdbcTemplate().query("SELECT * FROM bottle ORDER BY "+bottleFilterDto.getSortBy().toString().toLowerCase()+" LIMIT ? OFFSET ? ;",
+        List<Object> argsList = new ArrayList<>();
+        StringBuilder query = new StringBuilder("SELECT * FROM bottle inner join bottle_category on bottle_category.bottle_id = bottle.bottle_id Where 1 = 1 ");
+        for(String category : bottleFilterDto.getListOfCategories()) {
+            if(!category.isEmpty()){
+                query.append("And bottle_category.category = ? ");
+                argsList.add(category);
+            }
+        }
+        query.append("Limit ? Offset ?");
+        argsList.add(bottleFilterDto.getSize());
+        argsList.add(bottleFilterDto.getPage());
+        return getJdbcTemplate().query(
+                        query.toString(),
                 BeanPropertyRowMapper.newInstance(Bottle.class),
-                bottleFilterDto.getSize(), bottleFilterDto.getOffset());
+                argsList);
     }
 
     @Override
     public Integer countAllFilterBottle(BottleFilterDto bottleFilterDto) {
-        return getJdbcTemplate().queryForObject("select count(*) from bottle ORDER BY ? LIMIT ? OFFSET ? ;",
+        List<Object> argsList = new ArrayList<>();
+        StringBuilder query = new StringBuilder("select count(*) from bottle inner join bottle_category on bottle_category.bottle_id = bottle.bottle_id Where 1 = 1 ");
+        for(String category : bottleFilterDto.getListOfCategories()) {
+            if(!category.isEmpty()){
+                query.append("And bottle_category.category = ? ");
+                argsList.add(category);
+            }
+        }
+        return getJdbcTemplate().queryForObject(query.toString(),
                 Integer.class,
-                bottleFilterDto.getSortBy().toString().toLowerCase(),
-                bottleFilterDto.getSize(),
-                bottleFilterDto.getOffset()
+                argsList
         );
     }
 }

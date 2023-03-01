@@ -5,7 +5,7 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
     <changeSet author="vodai (generated)" id="1674563226619-8">
         <sql>
-            insert into status (status) values ('Created'), ('In Progress'), ('Delivered');
+            insert into status (status) values ('Approved by customer'), ('In Progress'), ('Delivered');
         </sql>
     </changeSet>
 </databaseChangeLog>

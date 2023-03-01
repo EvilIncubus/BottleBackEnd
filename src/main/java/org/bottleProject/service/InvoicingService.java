@@ -9,9 +9,6 @@ import java.time.LocalDateTime;
 
 public interface InvoicingService {
 
-    Workbook prepareInvoice(Order order);
+    void invoicing(Order order);
 
-    Workbook invoicing(InvoiceWrapper invoiceDto, LocalDateTime localDateTime);
-
-    File getInvoiceContents(long customerId, long orderId);
 }

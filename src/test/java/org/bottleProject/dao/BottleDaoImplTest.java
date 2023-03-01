@@ -1,7 +1,6 @@
 package org.bottleProject.dao;
 
 import org.bottleProject.dto.BottleFilterDto;
-import org.bottleProject.dto.enums.BottleSortBy;
 import org.bottleProject.entity.Bottle;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,6 +8,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -30,7 +30,6 @@ public class BottleDaoImplTest {
         bottle.setVolumeId(4);
         bottle.setSoda(true);
         bottle.setPlastic(true);
-        bottle.setPriceId(2);
         bottle.setCreateDate(LocalDateTime.now().withNano(0));
         bottle.setReserved(true);
         bottle.setProducer("Drink water SRL");
@@ -62,21 +61,31 @@ public class BottleDaoImplTest {
     @Test
     public void testUpdate() {
         Bottle bottle = bottleImplementDao.findById(1L);
-        int oldPrice = bottle.getPriceId();
-        bottle.setPriceId(5);
         Bottle bottle1 = bottleImplementDao.update(bottle, 1L);
 
         assertNotNull(bottle1);
         assertEquals(bottle, bottle1);
-        bottle.setBottleId(oldPrice);
         bottleImplementDao.update(bottle, 1L);
     }
 
     @Test
     public void testFilter() {
-        BottleFilterDto bottleFilterDto = new BottleFilterDto(1, 5, BottleSortBy.VOLUME_ID);
+        List<String> categories = new ArrayList<>();
+        categories.add("Coca Cola");
+        categories.add("Sprite");
+        BottleFilterDto bottleFilterDto = new BottleFilterDto(1, 5, categories);
         List<Bottle> bottles = bottleImplementDao.filterBy(bottleFilterDto);
         System.out.println(bottles);
         assertNotNull(bottles);
+    }
+
+    @Test
+    public void testCountFilter(){
+        List<String> categories = new ArrayList<>();
+        categories.add("Coca Cola");
+        categories.add("Sprite");
+        BottleFilterDto bottleFilterDto = new BottleFilterDto(1, 5, categories);
+        int count = bottleImplementDao.countAllFilterBottle(bottleFilterDto);
+        System.out.println(count);
     }
 }

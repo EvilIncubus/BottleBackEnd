@@ -5,12 +5,10 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
     <changeSet author="vodai (generated)" id="1674563226619-5">
         <sql>
-            Alter Table ADD CONSTRAINT
-            order_bottle UNIQUE CLUSTERED
-            (
-            bottle_id,
-            order_id
-            ) ON [PRIMARY]
+            ALTER TABLE order_bottle ADD CONSTRAINT order_bottle_constrain UNIQUE (bottle_id,
+            order_id);
+            ALTER TABLE bottle_category ADD CONSTRAINT bottle_category_constrain UNIQUE (bottle_id,
+            category);
         </sql>
     </changeSet>
 </databaseChangeLog>

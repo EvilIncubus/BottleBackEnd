@@ -40,7 +40,7 @@ public class OrderDaoImpl extends AbstractDaoImpl<Order> implements OrderDao {
         getJdbcTemplate().update(con -> {
             PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             stmt.setLong(1, entity.getCustomerId());
-            stmt.setString(2, entity.getDeliveryAddress());
+            stmt.setInt(2, entity.getAddressId());
             stmt.setTimestamp(3, Timestamp.valueOf(entity.getCurentDate()));
             stmt.setInt(4, entity.getStatusId());
             return stmt;
@@ -62,7 +62,7 @@ public class OrderDaoImpl extends AbstractDaoImpl<Order> implements OrderDao {
     @Override
     public Order update(Order entity, Long id) {
         getJdbcTemplate().update("UPDATE orders SET delivery_address = ? WHERE order_id=?",
-                entity.getDeliveryAddress(), entity.getOrderId());
+                entity.getAddressId(), entity.getOrderId());
         return findById(id);
     }
 
@@ -76,10 +76,8 @@ public class OrderDaoImpl extends AbstractDaoImpl<Order> implements OrderDao {
         return getJdbcTemplate().query("SELECT * FROM orders Where customer_id=?;", BeanPropertyRowMapper.newInstance(Order.class), id);
     }
 
-    //todo add constrain key
     @Override
     public String setOrderBottles(OrderBottle orderBottle) {
-        int amountBottle = 1;
         getJdbcTemplate().update("INSERT INTO order_bottle (bottle_id, order_id,amount_bottle) VALUES(?,?,?) ON DUPLICATE KEY UPDATE amount_bottle = ?;",
                 orderBottle.getBottleId(), orderBottle.getOrderId(), orderBottle.getAmountBottle(), orderBottle.getAmountBottle());
         return "Success Create";

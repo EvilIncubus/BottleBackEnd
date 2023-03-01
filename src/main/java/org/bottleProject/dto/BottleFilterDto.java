@@ -1,15 +1,15 @@
 package org.bottleProject.dto;
 
-import org.bottleProject.dto.enums.BottleSortBy;
+import java.util.List;
 
 public class BottleFilterDto {
     private int page;
     private int size;
-    private BottleSortBy sortBy;
+    private List<String> categories;
 
-    public BottleFilterDto(int page,int size, BottleSortBy sortBy) {
+    public BottleFilterDto(int page,int size, List<String> categories) {
         this.page = page;
-        this.sortBy = sortBy;
+        this.categories = categories;
         this.size = size;
     }
 
@@ -21,12 +21,12 @@ public class BottleFilterDto {
         this.page = page;
     }
 
-    public BottleSortBy getSortBy() {
-        return sortBy;
+    public List<String> getListOfCategories() {
+        return categories;
     }
 
-    public void setSortBy(BottleSortBy sortBy) {
-        this.sortBy = sortBy;
+    public void setListOfCategories(List<String> categories) {
+        this.categories = categories;
     }
 
     public int getSize() {

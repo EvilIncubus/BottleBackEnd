@@ -25,14 +25,13 @@ public class Bottle {
 
         private int storageId;
 
-        private int priceId;
 
 
     public Bottle() {
 
     }
 
-    public Bottle(long bottleId, String nameBottle, int volumeId, boolean soda, boolean plastic, LocalDateTime createDate, String producer, int storageId, int priceId) {
+    public Bottle(long bottleId, String nameBottle, int volumeId, boolean soda, boolean plastic, LocalDateTime createDate, String producer, int storageId) {
         this.bottleId = bottleId;
         this.nameBottle = nameBottle;
         this.volumeId = volumeId;
@@ -41,7 +40,6 @@ public class Bottle {
         this.createDate = createDate;
         this.producer = producer;
         this.storageId = storageId;
-        this.priceId = priceId;
     }
 
     public String getNameBottle() {
@@ -52,13 +50,7 @@ public class Bottle {
                 this.nameBottle = nameBottle;
         }
 
-        public int getPriceId() {
-                return priceId;
-        }
 
-        public void setPriceId(int priceId) {
-                this.priceId = priceId;
-        }
 
         public long getBottleId() {
                 return bottleId;
@@ -135,7 +127,6 @@ public class Bottle {
                         ", plastic=" + plastic +
                         ", producer=" + producer +
                         ", storage=" + storageId +
-                        ", priceId=" + priceId +
                         '}';
         }
 

@@ -1,6 +1,5 @@
 package org.bottleProject.integration;
 
-import liquibase.pro.packaged.P;
 import org.bottleProject.controller.OrderController;
 import org.bottleProject.dto.ListOrderDto;
 import org.bottleProject.dto.OrderSearchDto;
@@ -28,7 +27,7 @@ public class OrderControllerTest {
     public void createOrderTest(){
         Order order = new Order();
         order.setCustomerId(1);
-        order.setDeliveryAddress("str. Mesterul Manole 15");
+//        order.setAddressId("str. Mesterul Manole 15");
         order.setCurentDate(LocalDateTime.now());
         order.setStatusId(1);
         ResponseEntity<Order> response = orderController.createOrderByCustomerId(order);

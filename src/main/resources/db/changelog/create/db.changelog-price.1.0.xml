@@ -8,6 +8,9 @@
             <column autoIncrement="true" name="price_id" type="INT">
                 <constraints primaryKey="true"/>
             </column>
+            <column name="bottle_id" type="int">
+                <constraints nullable="false"/>
+            </column>
             <column name="price" type="DOUBLE">
                 <constraints nullable="false"/>
             </column>

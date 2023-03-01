@@ -1,7 +1,6 @@
 package org.bottleProject.integration;
 
 import org.bottleProject.controller.InvoiceController;
-import org.bottleProject.entity.Configuration;
 import org.bottleProject.entity.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +24,10 @@ public class InvoiceControllerTest {
     public void createInvoiceTest(){
         Order order = new Order();
         order.setOrderId(1);
-        order.setDeliveryAddress("str. Mesterul Manole 15");
+//        order.setAddressId("str. Mesterul Manole 15");
         order.setCurentDate(LocalDateTime.now());
         order.setStatusId(1);
-        Configuration configuration = new Configuration();
-        ResponseEntity<String> response = invoiceController.createInvoiceByOrder(order, configuration);
+        ResponseEntity<String> response = invoiceController.createInvoiceByOrder(order);
         assertEquals(response.getBody(), "invoice was created successfully.");
     }
 

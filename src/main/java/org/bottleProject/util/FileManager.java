@@ -3,16 +3,15 @@ package org.bottleProject.util;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.nio.file.Path;
 
 public class FileManager {
 
     private String folderName;
     private String fileName;
     private String fileExtension;
+    private Path filePath;
 
     public FileManager(String folderName, String fileName, String fileExtension) {
         this.folderName = folderName;
@@ -22,6 +21,15 @@ public class FileManager {
 
     public FileManager() {
 
+    }
+
+    public FileManager(Path filePath) {
+        this.filePath = filePath;
+    }
+
+    public void writeExcelFileLocal(Workbook xssfWorkbook) throws IOException {
+        FileOutputStream outputStream = new FileOutputStream(filePath.toString());
+        xssfWorkbook.write(outputStream);
     }
 
     public void writeExcelFile(Workbook xssfWorkbook) {
@@ -45,8 +53,8 @@ public class FileManager {
         }
     }
 
-    public File getExcelFile(String userEmail, String file) throws IOException {
-        String path = "C:\\Users\\VODAI\\Documents\\" + userEmail + "\\" + file;
+    public File getExcelFile(String userEmail, String fileName) throws IOException {
+        String path = "C:\\Users\\VODAI\\Documents\\" + userEmail + "\\" + fileName;
         return new File(path);
     }
 

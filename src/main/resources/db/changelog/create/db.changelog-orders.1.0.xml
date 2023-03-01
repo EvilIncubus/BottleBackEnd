@@ -11,7 +11,7 @@
             <column name="customer_id" type="INT">
                 <constraints nullable="false"/>
             </column>
-            <column name="delivery_address" type="VARCHAR(40)">
+            <column name="address_id" type="VARCHAR(40)">
                 <constraints nullable="false"/>
             </column>
             <column name="curent_date" type="datetime(6)">

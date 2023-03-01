@@ -14,7 +14,7 @@
             <column name="email" type="VARCHAR(30)">
                 <constraints nullable="false"/>
             </column>
-            <column name="address" type="VARCHAR(30)">
+            <column name="address_id" type="VARCHAR(30)">
                 <constraints nullable="false"/>
             </column>
             <column name="phone_number" type="VARCHAR(20)">

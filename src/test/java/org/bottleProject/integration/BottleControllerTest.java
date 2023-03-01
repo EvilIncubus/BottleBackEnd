@@ -2,7 +2,6 @@ package org.bottleProject.integration;
 
 import org.bottleProject.controller.BottleController;
 import org.bottleProject.dto.BottleFilterDto;
-import org.bottleProject.dto.enums.BottleSortBy;
 import org.bottleProject.entity.Bottle;
 import org.bottleProject.entity.Page;
 import org.junit.jupiter.api.Test;
@@ -14,6 +13,8 @@ import org.springframework.test.context.ActiveProfiles;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @SpringBootTest
@@ -29,7 +30,6 @@ public class BottleControllerTest {
         bottle.setVolumeId(4);
         bottle.setSoda(true);
         bottle.setPlastic(true);
-        bottle.setPriceId(2);
         bottle.setCreateDate(LocalDateTime.now().withNano(0));
         bottle.setReserved(true);
         bottle.setProducer("Drink water SRL");
@@ -47,7 +47,10 @@ public class BottleControllerTest {
 
     @Test
     public void getAllFilterBottleTest(){
-        BottleFilterDto bottleFilterDto = new BottleFilterDto(1, 1, BottleSortBy.SODA);
+        List<String> categories = new ArrayList<>();
+        categories.add("Coca Cola");
+        categories.add("Sprite");
+        BottleFilterDto bottleFilterDto = new BottleFilterDto(1, 1, categories);
         ResponseEntity<Page<Bottle>> response = bottleController.getListOfBottles(bottleFilterDto);
         assertNotNull((response.getBody()).getContent());
     }

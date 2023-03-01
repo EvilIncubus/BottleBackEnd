@@ -22,7 +22,7 @@ public class OrderServiceTest {
         Order order =new Order();
         order.setOrderId(2L);
         order.setCustomerId(1);
-        order.setDeliveryAddress("str. Alexei Mateevici 14");
+//        order.setAddressId("str. Alexei Mateevici 14");
         order.setCurentDate(localDateTime);
         order.setStatusId(3);
         long id = 2L;

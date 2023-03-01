@@ -5,19 +5,23 @@ import java.util.List;
 import java.util.Objects;
 
 public class Order {
-
     private long orderId;
 
     private int customerId;
 
-    private String deliveryAddress;
+    private int addressId;
 
     private LocalDateTime curentDate;
 
     private int statusId;
 
 
-    public Order(long orderId, int customerId, String deliveryAddress, LocalDateTime curentDate, int statusId, List<Bottle> bottles) {
+    public Order(long orderId, int customerId, int addressId, LocalDateTime curentDate, int statusId) {
+        this.orderId = orderId;
+        this.customerId = customerId;
+        this.addressId = addressId;
+        this.curentDate = curentDate;
+        this.statusId = statusId;
     }
 
     public  Order(){
@@ -35,12 +39,12 @@ public class Order {
         return customerId;
     }
 
-    public String getDeliveryAddress() {
-        return deliveryAddress;
+    public int getAddressId() {
+        return addressId;
     }
 
-    public void setDeliveryAddress(String deliveryAddress) {
-        this.deliveryAddress = deliveryAddress;
+    public void setAddressId(int addressId) {
+        this.addressId = addressId;
     }
 
     public LocalDateTime getCurentDate() {
@@ -68,7 +72,7 @@ public class Order {
         return "Bottle{" +
                 "orderId=" + orderId +
                 ", customerId=" + customerId +
-                ", deliveryAddress=" + deliveryAddress +
+                ", deliveryAddress=" + addressId +
                 ", localDateTime=" + curentDate +
                 ", statusId=" + statusId +
                 '}';
