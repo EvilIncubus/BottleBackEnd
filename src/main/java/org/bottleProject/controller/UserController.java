@@ -23,18 +23,4 @@ public class UserController {
             return new ResponseEntity<>(userResponse, HttpStatus.CREATED);
     }
 
-
-    @GetMapping("/getUserByEmail/{email}")
-    public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
-        try {
-            User user = userService.getUserByEmail(email);
-
-            if (user == null) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-            return new ResponseEntity<>(user, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
 }

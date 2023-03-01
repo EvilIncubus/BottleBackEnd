@@ -21,16 +21,12 @@ public class UserServiceImpl implements UserService {
     private final UserDao userDao;
     private final RoleDao roleDao;
     private final ProfileDao profileDao;
-    private final AuthenticationManager authenticationManager;
-    private final JwtProvider jwtUtils;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public UserServiceImpl(UserDao userDao,ProfileDao profileDao, RoleDao roleDao, AuthenticationManager authenticationManager, JwtProvider jwtUtils, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserServiceImpl(UserDao userDao,ProfileDao profileDao, RoleDao roleDao, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userDao = userDao;
         this.roleDao = roleDao;
         this.profileDao = profileDao;
-        this.authenticationManager = authenticationManager;
-        this.jwtUtils = jwtUtils;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
@@ -56,11 +52,5 @@ public class UserServiceImpl implements UserService {
         return userDao.findByEmail(email);
     }
 
-    @Override
-    public String authenticateUser(AuthenticationRequest authenticationRequest) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getPassword())
-        );
-        return jwtUtils.generateToken(authentication);
-    }
+
 }
