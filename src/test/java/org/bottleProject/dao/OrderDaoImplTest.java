@@ -25,7 +25,7 @@ public class OrderDaoImplTest {
     public void testCreateAndDelete() {
         Order order = new Order();
 //        order.setAddressId("str. Mesterul Manole 15");
-        order.setCurentDate(LocalDateTime.now());
+        order.setCreatedDate(LocalDateTime.now());
         order.setStatusId(1);
         order = orderDao.create(order);
         Order order1 = orderDao.findById(order.getOrderId());
@@ -96,13 +96,13 @@ public class OrderDaoImplTest {
 
     @Test
     public void testCountOrders() {
-        int count = orderDao.countFilterOrders("Yap");
+        int count = orderDao.countFilterOrders(1);
         assertNotEquals(0, count);
     }
 
     @Test
     public void testGetAllFilterOrder() {
-        List<Order> orderList = orderDao.getAllFilterOrder("Yapona Mama", 1,0);
+        List<Order> orderList = orderDao.getAllFilterOrder(1, 1,0);
         System.out.println(orderList);
         assertNotNull(orderList);
     }

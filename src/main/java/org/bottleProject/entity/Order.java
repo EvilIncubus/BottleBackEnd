@@ -1,26 +1,25 @@
 package org.bottleProject.entity;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
 
 public class Order {
     private long orderId;
 
-    private int customerId;
+    private int profileId;
 
     private int addressId;
 
-    private LocalDateTime curentDate;
+    private LocalDateTime createdDate;
 
     private int statusId;
 
 
-    public Order(long orderId, int customerId, int addressId, LocalDateTime curentDate, int statusId) {
+    public Order(long orderId, int profileId, int addressId, LocalDateTime createdDate, int statusId) {
         this.orderId = orderId;
-        this.customerId = customerId;
+        this.profileId = profileId;
         this.addressId = addressId;
-        this.curentDate = curentDate;
+        this.createdDate = createdDate;
         this.statusId = statusId;
     }
 
@@ -35,8 +34,8 @@ public class Order {
         this.orderId = orderID;
     }
 
-    public int getCustomerId() {
-        return customerId;
+    public int getProfileId() {
+        return profileId;
     }
 
     public int getAddressId() {
@@ -47,16 +46,16 @@ public class Order {
         this.addressId = addressId;
     }
 
-    public LocalDateTime getCurentDate() {
-        return curentDate;
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
     }
 
-    public void setCurentDate(LocalDateTime curentDate) {
-        this.curentDate = curentDate;
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
     }
 
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
+    public void setProfileId(int profileId) {
+        this.profileId = profileId;
     }
 
     public int getStatusId() {
@@ -71,9 +70,9 @@ public class Order {
     public String toString() {
         return "Bottle{" +
                 "orderId=" + orderId +
-                ", customerId=" + customerId +
+                ", customerId=" + profileId +
                 ", deliveryAddress=" + addressId +
-                ", localDateTime=" + curentDate +
+                ", localDateTime=" + createdDate +
                 ", statusId=" + statusId +
                 '}';
     }
@@ -85,7 +84,7 @@ public class Order {
         Order order = (org.bottleProject.entity.Order) obj;
 
         boolean idMatches = Objects.equals(orderId,order.orderId);
-        boolean allFieldsMach = customerId == order.customerId;
+        boolean allFieldsMach = profileId == order.profileId;
 
         return idMatches && allFieldsMach;
     }

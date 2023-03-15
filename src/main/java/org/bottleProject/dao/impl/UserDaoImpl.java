@@ -1,6 +1,7 @@
 package org.bottleProject.dao.impl;
 
 import org.bottleProject.dao.UserDao;
+import org.bottleProject.dto.UserWithProfileDto;
 import org.bottleProject.entity.User;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Objects;
 
@@ -30,12 +32,14 @@ public class UserDaoImpl extends AbstractDaoImpl<User> implements UserDao {
     public User create(User user) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        String sql = "INSERT INTO user (email, password) VALUES(?,?);";
+        String sql = "INSERT INTO user (email, password, account_status, created_date) VALUES(?,?,?,?);";
 
         getJdbcTemplate().update(con -> {
             PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, user.getEmail());
             stmt.setString(2, user.getPassword());
+            stmt.setString(3, user.getAccountStatus());
+            stmt.setTimestamp(4, Timestamp.valueOf(user.getCreatedDate()));
             return stmt;
         }, keyHolder);
 
@@ -74,5 +78,19 @@ public class UserDaoImpl extends AbstractDaoImpl<User> implements UserDao {
     @Override
     public void setRoleForUser(int userId, String roleName) {
 
+    }
+
+    @Override
+    public List<UserWithProfileDto> getListOfUsersWithProfile(int page, int size) {
+        return getJdbcTemplate().query("select u.email, p.first_name, p.last_name, a.address, p.phone_number, p.company from `user` as u \n" +
+                "inner join profile as p on p.user_id = u.user_id \n" +
+                "inner join address as a on a.profile_id = p.profile_id limit ? offset ?", BeanPropertyRowMapper.newInstance(UserWithProfileDto.class), size, (page - 1) * size);
+    }
+
+    @Override
+    public Integer countListOfUsersWithProfile() {
+        return getJdbcTemplate().queryForObject("select count(*) from `user` as u \n" +
+                "inner join profile as p on p.user_id = u.user_id \n" +
+                "inner join address as a on a.profile_id = p.profile_id ", Integer.class);
     }
 }

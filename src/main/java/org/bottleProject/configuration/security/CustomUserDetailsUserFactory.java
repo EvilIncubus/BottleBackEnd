@@ -14,6 +14,7 @@ public class CustomUserDetailsUserFactory {
     public CustomUserDetailsUserFactory() {
     }
 
+    //todo inject spring context for get profile, get principal from security context authentication in controller for validating if id of user that makes request maches woth data from token
     public static CustomUserDetailsImpl create(User user, Profile profile, String address){
         return new CustomUserDetailsImpl(
                 user.getEmail(),

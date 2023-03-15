@@ -22,8 +22,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Page<Order> getAllOrder(ListOrderDto listOrderDto){
-        List<Order> orderList = orderDao.getAllFilterOrder(listOrderDto.getNameCompany(), listOrderDto.getOffset(), listOrderDto.getSize());
-        return new Page<>(orderList, orderDao.countFilterOrders(listOrderDto.getNameCompany()), listOrderDto.getPage(), listOrderDto.getSize());
+        List<Order> orderList = orderDao.getAllFilterOrder(listOrderDto.getOrderId(), listOrderDto.getOffset(), listOrderDto.getSize());
+        return new Page<>(orderList, orderDao.countFilterOrders(listOrderDto.getOrderId()), listOrderDto.getPage(), listOrderDto.getSize());
     }
 
     @Override

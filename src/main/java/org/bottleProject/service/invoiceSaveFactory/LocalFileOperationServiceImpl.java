@@ -30,7 +30,7 @@ public class LocalFileOperationServiceImpl extends OperationsWithFile {
 
     @Override
     public void saveFile(Workbook workbook, Configuration configuration, Order order) {
-        User user = userDao.findById((long) order.getCustomerId());
+        User user = userDao.findById((long) order.getProfileId());
         LocalDateTime localDateTime = LocalDateTime.now();
         Path filePath = Path.of(user.getEmail() + "Invoice" + localDateTime.toLocalDate() + "xlsx");
         FileManager fileManager = new FileManager(filePath);

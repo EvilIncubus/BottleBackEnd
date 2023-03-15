@@ -4,17 +4,19 @@ public class Profile {
     private long profileId;
     private String firstName;
     private String lastName;
-    private int addressId;
+    private String address;
     private String phoneNumber;
     private String company;
+    private int userId;
 
-    public Profile(long profileId, String firstName, String lastName, int addressId, String phoneNumber, String company) {
+    public Profile(long profileId, String firstName, String lastName, String address, String phoneNumber, String company, int userId) {
         this.profileId = profileId;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.addressId = addressId;
+        this.address = address;
         this.phoneNumber = phoneNumber;
         this.company = company;
+        this.userId = userId;
     }
 
     public Profile() {
@@ -45,12 +47,12 @@ public class Profile {
         this.lastName = lastName;
     }
 
-    public int getAddressId() {
-        return addressId;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAddressId(int address) {
-        this.addressId = addressId;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getPhoneNumber() {
@@ -67,5 +69,13 @@ public class Profile {
 
     public void setCompany(String company) {
         this.company = company;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 }

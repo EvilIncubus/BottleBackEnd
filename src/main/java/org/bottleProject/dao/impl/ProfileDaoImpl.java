@@ -30,17 +30,20 @@ public class ProfileDaoImpl extends AbstractDaoImpl<Profile> implements ProfileD
     public Profile create(Profile profile) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        String sql = "INSERT INTO user (first_name, last_name, address_id, phone_number, company) VALUES(?,?,?,?,?);";
+        String sql = "INSERT INTO profile (first_name, last_name, phone_number, company, user_id) VALUES(?,?,?,?,?);";
 
         getJdbcTemplate().update(con -> {
             PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, profile.getFirstName());
             stmt.setString(2, profile.getLastName());
-            stmt.setInt(3, profile.getAddressId());
-            stmt.setString(4, profile.getPhoneNumber());
-            stmt.setString(5, profile.getCompany());
+            stmt.setString(3, profile.getPhoneNumber());
+            stmt.setString(4, profile.getCompany());
+            stmt.setInt(5, profile.getUserId());
             return stmt;
         }, keyHolder);
+
+        getJdbcTemplate().update("INSERT INTO address (profile_id, address) VALUES(?,?);",Objects.requireNonNull(keyHolder.getKey()).longValue(), profile.getAddress());
+
 
         return findById((Objects.requireNonNull(keyHolder.getKey()).longValue()));
     }
@@ -69,8 +72,19 @@ public class ProfileDaoImpl extends AbstractDaoImpl<Profile> implements ProfileD
     @Override
     public String getProfileAddress(Profile profile) {
         try {
-            return getJdbcTemplate().queryForObject("SELECT address FROM profile WHERE profile_id= ? and address_id = ?",
-                    String.class, profile.getProfileId(), profile.getAddressId());
+            return getJdbcTemplate().queryForObject("SELECT address FROM address WHERE profile_id = ?",
+                    String.class, profile.getProfileId());
+        } catch (
+                IncorrectResultSizeDataAccessException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public Profile getProfileByUserId(long id) {
+        try {
+            return getJdbcTemplate().queryForObject("SELECT * FROM profile WHERE user_id=?",
+                    BeanPropertyRowMapper.newInstance(Profile.class), id);
         } catch (
                 IncorrectResultSizeDataAccessException e) {
             return null;

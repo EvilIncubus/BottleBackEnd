@@ -35,13 +35,13 @@ public class OrderDaoImpl extends AbstractDaoImpl<Order> implements OrderDao {
     public Order create(Order entity) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        String sql = "INSERT INTO orders (customer_id, delivery_address, curent_date, status_id) VALUES(?,?,?,?);";
+        String sql = "INSERT INTO orders (profile_id, delivery_address, curent_date, status_id) VALUES(?,?,?,?);";
 
         getJdbcTemplate().update(con -> {
             PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            stmt.setLong(1, entity.getCustomerId());
+            stmt.setLong(1, entity.getProfileId());
             stmt.setInt(2, entity.getAddressId());
-            stmt.setTimestamp(3, Timestamp.valueOf(entity.getCurentDate()));
+            stmt.setTimestamp(3, Timestamp.valueOf(entity.getCreatedDate()));
             stmt.setInt(4, entity.getStatusId());
             return stmt;
         }, keyHolder);
@@ -73,7 +73,7 @@ public class OrderDaoImpl extends AbstractDaoImpl<Order> implements OrderDao {
 
     @Override
     public List<Order> allCustomerOrder(long id) {
-        return getJdbcTemplate().query("SELECT * FROM orders Where customer_id=?;", BeanPropertyRowMapper.newInstance(Order.class), id);
+        return getJdbcTemplate().query("SELECT * FROM orders Where profile_id=?;", BeanPropertyRowMapper.newInstance(Order.class), id);
     }
 
     @Override
@@ -100,7 +100,7 @@ public class OrderDaoImpl extends AbstractDaoImpl<Order> implements OrderDao {
         return getJdbcTemplate().query("select b.bottle_id, ob.amount_bottle, b.name_bottle, v.bottle_volume, p.price, b.soda, b.plastic, b.create_date \n" +
                 "from orders as o \n" +
                 "inner join order_bottle as ob on o.order_id = ob.order_id \n" +
-                "inner join customer c on c.customer_id = o.customer_id \n" +
+                "inner join profile c on c.profile_id = o.profile_id \n" +
                 "inner join bottle as b on b.bottle_id = ob.bottle_id \n" +
                 "inner join price p on p.price_id = b.price_id \n" +
                 "inner join volume v on v.volume_id = b.volume_id \n" +
@@ -110,10 +110,10 @@ public class OrderDaoImpl extends AbstractDaoImpl<Order> implements OrderDao {
     @Override
     public InvoiceWrapper getOrderInvoice(Order order) {
         InvoiceWrapper orderDto;
-        orderDto = getJdbcTemplate().queryForObject("select o.order_id, c.email, o.delivery_address, o.curent_date, b.producer \n" +
+        orderDto = getJdbcTemplate().queryForObject("select o.order_id, c.email, o.delivery_address, o.created_date, b.producer \n" +
                 "from orders as o \n" +
                 "inner join order_bottle as ob on o.order_id = ob.order_id \n" +
-                "inner join customer c on c.customer_id = o.customer_id \n" +
+                "inner join profile c on c.profile_id = o.profile_id \n" +
                 "inner join bottle as b on b.bottle_id = ob.bottle_id \n" +
                 "where o.order_id = ? limit 1;", BeanPropertyRowMapper.newInstance(InvoiceWrapper.class), order.getOrderId());
 
@@ -154,7 +154,7 @@ public class OrderDaoImpl extends AbstractDaoImpl<Order> implements OrderDao {
                 containsCondition = true;
             }
 
-            queryString += " curent_date AFTER ?";
+            queryString += " created_date AFTER ?";
             argsList.add(orderSearchDto.getFromDate());
         }
 
@@ -166,7 +166,7 @@ public class OrderDaoImpl extends AbstractDaoImpl<Order> implements OrderDao {
                 queryString += " WHERE";
             }
 
-            queryString += " curent_date BEFORE ?";
+            queryString += " created_date BEFORE ?";
             argsList.add(orderSearchDto.getToDate());
         }
 
@@ -175,18 +175,18 @@ public class OrderDaoImpl extends AbstractDaoImpl<Order> implements OrderDao {
     }
 
     @Override
-    public Integer countFilterOrders(String nameCompany) {
-        return getJdbcTemplate().queryForObject("select count(*) from orders Inner Join customer on orders.customer_id = customer.customer_id where customer.name_company Like Concat('%', ? ,'%')",
+    public Integer countFilterOrders(int orderId) {
+        return getJdbcTemplate().queryForObject("select count(*) from orders Inner Join profile on orders.profile_id = profile.profile_id where profile.profile_id = ? ",
                 Integer.class,
-                nameCompany
+                orderId
         );
     }
 
     @Override
-    public List<Order> getAllFilterOrder(String nameCompany, int page, int size) {
-        return getJdbcTemplate().query("SELECT orders.order_id, customer.name_company, orders.delivery_address, orders.curent_date, status.status FROM orders Inner Join customer on orders.customer_id = customer.customer_id Inner Join Status on orders.status_id = status.status_id WHERE customer.name_company Like Concat('%', ? ,'%') LIMIT ? OFFSET ?;",
+    public List<Order> getAllFilterOrder(int profileId, int page, int size) {
+        return getJdbcTemplate().query("SELECT orders.order_id, user.email, orders.delivery_address, orders.created_date, status.status FROM orders Inner Join profile on orders.profile_id = profile.profile_id Inner Join Status on orders.status_id = status.status_id WHERE profile.profile_id  ? LIMIT ? OFFSET ?;",
                 BeanPropertyRowMapper.newInstance(Order.class),
-                nameCompany,
+                profileId,
                 size,
                 page);
     }
@@ -222,7 +222,7 @@ public class OrderDaoImpl extends AbstractDaoImpl<Order> implements OrderDao {
                 containsCondition = true;
             }
 
-            queryString += " curent_date AFTER ?";
+            queryString += " created_date AFTER ?";
             argsList.add(orderSearchDto.getFromDate());
         }
 
@@ -234,7 +234,7 @@ public class OrderDaoImpl extends AbstractDaoImpl<Order> implements OrderDao {
                 queryString += " WHERE";
             }
 
-            queryString += " curent_date BEFORE ?";
+            queryString += " created_date BEFORE ?";
             argsList.add(orderSearchDto.getToDate());
         }
         queryString += ";";

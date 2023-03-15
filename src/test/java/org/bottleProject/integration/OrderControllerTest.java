@@ -26,9 +26,9 @@ public class OrderControllerTest {
     @Test
     public void createOrderTest(){
         Order order = new Order();
-        order.setCustomerId(1);
+        order.setProfileId(1);
 //        order.setAddressId("str. Mesterul Manole 15");
-        order.setCurentDate(LocalDateTime.now());
+        order.setCreatedDate(LocalDateTime.now());
         order.setStatusId(1);
         ResponseEntity<Order> response = orderController.createOrderByCustomerId(order);
         assertNotNull(response.getBody());
@@ -56,7 +56,7 @@ public class OrderControllerTest {
     @Test
     public void getListOfOrderTest(){
         ListOrderDto listOrderDto = new ListOrderDto();
-        listOrderDto.setNameCompany("Yap");
+        listOrderDto.setOrderId("Yap");
         listOrderDto.setPage(1);
         listOrderDto.setSize(1);
         ResponseEntity<Page<Order>> response = orderController.getListOfOrders(listOrderDto);

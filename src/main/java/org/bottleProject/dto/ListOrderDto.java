@@ -1,12 +1,12 @@
 package org.bottleProject.dto;
 
 public class ListOrderDto {
-    private String nameCompany;
+    private int orderId;
     private int size;
     private int page;
 
-    public ListOrderDto(String nameCompany, int size, int page) {
-        this.nameCompany = nameCompany;
+    public ListOrderDto(int orderId, int size, int page) {
+        this.orderId = orderId;
         this.size = size;
         this.page = page;
     }
@@ -15,12 +15,12 @@ public class ListOrderDto {
 
     }
 
-    public String getNameCompany() {
-        return nameCompany;
+    public int getOrderId() {
+        return orderId;
     }
 
-    public void setNameCompany(String nameCompany) {
-        this.nameCompany = nameCompany;
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
     }
 
     public int getSize() {

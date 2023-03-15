@@ -25,7 +25,7 @@ public class InvoiceControllerTest {
         Order order = new Order();
         order.setOrderId(1);
 //        order.setAddressId("str. Mesterul Manole 15");
-        order.setCurentDate(LocalDateTime.now());
+        order.setCreatedDate(LocalDateTime.now());
         order.setStatusId(1);
         ResponseEntity<String> response = invoiceController.createInvoiceByOrder(order);
         assertEquals(response.getBody(), "invoice was created successfully.");

@@ -29,7 +29,7 @@ public class SecurityUserDetailsService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException(email);
         }
-        Profile profile = profileDao.findById(user.getUserId());
+        Profile profile = profileDao.getProfileByUserId(user.getUserId());
         String address = profileDao.getProfileAddress(profile);
         user.setRoles(roleDao.getUserRole(user));
         return CustomUserDetailsUserFactory.create(user, profile, address);

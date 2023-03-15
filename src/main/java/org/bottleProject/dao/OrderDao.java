@@ -20,9 +20,9 @@ public interface OrderDao extends Dao<Order> {
 
     List<Order> searchOrder(OrderSearchDto orderSearchDto);
 
-    Integer countFilterOrders(String nameCompany);
+    Integer countFilterOrders(int orderId);
 
-    List<Order> getAllFilterOrder(String name_company, int page, int size);
+    List<Order> getAllFilterOrder(int orderId, int page, int size);
 
     Integer countSearchOrder(OrderSearchDto orderSearchDto);
 }

@@ -44,8 +44,10 @@ public class RoleDaoImpl extends AbstractDaoImpl<Role> implements RoleDao {
     @Override
     public void setUserRole(User user) {
         for (Role role : user.getRoles()){
-        getJdbcTemplate().update("INSERT INTO user_role (user_id, role_name) VALUES(?,?);",
-               user.getUserId(), role.getRoleName());
+            Integer id = getJdbcTemplate().queryForObject("Select role_id from role where role_name = ?;",
+                   Integer.class, role.getRoleName());
+            getJdbcTemplate().update("INSERT INTO user_role (user_id, role_id) VALUES(?,?);",
+                    user.getUserId(), id);
         }
     }
 

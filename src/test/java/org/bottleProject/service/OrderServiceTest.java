@@ -21,9 +21,9 @@ public class OrderServiceTest {
         LocalDateTime localDateTime = LocalDateTime.now();
         Order order =new Order();
         order.setOrderId(2L);
-        order.setCustomerId(1);
+        order.setProfileId(1);
 //        order.setAddressId("str. Alexei Mateevici 14");
-        order.setCurentDate(localDateTime);
+        order.setCreatedDate(localDateTime);
         order.setStatusId(3);
         long id = 2L;
 

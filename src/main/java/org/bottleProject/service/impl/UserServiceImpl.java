@@ -1,19 +1,19 @@
 package org.bottleProject.service.impl;
 
-import org.bottleProject.configuration.security.JwtProvider;
 import org.bottleProject.dao.ProfileDao;
 import org.bottleProject.dao.RoleDao;
 import org.bottleProject.dao.UserDao;
-import org.bottleProject.dto.AuthenticationRequest;
 import org.bottleProject.dto.CreateUserDto;
+import org.bottleProject.dto.UserWithProfileDto;
+import org.bottleProject.entity.Page;
 import org.bottleProject.entity.Profile;
 import org.bottleProject.entity.User;
 import org.bottleProject.service.UserService;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -35,22 +35,26 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setEmail(createUserDto.getEmail());
         user.setPassword(bCryptPasswordEncoder.encode(createUserDto.getPassword()));
+        user.setAccountStatus("ACTIVE");
+        user.setCreatedDate(LocalDateTime.now());
+        user = userDao.create(user);
         user.setRoles(createUserDto.getRoles());
         roleDao.setUserRole(user);
         Profile profile = new Profile();
         profile.setFirstName(createUserDto.getFirstName());
         profile.setLastName(createUserDto.getLastName());
-        profile.setAddressId(createUserDto.getAddressId());
         profile.setPhoneNumber(createUserDto.getPhoneNumber());
+        profile.setAddress(createUserDto.getEmail());
         profile.setCompany(createUserDto.getCompany());
+        profile.setUserId((int) user.getUserId());
         profileDao.create(profile);
-        return userDao.create(user);
+        return user;
     }
 
     @Override
-    public User getUserByEmail(String email) {
-        return userDao.findByEmail(email);
+    public Page<UserWithProfileDto> getAllUsersWithProfile(int page, int size) {
+        List<UserWithProfileDto> users = userDao.getListOfUsersWithProfile(page, size);
+        return new Page<>(users, userDao.countListOfUsersWithProfile(), page, size);
     }
-
 
 }

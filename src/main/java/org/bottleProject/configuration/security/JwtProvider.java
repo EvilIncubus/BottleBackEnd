@@ -18,7 +18,7 @@ import java.util.function.Function;
 public class JwtProvider {
     // TODO replace user details with personal User
 
-    private String jwtSigningKey = "secret";
+    private final String jwtSigningKey = "secret";
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -28,18 +28,13 @@ public class JwtProvider {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    public Boolean hasClaim(String token, String claimName) {
-        final Claims claims = extractAllClaims(token);
-        return claims.get(claimName) != null;
-    }
-
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver){
-            final Claims claims = extractAllClaims(token);
+            Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parser().setSigningKey(jwtSigningKey).parseClaimsJwt(token).getBody();
+        return Jwts.parser().setSigningKey(jwtSigningKey).parseClaimsJws(token).getBody();
     }
 
     private Boolean isTokenExpired(String token) {
@@ -51,7 +46,6 @@ public class JwtProvider {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         return Jwts.builder().setClaims(claims)
                 .setSubject(userDetails.getUsername())
-                //todo add more user details in climes
                 .claim("role", userDetails.getAuthorities())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + TimeUnit.HOURS.toMillis(24 * 7)))

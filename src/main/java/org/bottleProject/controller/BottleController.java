@@ -6,6 +6,7 @@ import org.bottleProject.entity.Page;
 import org.bottleProject.service.BottleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class BottleController {
         this.bottleService = bottleService;
     }
 
+    @PreAuthorize("MANAGER")
     @PostMapping("/createBottle")
     public ResponseEntity<Bottle> createBottle(@RequestBody Bottle bottle) {
         try {

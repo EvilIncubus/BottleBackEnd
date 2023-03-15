@@ -3,14 +3,12 @@
                    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
-    <changeSet author="vodai (generated)" id="1674563226619-8">
-        <insert
-                tableName="user">
-            <column  name="email"  value="grisha@gmail.com"/>
-            <column  name="password"  value="$2a$10$IpO3IqSoaGJ2fDe3LNZJAezmMLraz.hRHf1quSyZq1SvKCLhzBJmu"/>
-        </insert>
-        <sql>insert into role (role_name) values ('ADMIN');</sql>
-
-        <sql>insert into user_role (user_id, role_id) values (1, 1);</sql>
+    <changeSet author="vodai (generated)" id="1674563226612-5">
+        <dropColumn  tableName="profile">
+            <column  name="account_status"/>
+        </dropColumn>
+        <dropColumn  tableName="profile">
+            <column  name="created_date"/>
+        </dropColumn>
     </changeSet>
 </databaseChangeLog>
