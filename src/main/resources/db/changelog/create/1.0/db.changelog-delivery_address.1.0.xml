@@ -3,9 +3,17 @@
                    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
-    <changeSet author="vodai (generated)" id="1674563226619-8">
-        <sql>
-            insert into bottle_category (bottle_id, category) values (1, 'Juice'),(2, 'Sprite'),(3, 'Cola Cola'),(4, 'Fanta');
-        </sql>
+    <changeSet author="vodai (generated)" id="1674563226619-1">
+        <createTable tableName="delivery_address">
+            <column autoIncrement="true" name="delivery_address_id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="order_id" type="VARCHAR(40)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="delivery_address" type="VARCHAR(40)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
     </changeSet>
 </databaseChangeLog>

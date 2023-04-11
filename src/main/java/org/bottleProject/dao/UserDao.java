@@ -13,4 +13,10 @@ public interface UserDao extends Dao<User>{
     List<UserWithProfileDto> getListOfUsersWithProfile(int page, int size);
 
     Integer countListOfUsersWithProfile();
+
+    void setNewUserAccountStatus(String email, String accountStatus);
+
+    UserWithProfileDto findUserByEmail(String email);
+
+    User updateUsers(User user);
 }

@@ -24,7 +24,7 @@ public class UserDaoImpl extends AbstractDaoImpl<User> implements UserDao {
     }
 
     @Override
-    public List<User> getAll() {
+    public List<User> getAll(int size, int offset) {
         return getJdbcTemplate().query("SELECT * FROM user;", BeanPropertyRowMapper.newInstance(User.class));
     }
 
@@ -82,7 +82,7 @@ public class UserDaoImpl extends AbstractDaoImpl<User> implements UserDao {
 
     @Override
     public List<UserWithProfileDto> getListOfUsersWithProfile(int page, int size) {
-        return getJdbcTemplate().query("select u.email, p.first_name, p.last_name, a.address, p.phone_number, p.company from `user` as u \n" +
+        return getJdbcTemplate().query("select u.email, p.first_name, p.last_name, a.address, p.phone_number, p.profile_photo_path, p.company, u.account_status from `user` as u \n" +
                 "inner join profile as p on p.user_id = u.user_id \n" +
                 "inner join address as a on a.profile_id = p.profile_id limit ? offset ?", BeanPropertyRowMapper.newInstance(UserWithProfileDto.class), size, (page - 1) * size);
     }
@@ -92,5 +92,24 @@ public class UserDaoImpl extends AbstractDaoImpl<User> implements UserDao {
         return getJdbcTemplate().queryForObject("select count(*) from `user` as u \n" +
                 "inner join profile as p on p.user_id = u.user_id \n" +
                 "inner join address as a on a.profile_id = p.profile_id ", Integer.class);
+    }
+
+    @Override
+    public void setNewUserAccountStatus(String email, String accountStatus) {
+        getJdbcTemplate().update("UPDATE user SET account_status = ? WHERE email = ? ;",
+                accountStatus, email);
+    }
+
+    @Override
+    public UserWithProfileDto findUserByEmail(String email) {
+        return getJdbcTemplate().queryForObject("SELECT * FROM user WHERE email=?",
+                BeanPropertyRowMapper.newInstance(UserWithProfileDto.class), email);
+    }
+
+    @Override
+    public User updateUsers(User user) {
+        getJdbcTemplate().update("UPDATE user SET email = ?, password = ? WHERE user_id = ? ;",
+                user.getEmail(), user.getUserId());
+        return findById(user.getUserId());
     }
 }

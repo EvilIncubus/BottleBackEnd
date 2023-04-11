@@ -25,8 +25,8 @@ public class BottleDaoImpl extends AbstractDaoImpl<Bottle> implements BottleDao 
     }
 
     @Override
-    public List<Bottle> getAll() {
-        return getJdbcTemplate().query("SELECT * FROM bottle;", BeanPropertyRowMapper.newInstance(Bottle.class));
+    public List<Bottle> getAll(int size, int offset) {
+        return getJdbcTemplate().query("SELECT * FROM bottle limit ? offset ?;", BeanPropertyRowMapper.newInstance(Bottle.class), size, offset);
     }
 
     @Override
@@ -37,14 +37,14 @@ public class BottleDaoImpl extends AbstractDaoImpl<Bottle> implements BottleDao 
 
         getJdbcTemplate().update(con -> {
             PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            stmt.setString(1,entity.getNameBottle());
-            stmt.setInt(2,entity.getVolumeId());
-            stmt.setBoolean(3,entity.isSoda());
-            stmt.setBoolean(4,entity.isPlastic());
+            stmt.setString(1, entity.getNameBottle());
+            stmt.setInt(2, entity.getVolumeId());
+            stmt.setBoolean(3, entity.isSoda());
+            stmt.setBoolean(4, entity.isPlastic());
             stmt.setTimestamp(5, Timestamp.valueOf(entity.getCreateDate()));
-            stmt.setBoolean(6,entity.isReserved());
-            stmt.setString(7,entity.getProducer());
-            stmt.setInt(8,entity.getStorageId());
+            stmt.setBoolean(6, entity.isReserved());
+            stmt.setString(7, entity.getProducer());
+            stmt.setInt(8, entity.getStorageId());
             return stmt;
         }, keyHolder);
         return findById(Objects.requireNonNull(keyHolder.getKey()).longValue());
@@ -65,7 +65,7 @@ public class BottleDaoImpl extends AbstractDaoImpl<Bottle> implements BottleDao 
     @Override
     public Bottle update(Bottle entity, Long id) {
         getJdbcTemplate().update("UPDATE bottle SET name_bottle= ? WHERE bottle_id= ? ",
-                entity.getNameBottle(), entity.getBottleId() );
+                entity.getNameBottle(), entity.getBottleId());
         return findById(id);
     }
 
@@ -77,36 +77,123 @@ public class BottleDaoImpl extends AbstractDaoImpl<Bottle> implements BottleDao 
 
     @Override
     public List<Bottle> filterBy(BottleFilterDto bottleFilterDto) {
-        List<Object> argsList = new ArrayList<>();
-        StringBuilder query = new StringBuilder("SELECT * FROM bottle inner join bottle_category on bottle_category.bottle_id = bottle.bottle_id Where 1 = 1 ");
-        for(String category : bottleFilterDto.getListOfCategories()) {
-            if(!category.isEmpty()){
-                query.append("And bottle_category.category = ? ");
-                argsList.add(category);
+
+        StringBuilder query = new StringBuilder("SELECT * FROM bottle " +
+                " inner join bottle_category on bottle_category.bottle_category_id = bottle.bottle_category_id " +
+                " inner join bottle_packaging on bottle_packaging.bottle_packaging_id = bottle.bottle_packaging_id " +
+                " inner join price on price.bottle_id = bottle.bottle_id " +
+                " inner join volume on volume.volume_id = bottle.volume_id " +
+                " Where 1 = 1 ");
+        if (!bottleFilterDto.getListOfCategories().isEmpty()) {
+            query.append(" And bottle_category.category IN (");
+            for (String category : bottleFilterDto.getListOfCategories()) {
+                if (!category.isEmpty()) {
+                    query.append(" '").append(category).append("',");
+                }
             }
+            query.deleteCharAt(query.length() - 1);
+            query.append(")");
         }
-        query.append("Limit ? Offset ?");
-        argsList.add(bottleFilterDto.getSize());
-        argsList.add(bottleFilterDto.getPage());
+
+        if (!bottleFilterDto.getPackaging().isEmpty()) {
+            query.append(" And bottle_packaging.packaging IN (");
+            for (String packaging : bottleFilterDto.getPackaging()) {
+                if (!packaging.isEmpty()) {
+                    query.append(" '").append(packaging).append("',");
+                }
+            }
+            query.deleteCharAt(query.length() - 1);
+            query.append(")");
+        }
+        if (!bottleFilterDto.getVolume().isEmpty()) {
+            query.append(" And volume.volume IN (");
+            for (Double volume : bottleFilterDto.getVolume()) {
+                if (volume != 0) {
+                    query.append(" ").append(volume).append(",");
+                }
+            }
+            query.deleteCharAt(query.length() - 1);
+            query.append(")");
+        }
+        if (bottleFilterDto.getMinPrice() != 0) {
+            query.append(" And price.price > ").append(bottleFilterDto.getMinPrice()).append(" ");
+        }
+        if (bottleFilterDto.getMaxPrice() != 0) {
+            query.append(" And price.price < ").append(bottleFilterDto.getMaxPrice()).append(" ");
+        }
+        if (bottleFilterDto.getSugar() != null) {
+            query.append(" And bottle.sugar = ").append(bottleFilterDto.getSugar()).append(" ");
+        }
+        query.append(" Limit ").append(bottleFilterDto.getSize()).append(" Offset ").append(bottleFilterDto.getOffset());
         return getJdbcTemplate().query(
-                        query.toString(),
-                BeanPropertyRowMapper.newInstance(Bottle.class),
-                argsList);
+                query.toString(),
+                BeanPropertyRowMapper.newInstance(Bottle.class));
     }
 
     @Override
     public Integer countAllFilterBottle(BottleFilterDto bottleFilterDto) {
         List<Object> argsList = new ArrayList<>();
-        StringBuilder query = new StringBuilder("select count(*) from bottle inner join bottle_category on bottle_category.bottle_id = bottle.bottle_id Where 1 = 1 ");
-        for(String category : bottleFilterDto.getListOfCategories()) {
-            if(!category.isEmpty()){
-                query.append("And bottle_category.category = ? ");
-                argsList.add(category);
+        StringBuilder query = new StringBuilder("SELECT count(*) FROM bottle " +
+                " inner join bottle_category on bottle_category.bottle_category_id = bottle.bottle_category_id " +
+                " inner join bottle_packaging on bottle_packaging.bottle_packaging_id = bottle.bottle_packaging_id " +
+                " inner join price on price.bottle_id = bottle.bottle_id " +
+                " inner join volume on volume.volume_id = bottle.volume_id" +
+                " Where 1 = 1 ");
+        if (!bottleFilterDto.getListOfCategories().isEmpty()) {
+            query.append(" And bottle_category.category IN (");
+            for (String category : bottleFilterDto.getListOfCategories()) {
+                if (!category.isEmpty()) {
+                    query.append(" '").append(category).append("',");
+                }
             }
+            query.deleteCharAt(query.length() - 1);
+            query.append(")");
         }
-        return getJdbcTemplate().queryForObject(query.toString(),
-                Integer.class,
-                argsList
-        );
+
+        if (!bottleFilterDto.getPackaging().isEmpty()) {
+            query.append(" And bottle_packaging.packaging IN (");
+            for (String packaging : bottleFilterDto.getPackaging()) {
+                if (!packaging.isEmpty()) {
+                    query.append(" '").append(packaging).append("',");
+                }
+            }
+            query.deleteCharAt(query.length() - 1);
+            query.append(")");
+        }
+        if (!bottleFilterDto.getVolume().isEmpty()) {
+            query.append(" And volume.volume IN (");
+            for (Double volume : bottleFilterDto.getVolume()) {
+                if (volume != 0) {
+                    query.append(" ").append(volume).append(",");
+                }
+            }
+            query.deleteCharAt(query.length() - 1);
+            query.append(")");
+        }
+        if (bottleFilterDto.getMinPrice() != 0) {
+            query.append(" And price.price > ").append(bottleFilterDto.getMinPrice()).append(" ");
+        }
+        if (bottleFilterDto.getMaxPrice() != 0) {
+            query.append(" And price.price < ").append(bottleFilterDto.getMaxPrice()).append(" ");
+        }
+        if (bottleFilterDto.getSugar() != null) {
+            query.append(" And bottle.sugar = ").append(bottleFilterDto.getSugar()).append(" ");
+        }
+        return getJdbcTemplate().queryForObject(query.toString(), Integer.class);
+    }
+
+    @Override
+    public Integer countAllBottle() {
+        return getJdbcTemplate().queryForObject("select count(*) from bottle", Integer.class);
+    }
+
+    @Override
+    public List<Bottle> searchBottle(String search, int size, int page) {
+        return getJdbcTemplate().query("SELECT * FROM bottle where name_bottle like '%"+ search +"%' limit "+size+" offset "+page+";", BeanPropertyRowMapper.newInstance(Bottle.class));
+    }
+
+    @Override
+    public Integer countSearchBottle(String search) {
+        return getJdbcTemplate().queryForObject("select count(*) from bottle where name_bottle like '%"+ search +"%'", Integer.class);
     }
 }

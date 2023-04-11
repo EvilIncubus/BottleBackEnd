@@ -21,7 +21,7 @@ public class BottleController {
         this.bottleService = bottleService;
     }
 
-    @PreAuthorize("MANAGER")
+    @PreAuthorize("hasAnyAuthority('MANAGER')")
     @PostMapping("/createBottle")
     public ResponseEntity<Bottle> createBottle(@RequestBody Bottle bottle) {
         try {
@@ -32,6 +32,7 @@ public class BottleController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('OPERATOR')")
     @GetMapping("/getBottleById/{bottleId}")
     public ResponseEntity<Bottle> getBottleById(@PathVariable int bottleId) {
         try {
@@ -45,10 +46,44 @@ public class BottleController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @PostMapping("/getListOfBottlesByCategory")
-    public ResponseEntity<Page<Bottle>> getListOfBottles(@RequestBody BottleFilterDto bottleFilterDto) {
+
+
+    @GetMapping("/getListOfBottles")
+    public ResponseEntity<Page<Bottle>> getListOfBottles(@RequestParam int page,
+                                                         @RequestParam int size) {
+        try {
+            Page<Bottle> bottles = bottleService.getListOfBottle(page, size);
+
+            if (bottles == null) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(bottles, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PreAuthorize("hasAnyAuthority('OPERATOR')")
+    @PostMapping("/getListOfFilterBottles")
+    public ResponseEntity<Page<Bottle>> getListOfBottlesByCategory(@RequestBody BottleFilterDto bottleFilterDto) {
         try {
             Page<Bottle> bottles = bottleService.getListOfBottleByCategory(bottleFilterDto);
+
+            if (bottles == null) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(bottles, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/getSearchBottleByBrand")
+    public ResponseEntity<Page<Bottle>> getSearchBottleByBrand(@RequestParam String search,
+                                                               @RequestParam int page,
+                                                               @RequestParam int size) {
+        try {
+            Page<Bottle> bottles = bottleService.getSearchBottleByBrand(search, page, size);
 
             if (bottles == null) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);

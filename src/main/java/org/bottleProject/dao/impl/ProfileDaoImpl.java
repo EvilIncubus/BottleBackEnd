@@ -22,7 +22,7 @@ public class ProfileDaoImpl extends AbstractDaoImpl<Profile> implements ProfileD
     }
 
     @Override
-    public List<Profile> getAll() {
+    public List<Profile> getAll(int size, int offset) {
         return null;
     }
 
@@ -30,7 +30,7 @@ public class ProfileDaoImpl extends AbstractDaoImpl<Profile> implements ProfileD
     public Profile create(Profile profile) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        String sql = "INSERT INTO profile (first_name, last_name, phone_number, company, user_id) VALUES(?,?,?,?,?);";
+        String sql = "INSERT INTO profile (first_name, last_name, phone_number, company, user_id, profile_photo_path) VALUES(?,?,?,?,?,?);";
 
         getJdbcTemplate().update(con -> {
             PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -39,6 +39,7 @@ public class ProfileDaoImpl extends AbstractDaoImpl<Profile> implements ProfileD
             stmt.setString(3, profile.getPhoneNumber());
             stmt.setString(4, profile.getCompany());
             stmt.setInt(5, profile.getUserId());
+            stmt.setString(6, profile.getProfilePhotoPath());
             return stmt;
         }, keyHolder);
 
@@ -89,5 +90,11 @@ public class ProfileDaoImpl extends AbstractDaoImpl<Profile> implements ProfileD
                 IncorrectResultSizeDataAccessException e) {
             return null;
         }
+    }
+
+    @Override
+    public void updateProfile(Profile profile) {
+        getJdbcTemplate().update("UPDATE profile SET first_name = ?, last_name = ?, phone_number = ?, company = ?, profile_photo_path = ? WHERE user_id = ? ;",
+                profile.getFirstName(), profile.getLastName(), profile.getPhoneNumber(), profile.getCompany(), profile.getProfilePhotoPath());
     }
 }

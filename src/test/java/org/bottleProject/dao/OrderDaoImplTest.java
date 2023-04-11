@@ -40,7 +40,7 @@ public class OrderDaoImplTest {
 
     @Test
     public void testGetAll() {
-        List<Order> orders = orderDao.getAll();
+        List<Order> orders = orderDao.getAll(1,1);
 
         assertNotNull(orders);
     }
@@ -96,13 +96,13 @@ public class OrderDaoImplTest {
 
     @Test
     public void testCountOrders() {
-        int count = orderDao.countFilterOrders(1);
+        int count = orderDao.countFilterCustomerOrders(1);
         assertNotEquals(0, count);
     }
 
     @Test
     public void testGetAllFilterOrder() {
-        List<Order> orderList = orderDao.getAllFilterOrder(1, 1,0);
+        List<Order> orderList = orderDao.getAllFilterCustomerOrder(1, 1,0);
         System.out.println(orderList);
         assertNotNull(orderList);
     }

@@ -1,6 +1,7 @@
 package org.bottleProject.dto;
 
 import org.bottleProject.entity.Role;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -13,8 +14,12 @@ public class CreateUserDto {
     private String address;
     private String phoneNumber;
     private String company;
+    private String profilePhoto;
 
-    public CreateUserDto(String email, String password, List<Role> roles, String firstName, String lastName, String address, String phoneNumber, String company) {
+    public CreateUserDto() {
+    }
+
+    public CreateUserDto(String email, String password, List<Role> roles, String firstName, String lastName, String address, String phoneNumber, String company, String profilePhoto) {
         this.email = email;
         this.password = password;
         this.roles = roles;
@@ -23,6 +28,15 @@ public class CreateUserDto {
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.company = company;
+        this.profilePhoto = profilePhoto;
+    }
+
+    public String getProfilePhoto() {
+        return profilePhoto;
+    }
+
+    public void setProfilePhoto(String profilePhoto) {
+        this.profilePhoto = profilePhoto;
     }
 
     public String getEmail() {

@@ -33,7 +33,7 @@ public class InvoiceDaoImplTest {
 
     @Test
     public void testGetAll() {
-        List<Invoice> invoices = invoiceDao.getAll();
+        List<Invoice> invoices = invoiceDao.getAll(1,2);
 
         assertNotNull(invoices);
     }

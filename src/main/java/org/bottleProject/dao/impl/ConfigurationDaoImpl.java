@@ -18,7 +18,7 @@ public class ConfigurationDaoImpl extends AbstractDaoImpl<Configuration> impleme
     }
 
     @Override
-    public List<Configuration> getAll() {
+    public List<Configuration> getAll(int size, int offset) {
         return null;
     }
 

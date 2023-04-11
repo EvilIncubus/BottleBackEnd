@@ -1,6 +1,7 @@
 package org.bottleProject.integration;
 
 import org.bottleProject.controller.OrderController;
+import org.bottleProject.dto.CreateOrderDto;
 import org.bottleProject.dto.ListOrderDto;
 import org.bottleProject.dto.OrderSearchDto;
 import org.bottleProject.entity.Order;
@@ -27,13 +28,13 @@ public class OrderControllerTest {
     public void createOrderTest(){
         Order order = new Order();
         order.setProfileId(1);
-//        order.setAddressId("str. Mesterul Manole 15");
+        order.setAddressId(2);
         order.setCreatedDate(LocalDateTime.now());
         order.setStatusId(1);
-        ResponseEntity<Order> response = orderController.createOrderByCustomerId(order);
+        ResponseEntity<Long> response = orderController.createOrderByCustomerId(new CreateOrderDto());
         assertNotNull(response.getBody());
-        order.setOrderId(Objects.requireNonNull(response.getBody()).getOrderId());
-        assertEquals(order, response.getBody());
+        order.setOrderId(Objects.requireNonNull(response.getBody()));
+        assertEquals(order.getOrderId(), response.getBody());
     }
 
     @Test
@@ -56,7 +57,7 @@ public class OrderControllerTest {
     @Test
     public void getListOfOrderTest(){
         ListOrderDto listOrderDto = new ListOrderDto();
-        listOrderDto.setOrderId("Yap");
+        listOrderDto.setOrderId(1);
         listOrderDto.setPage(1);
         listOrderDto.setSize(1);
         ResponseEntity<Page<Order>> response = orderController.getListOfOrders(listOrderDto);

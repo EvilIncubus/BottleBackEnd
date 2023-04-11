@@ -9,4 +9,6 @@ public interface RoleDao extends Dao<Role>{
     void setUserRole(User user);
 
     List<Role> getUserRole(User user);
+
+    void updateUserRole(User user);
 }

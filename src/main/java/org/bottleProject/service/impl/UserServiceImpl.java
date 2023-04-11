@@ -47,6 +47,7 @@ public class UserServiceImpl implements UserService {
         profile.setAddress(createUserDto.getEmail());
         profile.setCompany(createUserDto.getCompany());
         profile.setUserId((int) user.getUserId());
+        profile.setProfilePhotoPath(createUserDto.getProfilePhoto());
         profileDao.create(profile);
         return user;
     }
@@ -55,6 +56,33 @@ public class UserServiceImpl implements UserService {
     public Page<UserWithProfileDto> getAllUsersWithProfile(int page, int size) {
         List<UserWithProfileDto> users = userDao.getListOfUsersWithProfile(page, size);
         return new Page<>(users, userDao.countListOfUsersWithProfile(), page, size);
+    }
+
+    @Override
+    public void setUserAccountStatus(String email, String accountStatus) {
+        userDao.setNewUserAccountStatus(email, accountStatus);
+    }
+
+    @Override
+    public User updateUser(CreateUserDto createUserDto) {
+        User user = new User();
+        user.setEmail(createUserDto.getEmail());
+        user.setPassword(bCryptPasswordEncoder.encode(createUserDto.getPassword()));
+        user.setAccountStatus("ACTIVE");
+        user.setCreatedDate(LocalDateTime.now());
+        user = userDao.updateUsers(user);
+        user.setRoles(createUserDto.getRoles());
+        roleDao.updateUserRole(user);
+        Profile profile = new Profile();
+        profile.setFirstName(createUserDto.getFirstName());
+        profile.setLastName(createUserDto.getLastName());
+        profile.setPhoneNumber(createUserDto.getPhoneNumber());
+        profile.setAddress(createUserDto.getEmail());
+        profile.setCompany(createUserDto.getCompany());
+        profile.setUserId((int) user.getUserId());
+        profile.setProfilePhotoPath(createUserDto.getProfilePhoto());
+        profileDao.updateProfile(profile);
+        return user;
     }
 
 }

@@ -1,6 +1,7 @@
 package org.bottleProject.dao;
 
 import org.bottleProject.dto.BottleListWrapper;
+import org.bottleProject.dto.FullOrderDto;
 import org.bottleProject.dto.InvoiceWrapper;
 import org.bottleProject.dto.OrderSearchDto;
 import org.bottleProject.entity.Order;
@@ -20,9 +21,18 @@ public interface OrderDao extends Dao<Order> {
 
     List<Order> searchOrder(OrderSearchDto orderSearchDto);
 
-    Integer countFilterOrders(int orderId);
+    Integer countFilterCustomerOrders(int orderId);
 
-    List<Order> getAllFilterOrder(int orderId, int page, int size);
+    List<Order> getAllFilterCustomerOrder(int orderId, int page, int size);
 
-    Integer countSearchOrder(OrderSearchDto orderSearchDto);
+    Integer countSearchCustomerOrder(OrderSearchDto orderSearchDto);
+
+    List<FullOrderDto> getAllFilterOrder(int page, int size);
+
+    Integer countFilterOrders();
+
+
+    Integer getOrderStatus(String status);
+
+    Integer getOrderAddress(String address);
 }

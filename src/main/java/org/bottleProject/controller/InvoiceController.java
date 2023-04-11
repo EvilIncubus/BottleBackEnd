@@ -10,6 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.*;
@@ -28,6 +29,7 @@ public class InvoiceController {
         this.invoiceFileOperationService = invoiceFileOperationService;
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping("/generateInvoice/{saveType}")
     public ResponseEntity<String> createInvoiceByOrder(@RequestBody Order order) {
         try {
@@ -38,6 +40,7 @@ public class InvoiceController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("/downloadInvoiceByOrderId/{downloadType}/{customerId}/{orderId}")
     public ResponseEntity<Resource> download(@PathVariable Long customerId, @PathVariable Long orderId) throws IOException {
         File foundFile = invoiceFileOperationService.getFile(customerId, orderId);

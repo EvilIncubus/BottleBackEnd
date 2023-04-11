@@ -1,19 +1,20 @@
 package org.bottleProject.service;
 
+import org.bottleProject.dto.CreateOrderDto;
+import org.bottleProject.dto.FullOrderDto;
 import org.bottleProject.dto.ListOrderDto;
 import org.bottleProject.dto.OrderSearchDto;
-import org.bottleProject.entity.Bottle;
 import org.bottleProject.entity.Order;
 import org.bottleProject.entity.OrderBottle;
 import org.bottleProject.entity.Page;
 
-import java.util.List;
-
 public interface OrderService {
 
-    public Page<Order> getAllOrder(ListOrderDto listOrderDto);
+    Page<Order> getAllCustomerOrder(ListOrderDto listOrderDto);
 
-    Order createOrder(Order order);
+    Page<FullOrderDto> getAllOrder(int page, int size);
+
+    long createOrder(CreateOrderDto order);
 
     String addItemToOrder(OrderBottle orderBottle);
 

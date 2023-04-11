@@ -50,8 +50,8 @@ public class BottleControllerTest {
         List<String> categories = new ArrayList<>();
         categories.add("Coca Cola");
         categories.add("Sprite");
-        BottleFilterDto bottleFilterDto = new BottleFilterDto(1, 1, categories);
-        ResponseEntity<Page<Bottle>> response = bottleController.getListOfBottles(bottleFilterDto);
+        BottleFilterDto bottleFilterDto = new BottleFilterDto();
+        ResponseEntity<Page<Bottle>> response = bottleController.getListOfBottlesByCategory(bottleFilterDto);
         assertNotNull((response.getBody()).getContent());
     }
 }

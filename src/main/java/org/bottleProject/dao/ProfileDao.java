@@ -6,4 +6,6 @@ public interface ProfileDao extends Dao<Profile>{
     String getProfileAddress(Profile profile);
 
     Profile getProfileByUserId(long id);
+
+    void updateProfile(Profile profile);
 }

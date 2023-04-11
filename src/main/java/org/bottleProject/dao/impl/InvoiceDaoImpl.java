@@ -21,7 +21,7 @@ public class InvoiceDaoImpl extends AbstractDaoImpl<Invoice> implements InvoiceD
     }
 
     @Override
-    public List<Invoice> getAll() {
+    public List<Invoice> getAll(int size, int offset) {
         return getJdbcTemplate().query("SELECT * FROM invoice;", BeanPropertyRowMapper.newInstance(Invoice.class));
     }
 

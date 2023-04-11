@@ -8,8 +8,9 @@ public class Profile {
     private String phoneNumber;
     private String company;
     private int userId;
+    private String profilePhotoPath;
 
-    public Profile(long profileId, String firstName, String lastName, String address, String phoneNumber, String company, int userId) {
+    public Profile(long profileId, String firstName, String lastName, String address, String phoneNumber, String company, int userId, String profilePhotoPath) {
         this.profileId = profileId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -17,10 +18,19 @@ public class Profile {
         this.phoneNumber = phoneNumber;
         this.company = company;
         this.userId = userId;
+        this.profilePhotoPath = profilePhotoPath;
     }
 
     public Profile() {
 
+    }
+
+    public String getProfilePhotoPath() {
+        return profilePhotoPath;
+    }
+
+    public void setProfilePhotoPath(String profilePhotoPath) {
+        this.profilePhotoPath = profilePhotoPath;
     }
 
     public long getProfileId() {

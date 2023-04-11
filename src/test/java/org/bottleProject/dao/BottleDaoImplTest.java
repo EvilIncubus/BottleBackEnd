@@ -44,7 +44,7 @@ public class BottleDaoImplTest {
     //Test to check if bottles is getting all in correct form
     @Test
     public void testGetAll() {
-        List<Bottle> bottles = bottleImplementDao.getAll();
+        List<Bottle> bottles = bottleImplementDao.getAll(1,1);
         System.out.println(bottles);
         assertNotNull(bottles);
     }
@@ -73,7 +73,7 @@ public class BottleDaoImplTest {
         List<String> categories = new ArrayList<>();
         categories.add("Coca Cola");
         categories.add("Sprite");
-        BottleFilterDto bottleFilterDto = new BottleFilterDto(1, 5, categories);
+        BottleFilterDto bottleFilterDto = new BottleFilterDto();
         List<Bottle> bottles = bottleImplementDao.filterBy(bottleFilterDto);
         System.out.println(bottles);
         assertNotNull(bottles);
@@ -84,7 +84,7 @@ public class BottleDaoImplTest {
         List<String> categories = new ArrayList<>();
         categories.add("Coca Cola");
         categories.add("Sprite");
-        BottleFilterDto bottleFilterDto = new BottleFilterDto(1, 5, categories);
+        BottleFilterDto bottleFilterDto = new BottleFilterDto();
         int count = bottleImplementDao.countAllFilterBottle(bottleFilterDto);
         System.out.println(count);
     }

@@ -3,12 +3,15 @@
                    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
-    <changeSet author="vodai (generated)" id="1674563226619-5">
-        <sql>
-            ALTER TABLE order_bottle ADD CONSTRAINT order_bottle_constrain UNIQUE (bottle_id,
-            order_id);
-            ALTER TABLE bottle_category ADD CONSTRAINT bottle_category_constrain UNIQUE (bottle_id,
-            category);
-        </sql>
+    <changeSet author="vodai (generated)" id="1674563226619-8">
+        <insert
+                tableName="status">
+            <column  name="status"  value="Created"/>
+            <column  name="status"  value="Processed By The Warehouse"/>
+            <column  name="status"  value="On The Way"/>
+        </insert>
+        <delete tableName="status">
+            <where>status = 'In Progress'</where>
+        </delete>
     </changeSet>
 </databaseChangeLog>

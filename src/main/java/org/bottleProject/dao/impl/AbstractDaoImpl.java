@@ -4,6 +4,7 @@ import org.bottleProject.dao.Dao;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
+import java.util.List;
 
 public abstract class AbstractDaoImpl<T> implements Dao<T> {
 
@@ -16,4 +17,6 @@ public abstract class AbstractDaoImpl<T> implements Dao<T> {
     public JdbcTemplate getJdbcTemplate() {
         return jdbcTemplate;
     }
+
+
 }

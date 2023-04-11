@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface Dao<T> {
 
-    List<T> getAll();
+    List<T> getAll(int size, int offset);
 
     T create(T t);
 
