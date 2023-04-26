@@ -1,10 +1,15 @@
 package org.bottleProject.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDateTime;
 
 public class FullOrderDto {
 
     private int orderId;
+
+    @JsonFormat
+            (shape = JsonFormat.Shape.STRING, pattern = ("dd:MM:yyyy hh:mm:ss"))
     private LocalDateTime createdDate;
     private String email;
     private String status;

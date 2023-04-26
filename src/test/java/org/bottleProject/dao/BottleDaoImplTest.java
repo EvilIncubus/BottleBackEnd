@@ -28,10 +28,9 @@ public class BottleDaoImplTest {
         Bottle bottle =new Bottle();
         bottle.setNameBottle("Peace");
         bottle.setVolumeId(4);
-        bottle.setSoda(true);
         bottle.setPlastic(true);
         bottle.setCreateDate(LocalDateTime.now().withNano(0));
-        bottle.setReserved(true);
+        bottle.setStock(15);
         bottle.setProducer("Drink water SRL");
         bottle.setStorageId(4);
         Bottle bottle1 = bottleImplementDao.create(bottle);

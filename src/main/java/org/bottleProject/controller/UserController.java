@@ -18,6 +18,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -48,7 +49,7 @@ public class UserController {
         try {
             String originalFilename = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
             String filename = UUID.randomUUID() + "-" + originalFilename;
-
+            System.out.println(uploadDir);
             Path path = Paths.get("C:\\resources\\" + filename);
             InputStream is = file.getInputStream();
 
@@ -80,6 +81,20 @@ public class UserController {
                                                                    @RequestParam int size) {
         Page<UserWithProfileDto> userList = userService.getAllUsersWithProfile(page, size);
         return new ResponseEntity<>(userList, HttpStatus.CREATED);
+    }
+
+    @PreAuthorize("hasAnyAuthority('OPERATOR')")
+    @GetMapping("/getListOfCustomersForOperator")
+    public ResponseEntity<List<UserWithProfileDto>> getListOfCustomersForOperator() {
+        List<UserWithProfileDto> companies = userService.getListOfCustomersForOperator();
+        return new ResponseEntity<>(companies, HttpStatus.CREATED);
+    }
+
+    @PreAuthorize("hasAnyAuthority('OPERATOR')")
+    @GetMapping("/getSearchListOfCustomersForOperator")
+    public ResponseEntity<List<UserWithProfileDto>> getSearchListOfCustomersForOperator(@RequestParam String search) {
+        List<UserWithProfileDto> companies = userService.getSearchListOfCustomersForOperator(search);
+        return new ResponseEntity<>(companies, HttpStatus.CREATED);
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")

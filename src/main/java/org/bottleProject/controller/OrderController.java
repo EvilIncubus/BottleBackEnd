@@ -1,9 +1,6 @@
 package org.bottleProject.controller;
 
-import org.bottleProject.dto.CreateOrderDto;
-import org.bottleProject.dto.FullOrderDto;
-import org.bottleProject.dto.ListOrderDto;
-import org.bottleProject.dto.OrderSearchDto;
+import org.bottleProject.dto.*;
 import org.bottleProject.entity.Order;
 import org.bottleProject.entity.OrderBottle;
 import org.bottleProject.entity.Page;
@@ -45,11 +42,11 @@ public class OrderController {
     }
 
     @PreAuthorize("hasAnyAuthority('MANAGER') or hasAnyAuthority('OPERATOR')")
-    @GetMapping("/getOrderById/{customerId}")
-    public ResponseEntity<Order> getOrderById(@PathVariable long orderId) {
+    @GetMapping("/getOrderById")
+    public ResponseEntity<InvoiceWrapper> getOrderById(@RequestParam long orderId) {
         try {
 
-            Order order = orderService.getOrderById(orderId);
+            InvoiceWrapper order = orderService.getOrderById(orderId);
 
             if (order == null) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -61,10 +58,61 @@ public class OrderController {
     }
 
     @PreAuthorize("hasAnyAuthority('OPERATOR')")
-    @PostMapping("/getListOfOrdersForOperator")
-    public ResponseEntity<Page<Order>> getListOfOrders(@RequestBody ListOrderDto listOrderDto) {
+    @PostMapping("/getListOfActiveOrdersForOperator")
+    public ResponseEntity<Page<FullOrderDto>> getListOfActiveOrders(@RequestBody ListOfCustomersOrdersDto listOrderDto) {
         try {
-            Page<Order> orders = orderService.getAllCustomerOrder(listOrderDto);
+            Page<FullOrderDto> orders = orderService.getAllCustomerOrder(listOrderDto);
+
+            if (orders == null) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(orders, HttpStatus.OK);
+
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PreAuthorize("hasAnyAuthority('OPERATOR')")
+    @PostMapping("/getSearchListOfActiveOrdersForOperator")
+    public ResponseEntity<Page<FullOrderDto>> getSearchListOfCustomer(@RequestParam String search) {
+        try {
+            Page<FullOrderDto> orders = orderService.getAllFilterCustomerOrder(search);
+
+            if (orders == null) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(orders, HttpStatus.OK);
+
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PreAuthorize("hasAnyAuthority('OPERATOR')")
+    @PostMapping("/getListOfOrdersForOperator")
+    public ResponseEntity<Page<FullOrderDto>> getListOfOperatorsOrders(@RequestBody CustomersQueryForOperatorDto customersQueryForOperator) {
+        try {
+            Page<FullOrderDto> orders = orderService.getListOfOperatorsOrders(customersQueryForOperator);
+
+            if (orders == null) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(orders, HttpStatus.OK);
+
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PreAuthorize("hasAnyAuthority('OPERATOR')")
+    @PostMapping("/getListOfCustomersOrdersForOperator")
+    public ResponseEntity<Page<FullOrderDto>> getListOfOrdersOfCustomer(@RequestBody ListOfCustomersOrdersDto listOrderDto) {
+        try {
+            Page<FullOrderDto> orders = orderService.getAllCustomerOrder(listOrderDto);
 
             if (orders == null) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);

@@ -21,9 +21,9 @@ public interface OrderDao extends Dao<Order> {
 
     List<Order> searchOrder(OrderSearchDto orderSearchDto);
 
-    Integer countFilterCustomerOrders(int orderId);
+    Integer countFilterCustomerOrders(int profileId);
 
-    List<Order> getAllFilterCustomerOrder(int orderId, int page, int size);
+    List<FullOrderDto> getAllFilterCustomerOrder(int profileId, int page, int size);
 
     Integer countSearchCustomerOrder(OrderSearchDto orderSearchDto);
 
@@ -35,4 +35,10 @@ public interface OrderDao extends Dao<Order> {
     Integer getOrderStatus(String status);
 
     Integer getOrderAddress(String address);
+
+    List<FullOrderDto> getAllOperatorOrders(String email, int offset, int size);
+
+    Integer countOperatorOrders(String email);
+
+    List<FullOrderDto> searchCustomer(String search);
 }

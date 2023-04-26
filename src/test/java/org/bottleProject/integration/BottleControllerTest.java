@@ -28,10 +28,8 @@ public class BottleControllerTest {
         Bottle bottle =new Bottle();
         bottle.setNameBottle("Peace");
         bottle.setVolumeId(4);
-        bottle.setSoda(true);
-        bottle.setPlastic(true);
         bottle.setCreateDate(LocalDateTime.now().withNano(0));
-        bottle.setReserved(true);
+        bottle.setStock(200);
         bottle.setProducer("Drink water SRL");
         bottle.setStorageId(4);
         ResponseEntity<Bottle> bottle1 = bottleController.createBottle(bottle);

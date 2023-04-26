@@ -1,6 +1,7 @@
 package org.bottleProject.dao.impl;
 
 import org.bottleProject.dao.UserDao;
+import org.bottleProject.dto.FullOrderDto;
 import org.bottleProject.dto.UserWithProfileDto;
 import org.bottleProject.entity.User;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
@@ -82,7 +83,7 @@ public class UserDaoImpl extends AbstractDaoImpl<User> implements UserDao {
 
     @Override
     public List<UserWithProfileDto> getListOfUsersWithProfile(int page, int size) {
-        return getJdbcTemplate().query("select u.email, p.first_name, p.last_name, a.address, p.phone_number, p.profile_photo_path, p.company, u.account_status from `user` as u \n" +
+        return getJdbcTemplate().query("select p.profile_id, u.email, p.first_name, p.last_name, a.address, p.phone_number, p.profile_photo_path, p.company, u.account_status from `user` as u \n" +
                 "inner join profile as p on p.user_id = u.user_id \n" +
                 "inner join address as a on a.profile_id = p.profile_id limit ? offset ?", BeanPropertyRowMapper.newInstance(UserWithProfileDto.class), size, (page - 1) * size);
     }
@@ -111,5 +112,23 @@ public class UserDaoImpl extends AbstractDaoImpl<User> implements UserDao {
         getJdbcTemplate().update("UPDATE user SET email = ?, password = ? WHERE user_id = ? ;",
                 user.getEmail(), user.getUserId());
         return findById(user.getUserId());
+    }
+
+    @Override
+    public List<UserWithProfileDto> getListOfCustomersForOperator() {
+        return getJdbcTemplate().query("select p.profile_id, u.email, p.first_name, p.last_name, a.address, p.phone_number, p.profile_photo_path, p.company, u.account_status from `user` as u \n" +
+                "inner join profile as p on p.user_id = u.user_id \n" +
+                "inner join address as a on a.profile_id = p.profile_id \n" +
+                "inner join user_role ur on ur.user_id = u.user_id \n" +
+                "inner join role as r on r.role_id = ur.role_id where r.role_name = 'CUSTOMER' limit "+5+"", BeanPropertyRowMapper.newInstance(UserWithProfileDto.class));
+    }
+
+    @Override
+    public List<UserWithProfileDto> getSearchListOfCustomersForOperator(String search) {
+        return getJdbcTemplate().query("select p.profile_id, u.email, p.first_name, p.last_name, a.address, p.phone_number, p.profile_photo_path, p.company, u.account_status from `user` as u \n" +
+                "inner join profile as p on p.user_id = u.user_id \n" +
+                "inner join address as a on a.profile_id = p.profile_id \n" +
+                "inner join user_role ur on ur.user_id = u.user_id \n" +
+                "inner join role as r on r.role_id = ur.role_id where r.role_name = 'CUSTOMER' and p.company like '%"+ search +"%' limit "+5+" offset "+0+";", BeanPropertyRowMapper.newInstance(UserWithProfileDto.class));
     }
 }

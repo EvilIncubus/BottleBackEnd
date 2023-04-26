@@ -1,6 +1,7 @@
 package org.bottleProject.dao;
 
 import org.bottleProject.dto.BottleListWrapper;
+import org.bottleProject.dto.FullOrderDto;
 import org.bottleProject.dto.InvoiceWrapper;
 import org.bottleProject.entity.Order;
 import org.bottleProject.entity.OrderBottle;
@@ -102,7 +103,7 @@ public class OrderDaoImplTest {
 
     @Test
     public void testGetAllFilterOrder() {
-        List<Order> orderList = orderDao.getAllFilterCustomerOrder(1, 1,0);
+        List<FullOrderDto> orderList = orderDao.getAllFilterCustomerOrder(1, 1,0);
         System.out.println(orderList);
         assertNotNull(orderList);
     }

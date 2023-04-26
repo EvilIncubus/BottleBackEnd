@@ -19,4 +19,8 @@ public interface UserDao extends Dao<User>{
     UserWithProfileDto findUserByEmail(String email);
 
     User updateUsers(User user);
+
+    List<UserWithProfileDto> getListOfCustomersForOperator();
+
+    List<UserWithProfileDto> getSearchListOfCustomersForOperator(String search);
 }

@@ -33,18 +33,20 @@ public class BottleDaoImpl extends AbstractDaoImpl<Bottle> implements BottleDao 
     public Bottle create(Bottle entity) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        String sql = "INSERT INTO bottle (name_bottle, volume_id, soda, plastic, create_date , reserved, producer, storage_id) VALUES(?,?,?,?,?,?,?,?);";
+        String sql = "INSERT INTO bottle (name_bottle, volume_id, sugar, create_date, stock, producer, storage_id, bottle_category_id, bottle_packaging_id, bottle_photo) VALUES(?,?,?,?,?,?,?,?,?,?);";
 
         getJdbcTemplate().update(con -> {
             PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, entity.getNameBottle());
             stmt.setInt(2, entity.getVolumeId());
-            stmt.setBoolean(3, entity.isSoda());
-            stmt.setBoolean(4, entity.isPlastic());
-            stmt.setTimestamp(5, Timestamp.valueOf(entity.getCreateDate()));
-            stmt.setBoolean(6, entity.isReserved());
-            stmt.setString(7, entity.getProducer());
-            stmt.setInt(8, entity.getStorageId());
+            stmt.setBoolean(3, entity.isSugar());
+            stmt.setTimestamp(4, Timestamp.valueOf(entity.getCreateDate()));
+            stmt.setInt(5, entity.getStock());
+            stmt.setString(6, entity.getProducer());
+            stmt.setInt(7, entity.getStorageId());
+            stmt.setInt(8, entity.getBottleCategoryId());
+            stmt.setInt(9, entity.getBottlePackagingId());
+            stmt.setString(10, entity.getBottlePhoto());
             return stmt;
         }, keyHolder);
         return findById(Objects.requireNonNull(keyHolder.getKey()).longValue());

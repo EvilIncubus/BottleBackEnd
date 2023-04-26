@@ -1,9 +1,7 @@
 package org.bottleProject.integration;
 
 import org.bottleProject.controller.OrderController;
-import org.bottleProject.dto.CreateOrderDto;
-import org.bottleProject.dto.ListOrderDto;
-import org.bottleProject.dto.OrderSearchDto;
+import org.bottleProject.dto.*;
 import org.bottleProject.entity.Order;
 import org.bottleProject.entity.OrderBottle;
 import org.bottleProject.entity.Page;
@@ -28,7 +26,7 @@ public class OrderControllerTest {
     public void createOrderTest(){
         Order order = new Order();
         order.setProfileId(1);
-        order.setAddressId(2);
+        order.setDeliveryAddressId(2);
         order.setCreatedDate(LocalDateTime.now());
         order.setStatusId(1);
         ResponseEntity<Long> response = orderController.createOrderByCustomerId(new CreateOrderDto());
@@ -50,17 +48,17 @@ public class OrderControllerTest {
 
     @Test
     public void getOrderByIdTest(){
-        ResponseEntity<Order> response = orderController.getOrderById(1);
+        ResponseEntity<InvoiceWrapper> response = orderController.getOrderById(1);
         assertNotNull(response.getBody());
     }
 
     @Test
     public void getListOfOrderTest(){
-        ListOrderDto listOrderDto = new ListOrderDto();
-        listOrderDto.setOrderId(1);
+        ListOfCustomersOrdersDto listOrderDto = new ListOfCustomersOrdersDto();
+        listOrderDto.setProfileId(1);
         listOrderDto.setPage(1);
         listOrderDto.setSize(1);
-        ResponseEntity<Page<Order>> response = orderController.getListOfOrders(listOrderDto);
+        ResponseEntity<Page<FullOrderDto>> response = orderController.getListOfActiveOrders(listOrderDto);
         assertNotNull(Objects.requireNonNull(response.getBody()).getContent());
     }
 

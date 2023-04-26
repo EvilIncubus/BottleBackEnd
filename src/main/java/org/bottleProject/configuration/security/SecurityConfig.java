@@ -1,6 +1,7 @@
 package org.bottleProject.configuration.security;
 
 import org.bottleProject.service.impl.SecurityUserDetailsService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,6 +11,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,6 +28,8 @@ public class SecurityConfig {
 
     private final JwtOncePerRequestFilter jwtAuthFilter;
     private final SecurityUserDetailsService securityUserDetailsService;
+    @Value("${spring.websecurity.debug:false}")
+    boolean webSecurityDebug;
 
     public SecurityConfig(JwtOncePerRequestFilter jwtAuthFilter, SecurityUserDetailsService securityUserDetailsService) {
         this.jwtAuthFilter = jwtAuthFilter;
@@ -40,7 +44,7 @@ public class SecurityConfig {
                 .and()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/**").permitAll()
+                .antMatchers("/photos/**").permitAll()
                 .antMatchers("/rest/api/auth/**").permitAll()
                 .anyRequest()
                 .authenticated()
@@ -51,6 +55,11 @@ public class SecurityConfig {
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
+    }
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.debug(webSecurityDebug);
     }
 
     @Bean

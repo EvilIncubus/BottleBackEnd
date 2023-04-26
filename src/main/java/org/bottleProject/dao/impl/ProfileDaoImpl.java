@@ -1,6 +1,7 @@
 package org.bottleProject.dao.impl;
 
 import org.bottleProject.dao.ProfileDao;
+import org.bottleProject.dto.UserWithProfileDto;
 import org.bottleProject.entity.Profile;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;

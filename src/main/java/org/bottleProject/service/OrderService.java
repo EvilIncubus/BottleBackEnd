@@ -1,16 +1,13 @@
 package org.bottleProject.service;
 
-import org.bottleProject.dto.CreateOrderDto;
-import org.bottleProject.dto.FullOrderDto;
-import org.bottleProject.dto.ListOrderDto;
-import org.bottleProject.dto.OrderSearchDto;
+import org.bottleProject.dto.*;
 import org.bottleProject.entity.Order;
 import org.bottleProject.entity.OrderBottle;
 import org.bottleProject.entity.Page;
 
 public interface OrderService {
 
-    Page<Order> getAllCustomerOrder(ListOrderDto listOrderDto);
+    Page<FullOrderDto> getAllCustomerOrder(ListOfCustomersOrdersDto listOrderDto);
 
     Page<FullOrderDto> getAllOrder(int page, int size);
 
@@ -18,7 +15,11 @@ public interface OrderService {
 
     String addItemToOrder(OrderBottle orderBottle);
 
-    Order getOrderById(long orderId);
+    InvoiceWrapper getOrderById(long orderId);
 
     Page<Order> searchOrder(OrderSearchDto orderSearchDto);
+
+    Page<FullOrderDto> getListOfOperatorsOrders(CustomersQueryForOperatorDto customersQueryForOperator);
+
+    Page<FullOrderDto> getAllFilterCustomerOrder(String search);
 }

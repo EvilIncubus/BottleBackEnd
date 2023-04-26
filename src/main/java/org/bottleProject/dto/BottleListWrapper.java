@@ -1,23 +1,52 @@
 package org.bottleProject.dto;
 
-import java.time.LocalDateTime;
 public class BottleListWrapper {
-    private long bottleID;
+    private long bottleId;
     private int amountBottle;
     private String nameBottle;
-    private double size;
-    private double price;
-    private boolean CO2;
-    private boolean plastic;
-    private LocalDateTime dateTime;
 
+    private boolean sugar;
 
-    public long getBottleID() {
-        return bottleID;
+    private double bottleVolume;
+
+    private int stock;
+
+    private String producer;
+
+    private String storageSection;
+
+    private String category;
+
+    private String packaging;
+
+    private int price;
+
+    private String bottlePhoto;
+
+    public BottleListWrapper() {
     }
 
-    public void setBottleID(long bottleID) {
-        this.bottleID = bottleID;
+    public BottleListWrapper(long bottleId, int amountBottle, String nameBottle, boolean sugar, double bottleVolume, int stock, String producer, String storageSection, String category, String packaging, int price, String bottlePhoto) {
+        this.bottleId = bottleId;
+        this.amountBottle = amountBottle;
+        this.nameBottle = nameBottle;
+        this.sugar = sugar;
+        this.bottleVolume = bottleVolume;
+        this.stock = stock;
+        this.producer = producer;
+        this.storageSection = storageSection;
+        this.category = category;
+        this.packaging = packaging;
+        this.price = price;
+        this.bottlePhoto = bottlePhoto;
+    }
+
+    public long getBottleId() {
+        return bottleId;
+    }
+
+    public void setBottleId(long bottleId) {
+        this.bottleId = bottleId;
     }
 
     public int getAmountBottle() {
@@ -36,58 +65,85 @@ public class BottleListWrapper {
         this.nameBottle = nameBottle;
     }
 
-    public double getSize() {
-        return size;
+    public boolean isSugar() {
+        return sugar;
     }
 
-    public void setSize(double size) {
-        this.size = size;
+    public void setSugar(boolean sugar) {
+        this.sugar = sugar;
     }
 
-    public double getPrice() {
+
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
-    public boolean isCO2() {
-        return CO2;
+    public int getStock() {
+        return stock;
     }
 
-    public void setCO2(boolean CO2) {
-        this.CO2 = CO2;
+    public void setStock(int stock) {
+        this.stock = stock;
     }
 
-    public boolean isPlastic() {
-        return plastic;
+    public String getProducer() {
+        return producer;
     }
 
-    public void setPlastic(boolean plastic) {
-        this.plastic = plastic;
+    public void setProducer(String producer) {
+        this.producer = producer;
     }
 
-    public LocalDateTime getDateTime() {
-        return dateTime;
+    public double getBottleVolume() {
+        return bottleVolume;
     }
 
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
+    public void setBottleVolume(double bottleVolume) {
+        this.bottleVolume = bottleVolume;
     }
 
+    public String getStorageSection() {
+        return storageSection;
+    }
+
+    public void setStorageSection(String storageSection) {
+        this.storageSection = storageSection;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getPackaging() {
+        return packaging;
+    }
+
+    public void setPackaging(String packaging) {
+        this.packaging = packaging;
+    }
+
+    public String getBottlePhoto() {
+        return bottlePhoto;
+    }
+
+    public void setBottlePhoto(String bottlePhoto) {
+        this.bottlePhoto = bottlePhoto;
+    }
 
     @Override
     public String toString() {
         return "FinalOrderDto{" +
-                ", BottleID=" + bottleID +
+                ", BottleID=" + bottleId +
                 ", AmountBottle=" + amountBottle +
                 ", NameBottle=" + nameBottle +
-                ", Size=" + size +
-                ", Price=" + price +
-                ", CO2=" + CO2 +
-                ", Plastic=" + plastic +
-                ", Data/Time=" + dateTime +
                 '}';
     }
 }

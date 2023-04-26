@@ -7,7 +7,6 @@ import org.bottleProject.dto.BottleListWrapper;
 import org.bottleProject.dto.InvoiceWrapper;
 import org.bottleProject.entity.Order;
 import org.bottleProject.service.InvoiceFileOperationService;
-import org.bottleProject.service.InvoiceFileOperationsFactory;
 import org.bottleProject.service.InvoicingService;
 import org.springframework.stereotype.Service;
 
@@ -125,14 +124,14 @@ public class InvoiceServiceImpl implements InvoicingService {
         headerCellStyle.setLeftBorderColor(IndexedColors.BLACK.index);
 
         List<String> valuesToWrite = new ArrayList<>();
-        valuesToWrite.add(String.valueOf(orderDto.getOrderID()));
-        valuesToWrite.add(orderDto.getEmail());
-        valuesToWrite.add(orderDto.getDeliveryAddress());
+        valuesToWrite.add(String.valueOf(orderDto.getOrderId()));
+        valuesToWrite.add(orderDto.getLastName());
+        valuesToWrite.add(orderDto.getFirstName());
         setAddValues(sheet, valuesToWrite, headerCellStyle, 2, 1);
 
         valuesToWrite = new ArrayList<>();
-        valuesToWrite.add(String.valueOf(orderDto.getCurentDate()));
-        valuesToWrite.add(orderDto.getProducer());
+        valuesToWrite.add(String.valueOf(orderDto.getCreatedDate()));
+        valuesToWrite.add(orderDto.getCompany());
         setAddValues(sheet, valuesToWrite, headerCellStyle, 8, 1);
     }
 
@@ -148,19 +147,19 @@ public class InvoiceServiceImpl implements InvoicingService {
         headerCellStyle.setLeftBorderColor(IndexedColors.BLACK.index);
 
         List<String> valuesToWrite = new ArrayList<>();
-        valuesToWrite.add(String.valueOf(finalOrderDto.getBottleID()));
+        valuesToWrite.add(String.valueOf(finalOrderDto.getBottleId()));
         valuesToWrite.add(finalOrderDto.getNameBottle());
-        valuesToWrite.add(String.valueOf(finalOrderDto.getSize()));
-        if (finalOrderDto.isCO2()) {
-            valuesToWrite.add("Yes");
-        } else {
-            valuesToWrite.add("No");
-        }
-        if (finalOrderDto.isPlastic()) {
-            valuesToWrite.add("Plastic");
-        } else {
-            valuesToWrite.add("Glass");
-        }
+//        valuesToWrite.add(String.valueOf(finalOrderDto.getSize()));
+//        if (finalOrderDto.isCO2()) {
+//            valuesToWrite.add("Yes");
+//        } else {
+//            valuesToWrite.add("No");
+//        }
+//        if (finalOrderDto.isPlastic()) {
+//            valuesToWrite.add("Plastic");
+//        } else {
+//            valuesToWrite.add("Glass");
+//        }
         valuesToWrite.add(String.valueOf(finalOrderDto.getAmountBottle()));
         valuesToWrite.add(String.valueOf(finalOrderDto.getPrice()));
         setValuesPlus(sheet, valuesToWrite, headerCellStyle, 1, i);

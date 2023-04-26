@@ -8,19 +8,22 @@ public class Order {
 
     private int profileId;
 
-    private int addressId;
+    private int deliveryAddressId;
 
     private LocalDateTime createdDate;
 
     private int statusId;
 
+    private String operatorEmail;
 
-    public Order(long orderId, int profileId, int addressId, LocalDateTime createdDate, int statusId) {
+
+    public Order(long orderId, int profileId, int deliveryAddressId, LocalDateTime createdDate, int statusId, String operatorId) {
         this.orderId = orderId;
         this.profileId = profileId;
-        this.addressId = addressId;
+        this.deliveryAddressId = deliveryAddressId;
         this.createdDate = createdDate;
         this.statusId = statusId;
+        this.operatorEmail = operatorId;
     }
 
     public  Order(){
@@ -38,12 +41,12 @@ public class Order {
         return profileId;
     }
 
-    public int getAddressId() {
-        return addressId;
+    public int getDeliveryAddressId() {
+        return deliveryAddressId;
     }
 
-    public void setAddressId(int addressId) {
-        this.addressId = addressId;
+    public void setDeliveryAddressId(int deliveryAddressId) {
+        this.deliveryAddressId = deliveryAddressId;
     }
 
     public LocalDateTime getCreatedDate() {
@@ -66,12 +69,20 @@ public class Order {
         this.statusId = statusId;
     }
 
+    public String getOperatorEmail() {
+        return operatorEmail;
+    }
+
+    public void setOperatorEmail(String operatorId) {
+        this.operatorEmail = operatorId;
+    }
+
     @Override
     public String toString() {
         return "Bottle{" +
                 "orderId=" + orderId +
                 ", customerId=" + profileId +
-                ", deliveryAddress=" + addressId +
+                ", deliveryAddress=" + deliveryAddressId +
                 ", localDateTime=" + createdDate +
                 ", statusId=" + statusId +
                 '}';

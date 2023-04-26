@@ -6,13 +6,16 @@ public class CreateOrderDto {
     private String address;
     private String status;
 
+    private String operatorEmail;
+
     public CreateOrderDto() {
     }
 
-    public CreateOrderDto(int profileId, String address, String status) {
+    public CreateOrderDto(int profileId, String address, String status, String operatorEmail) {
         this.profileId = profileId;
         this.address = address;
         this.status = status;
+        this.operatorEmail = operatorEmail;
     }
 
     public int getProfileId() {
@@ -27,7 +30,7 @@ public class CreateOrderDto {
         return address;
     }
 
-    public void setAddressId(String address) {
+    public void setAddress(String address) {
         this.address = address;
     }
 
@@ -39,4 +42,15 @@ public class CreateOrderDto {
         this.status = status;
     }
 
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getOperatorEmail() {
+        return operatorEmail;
+    }
+
+    public void setOperatorEmail(String operatorEmail) {
+        this.operatorEmail = operatorEmail;
+    }
 }

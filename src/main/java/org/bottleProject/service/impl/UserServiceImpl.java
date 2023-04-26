@@ -85,4 +85,14 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Override
+    public List<UserWithProfileDto> getListOfCustomersForOperator() {
+        return userDao.getListOfCustomersForOperator();
+    }
+
+    @Override
+    public List<UserWithProfileDto> getSearchListOfCustomersForOperator(String search) {
+        return userDao.getSearchListOfCustomersForOperator(search);
+    }
+
 }

@@ -1,26 +1,26 @@
 package org.bottleProject.dto;
 
-public class ListOrderDto {
-    private int orderId;
+public class ListOfCustomersOrdersDto {
+    private int profileId;
     private int size;
     private int page;
 
-    public ListOrderDto(int orderId, int size, int page) {
-        this.orderId = orderId;
+    public ListOfCustomersOrdersDto(int profileId, int size, int page) {
+        this.profileId = profileId;
         this.size = size;
         this.page = page;
     }
 
-    public ListOrderDto() {
+    public ListOfCustomersOrdersDto() {
 
     }
 
-    public int getOrderId() {
-        return orderId;
+    public int getProfileId() {
+        return profileId;
     }
 
-    public void setOrderId(int orderId) {
-        this.orderId = orderId;
+    public void setProfileId(int profileId) {
+        this.profileId = profileId;
     }
 
     public int getSize() {

@@ -1,10 +1,8 @@
 package org.bottleProject.service.impl;
 
 import org.bottleProject.dao.OrderDao;
-import org.bottleProject.dto.CreateOrderDto;
-import org.bottleProject.dto.FullOrderDto;
-import org.bottleProject.dto.ListOrderDto;
-import org.bottleProject.dto.OrderSearchDto;
+import org.bottleProject.dao.UserDao;
+import org.bottleProject.dto.*;
 import org.bottleProject.entity.Order;
 import org.bottleProject.entity.OrderBottle;
 import org.bottleProject.entity.Page;
@@ -18,15 +16,17 @@ import java.util.List;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderDao orderDao;
+    private final UserDao userDao;
 
-    public OrderServiceImpl(OrderDao orderDao) {
+    public OrderServiceImpl(OrderDao orderDao, UserDao userDao) {
         this.orderDao = orderDao;
+        this.userDao = userDao;
     }
 
     @Override
-    public Page<Order> getAllCustomerOrder(ListOrderDto listOrderDto){
-        List<Order> orderList = orderDao.getAllFilterCustomerOrder(listOrderDto.getOrderId(), listOrderDto.getOffset(), listOrderDto.getSize());
-        return new Page<>(orderList, orderDao.countFilterCustomerOrders(listOrderDto.getOrderId()), listOrderDto.getPage(), listOrderDto.getSize());
+    public Page<FullOrderDto> getAllCustomerOrder(ListOfCustomersOrdersDto listOrderDto){
+        List<FullOrderDto> orderList = orderDao.getAllFilterCustomerOrder(listOrderDto.getProfileId(), listOrderDto.getOffset(), listOrderDto.getSize());
+        return new Page<>(orderList, orderDao.countFilterCustomerOrders(listOrderDto.getProfileId()), listOrderDto.getPage(), listOrderDto.getSize());
     }
 
     @Override
@@ -40,8 +40,9 @@ public class OrderServiceImpl implements OrderService {
         Order orderToDB = new Order();
         orderToDB.setProfileId(order.getProfileId());
         orderToDB.setStatusId(orderDao.getOrderStatus(order.getStatus()));
-        orderToDB.setAddressId(orderDao.getOrderAddress(order.getAddress()));
+        orderToDB.setDeliveryAddressId(orderDao.getOrderAddress(order.getAddress()));
         orderToDB.setCreatedDate(LocalDateTime.now());
+        orderToDB.setOperatorEmail(order.getOperatorEmail());
         Order orderResponse = orderDao.create(orderToDB);
         return orderResponse.getOrderId();
     }
@@ -52,13 +53,25 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order getOrderById(long orderId) {
-        return orderDao.findById(orderId);
+    public InvoiceWrapper getOrderById(long orderId) {
+        Order order = orderDao.findById(orderId);
+        return orderDao.getOrderInvoice(order);
     }
 
     @Override
     public Page<Order> searchOrder(OrderSearchDto orderSearchDto) {
         return new Page<>(orderDao.searchOrder(orderSearchDto),orderDao.countSearchCustomerOrder(orderSearchDto), orderSearchDto.getPage(), orderSearchDto.getSize());
+    }
+
+    @Override
+    public Page<FullOrderDto> getListOfOperatorsOrders(CustomersQueryForOperatorDto customersQueryForOperator) {
+        List<FullOrderDto> orderList = orderDao.getAllOperatorOrders(customersQueryForOperator.getEmail(), customersQueryForOperator.getOffset(), customersQueryForOperator.getSize());
+        return new Page<>(orderList, orderDao.countOperatorOrders(customersQueryForOperator.getEmail()), customersQueryForOperator.getPage(), customersQueryForOperator.getSize());
+    }
+
+    @Override
+    public Page<FullOrderDto> getAllFilterCustomerOrder(String search) {
+        return new Page<>(orderDao.searchCustomer(search),5, 0, 5);
     }
 
 
