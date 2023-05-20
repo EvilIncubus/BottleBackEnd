@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet author="vodai (generated)" id="1674563226619-8">
+        <sql>
+            insert into bottle ( name_bottle , volume_id, soda ,sugar , plastic, create_date , reserved, producer, storage_id)
+            values ('Peace', 1, 1, 0, 1, '2022-12-20 13:30:27', 0, 'Drink water SRL', 1),
+            ('Peace', 1, 1, 0, 0, '2022-12-20 13:30:27', 0, 'Drink water SRL', 2),
+            ('Peace', 1, 0, 1, 1, '2022-12-20 13:30:27', 0, 'Drink water SRL', 3),
+            ('Peace', 1, 0, 0, 0, '2022-12-20 13:30:27', 0, 'Drink water SRL', 4),
+            ('Peace', 2, 1, 1, 1, '2022-12-20 13:30:27', 0, 'Drink water SRL', 5),
+            ('Peace', 2, 1, 1, 0, '2022-12-20 13:30:27', 0, 'Drink water SRL', 6),
+            ('Peace', 2, 0, 0, 1, '2022-12-20 13:30:27', 0, 'Drink water SRL', 7),
+            ('Peace', 2, 0, 1, 0, '2022-12-20 13:30:27', 0, 'Drink water SRL', 8),
+            ('Peace', 3, 1, 0, 1, '2022-12-20 13:30:27', 0, 'Drink water SRL', 9),
+            ('Peace', 3, 1, 0, 0, '2022-12-20 13:30:27', 0, 'Drink water SRL', 10),
+            ('Peace', 3, 0, 0, 1, '2022-12-20 13:30:27', 0, 'Drink water SRL', 11),
+            ('Peace', 3, 0, 1, 0, '2022-12-20 13:30:27', 0, 'Drink water SRL', 12),
+            ('Peace', 4, 1, 0, 1, '2022-12-20 13:30:27', 0, 'Drink water SRL', 13),
+            ('Peace', 4, 1, 0, 0, '2022-12-20 13:30:27', 0, 'Drink water SRL', 14),
+            ('Peace', 4, 0, 1, 1, '2022-12-20 13:30:27', 0, 'Drink water SRL', 15),
+            ('Peace', 4, 0, 1, 0, '2022-12-20 13:30:27', 0, 'Drink water SRL', 16),
+            ('Peace', 5, 1, 0, 1, '2022-12-20 13:30:27', 0, 'Drink water SRL', 17),
+            ('Peace', 5, 1, 0, 0, '2022-12-20 13:30:27', 0, 'Drink water SRL', 18),
+            ('Peace', 5, 0, 1, 1, '2022-12-20 13:30:27', 0, 'Drink water SRL', 19),
+            ('Peace', 5, 0, 0, 0, '2022-12-20 13:30:27', 0, 'Drink water SRL', 20),
+            ('Peace', 6, 1, 0, 1, '2022-12-20 13:30:27', 0, 'Drink water SRL', 21),
+            ('Peace', 6, 1, 1, 0, '2022-12-20 13:30:27', 0, 'Drink water SRL', 22),
+            ('Peace', 6, 0, 1, 1, '2022-12-20 13:30:27', 0, 'Drink water SRL', 23),
+            ('Peace', 6, 0, 0, 0, '2022-12-20 13:30:27', 0, 'Drink water SRL', 24),
+            ('Peace', 7, 1, 1, 1, '2022-12-20 13:30:27', 0, 'Drink water SRL', 25),
+            ('Peace', 7, 1, 0, 0, '2022-12-20 13:30:27', 0, 'Drink water SRL', 26),
+            ('Peace', 7, 0, 1, 1, '2022-12-20 13:30:27', 0, 'Drink water SRL', 27),
+            ('Peace', 7, 0, 1, 0, '2022-12-20 13:30:27', 0, 'Drink water SRL', 28),
+            ('Peace', 8, 1, 0, 1, '2022-12-20 13:30:27', 0, 'Drink water SRL', 29),
+            ('Peace', 8, 1, 1, 0, '2022-12-20 13:30:27', 0, 'Drink water SRL', 30),
+            ('Peace', 8, 0, 0, 1, '2022-12-20 13:30:27', 0, 'Drink water SRL', 31),
+            ('Peace', 8, 0, 1, 0, '2022-12-20 13:30:27', 0, 'Drink water SRL', 32),
+            ('Peace', 9, 1, 0, 1, '2022-12-20 13:30:27', 0, 'Drink water SRL', 33),
+            ('Peace', 9, 1, 0, 0, '2022-12-20 13:30:27', 0, 'Drink water SRL', 34),
+            ('Peace', 9, 0, 1, 1, '2022-12-20 13:30:27', 0, 'Drink water SRL', 35),
+            ('Peace', 9, 0, 1, 0, '2022-12-20 13:30:27', 0, 'Drink water SRL', 36),
+            ('Peace', 10, 1, 0, 1, '2022-12-20 13:30:27', 0, 'Drink water SRL', 37),
+            ('Peace', 10, 1, 0, 0, '2022-12-20 13:30:27', 0, 'Drink water SRL', 38),
+            ('Peace', 10, 0, 1, 1, '2022-12-20 13:30:27', 0, 'Drink water SRL', 39),
+            ('Peace', 10, 0, 1, 0, '2022-12-20 13:30:27', 0, 'Drink water SRL', 40),
+            ('Peace', 11, 1, 0, 1, '2022-12-20 13:30:27', 0, 'Drink water SRL', 41),
+            ('Peace', 11, 1, 0, 0, '2022-12-20 13:30:27', 0, 'Drink water SRL', 42),
+            ('Peace', 11, 0, 1, 1, '2022-12-20 13:30:27', 0, 'Drink water SRL', 43),
+            ('Peace', 11, 0, 1, 0, '2022-12-20 13:30:27', 0, 'Drink water SRL', 44),
+            ('Peace', 12, 1, 0, 1, '2022-12-20 13:30:27', 0, 'Drink water SRL', 45),
+            ('Peace', 12, 1, 0, 0, '2022-12-20 13:30:27', 0, 'Drink water SRL', 46),
+            ('Peace', 12, 0, 0, 1, '2022-12-20 13:30:27', 0, 'Drink water SRL', 47),
+            ('Peace', 12, 0, 1, 0, '2022-12-20 13:30:27', 0, 'Drink water SRL', 48),
+            ('Peace', 1, 1, 1, 1, '2022-12-20 13:30:27', 0, 'Drink water SRL', 49),
+            ('Peace', 1, 1, 0, 0, '2022-12-20 13:30:27', 0, 'Drink water SRL', 50);
+        </sql>
+    </changeSet>
+</databaseChangeLog>

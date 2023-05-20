@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet author="vodai (generated)" id="1674563226619-8">
+        <sql>
+            insert into price(bottle_id, price) values
+            (1, 7.00),(2, 7.10),(3, 7.30),(4, 7.50),
+            (5, 7.20),(6, 7.40),(7, 7.60),(8, 7.80),
+            (9, 7.40),(10, 7.60),(11, 7.80),(12, 8.00),
+            (13, 7.80),(14, 8.10),(15, 8.50),(16, 8.90),
+            (17, 8.20),(18, 8.50),(19, 8.90),(20, 9.40),
+            (21, 8.80),(22, 9.50),(23, 10.00),(24, 10.50),
+            (25, 9.40),(26, 10.10),(27, 10.70),(28, 11.00),
+            (29, 10.40),(30, 11.50),(31, 12.00),(32, 13.00),
+            (33, 11.40),(34, 12.50),(35, 13.00),(36, 18.00),
+            (37, 13.40),(38, 14.50),(39, 15.00),(40, 20.00),
+            (41, 16.40),(42, 17.50),(43, 18.00),(44, 22.00),
+            (45, 19.40),(46, 21.50),(47, 24.00),(48, 29.00),
+            (49, 7.10),(50, 7.20);
+        </sql>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet author="vodai (generated)" id="1674563226619-8">
+        <sql>
+            insert into storage(storage_section) values
+            ('A1'),('A2'),('A3'),('A4'),
+            ('B1'),('B2'),('B3'),('B4'),
+            ('C1'),('C2'),('C3'),('B4'),
+            ('D1'),('D2'),('D3'),('D4'),
+            ('E1'),('E2'),('E3'),('E4'),
+            ('F1'),('F2'),('F3'),('F4'),
+            ('G1'),('G2'),('G3'),('G4'),
+            ('H1'),('H2'),('H3'),('H4'),
+            ('I1'),('I2'),('I3'),('I4'),
+            ('J1'),('J2'),('J3'),('J4'),
+            ('K1'),('K2'),('K3'),('K4'),
+            ('L1'),('L2'),('L3'),('L4'),
+            ('M1'),('M2');
+        </sql>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet author="vodai (generated)" id="1674563226619-8">
+        <sql>
+            insert into delivery_address (profile_id, delivery_address) values
+            (1, 'Maple Street 10'),
+            (2, 'Oak Avenue 25'),
+            (3, 'Pine Street 5'),
+            (4, 'Elm Drive 12'),
+            (5, 'Cedar Lane 7'),
+            (6, 'Willow Street 15'),
+            (7, 'Birch Avenue 20'),
+            (1, 'Cherry Lane 30'),
+            (2, 'Spruce Drive 9'),
+            (3, 'Magnolia Street 11'),
+            (4, 'Cypress Avenue 16'),
+            (5, 'Sycamore Lane 19'),
+            (6, 'Hickory Drive 22'),
+            (7, 'Dogwood Street 28'),
+            (10, 'Redwood Avenue 33'),
+            (11, 'Beech Lane 40'),
+            (12, 'Aspen Drive 45'),
+            (13, 'Juniper Street 50'),
+            (14, 'Poplar Avenue 55'),
+            (25, 'Larch Lane 60'),
+            (1, 'Fir Drive 65'),
+            (2, 'Sassafras Street 70'),
+            (3, 'Maple Avenue 75'),
+            (4, 'Chestnut Lane 80'),
+            (5, 'Pine Drive 85'),
+            (6, 'Walnut Street 90'),
+            (7, 'Oak Lane 95'),
+            (8, 'Cherry Drive 100'),
+            (9, 'Spruce Street 105'),
+            (0, 'Magnolia Avenue 110'),
+            (1, 'Cypress Lane 115'),
+            (2, 'Sycamore Drive 120'),
+            (3, 'Hickory Street 125'),
+            (4, 'Dogwood Avenue 130'),
+            (5, 'Redwood Lane 135'),
+            (16, 'Beech Street 140'),
+            (17, 'Aspen Avenue 145'),
+            (18, 'Juniper Drive 150'),
+            (19, 'Poplar Lane 155'),
+            (10, 'Larch Street 160'),
+            (11, 'Fir Avenue 165'),
+            (12, 'Sassafras Lane 170'),
+            (13, 'Maple Drive 175'),
+            (14, 'Chestnut Street 180'),
+            (15, 'Pine Avenue 185'),
+            (16, 'Walnut Lane 190'),
+            (17, 'Oak Street 195'),
+            (18, 'Cherry Avenue 200'),
+            (19, 'Spruce Lane 205'),
+            (10, 'Magnolia Drive 210');
+        </sql>
+    </changeSet>
+</databaseChangeLog>
