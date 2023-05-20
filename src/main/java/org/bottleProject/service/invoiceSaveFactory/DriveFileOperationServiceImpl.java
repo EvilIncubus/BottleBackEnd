@@ -17,19 +17,19 @@ import java.nio.file.Path;
 import java.time.LocalDateTime;
 
 @Service
-public class DriveFileOperationServiceServiceImpl extends OperationsWithFile {
+public class DriveFileOperationServiceImpl extends OperationsWithFile {
 
     private UserDao userDao;
     private InvoiceDao invoiceDao;
     private GoogleApiService googleApiService;
 
-    public DriveFileOperationServiceServiceImpl(UserDao userDao, InvoiceDao invoiceDao, GoogleApiService googleApiService) {
+    public DriveFileOperationServiceImpl(UserDao userDao, InvoiceDao invoiceDao, GoogleApiService googleApiService) {
         this.userDao = userDao;
         this.invoiceDao = invoiceDao;
         this.googleApiService = googleApiService;
     }
 
-    public DriveFileOperationServiceServiceImpl() {
+    public DriveFileOperationServiceImpl() {
 
     }
 

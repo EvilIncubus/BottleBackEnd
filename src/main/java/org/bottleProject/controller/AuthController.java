@@ -1,12 +1,8 @@
 package org.bottleProject.controller;
 
-import io.jsonwebtoken.Jwt;
 import org.bottleProject.dto.AuthenticationRequest;
-import org.bottleProject.entity.User;
 import org.bottleProject.service.AuthenticationService;
-import org.bottleProject.service.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

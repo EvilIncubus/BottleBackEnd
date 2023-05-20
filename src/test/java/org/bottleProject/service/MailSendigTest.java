@@ -22,13 +22,13 @@ public class MailSendigTest {
 
     @Test
     void sendMailByMailGunTest(){
-        MessageResponse messageResponse = mailGunService.sendSimpleMessage();
+        MessageResponse messageResponse = mailGunService.sendOrderConfirmation("vladislav.odai@gmail.com", "localhost:3000/confirmOrder", "hi customer");
         System.out.println(messageResponse.getMessage());
     }
 
     @Test
     void sendMailBySendGridTest() throws IOException {
-        sendGridService.sendEmail();
+        sendGridService.sendOrderConfirmation("vladislav.odai@gmail.com", "localhost:3000/confirmOrder", "hi customer");
 
     }
 }

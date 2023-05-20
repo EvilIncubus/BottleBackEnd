@@ -103,7 +103,7 @@ public class OrderDaoImplTest {
 
     @Test
     public void testGetAllFilterOrder() {
-        List<FullOrderDto> orderList = orderDao.getAllFilterCustomerOrder(1, 1,0);
+        List<FullOrderDto> orderList = orderDao.getAllFilterCustomerOrder(1, "operator",1,0);
         System.out.println(orderList);
         assertNotNull(orderList);
     }

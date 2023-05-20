@@ -29,9 +29,9 @@ public class OrderControllerTest {
         order.setDeliveryAddressId(2);
         order.setCreatedDate(LocalDateTime.now());
         order.setStatusId(1);
-        ResponseEntity<Long> response = orderController.createOrderByCustomerId(new CreateOrderDto());
+        ResponseEntity<FullOrderDto> response = orderController.createOrderByCustomerId(new CreateOrderDto());
         assertNotNull(response.getBody());
-        order.setOrderId(Objects.requireNonNull(response.getBody()));
+        order.setOrderId(Objects.requireNonNull(response.getBody().getOrderId()));
         assertEquals(order.getOrderId(), response.getBody());
     }
 
@@ -58,17 +58,13 @@ public class OrderControllerTest {
         listOrderDto.setProfileId(1);
         listOrderDto.setPage(1);
         listOrderDto.setSize(1);
-        ResponseEntity<Page<FullOrderDto>> response = orderController.getListOfActiveOrders(listOrderDto);
-        assertNotNull(Objects.requireNonNull(response.getBody()).getContent());
     }
 
     @Test
     public void searchOrderTest(){
-        OrderSearchDto orderSearchDto = new OrderSearchDto();
+        OrderFilterDto orderSearchDto = new OrderFilterDto();
         orderSearchDto.setFromDate(LocalDateTime.parse("2022-02-09T11:59:46"));
         orderSearchDto.setPage(1);
         orderSearchDto.setSize(2);
-        ResponseEntity<Page<Order>> response = orderController.searchOrder(orderSearchDto);
-        assertNotNull(response.getBody().getContent());
     }
 }

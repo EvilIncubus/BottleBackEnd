@@ -1,5 +1,7 @@
 package org.bottleProject.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -9,6 +11,8 @@ public class User{
     private String email;
     private String password;
     private String accountStatus;
+    @JsonFormat
+            (shape = JsonFormat.Shape.STRING, pattern = ("dd:MM:yyyy hh:mm:ss"))
     private LocalDateTime createdDate;
     private List<Role> roles;
 

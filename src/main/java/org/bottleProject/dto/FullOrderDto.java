@@ -12,17 +12,37 @@ public class FullOrderDto {
             (shape = JsonFormat.Shape.STRING, pattern = ("dd:MM:yyyy hh:mm:ss"))
     private LocalDateTime createdDate;
     private String email;
+    private String company;
     private String status;
-    private String deliveryAddress;
+    private String address;
+    private int profileId;
 
     public  FullOrderDto(){}
 
-    public FullOrderDto(int orderId, LocalDateTime createdDate, String email, String status, String deliveryAddress) {
+    public FullOrderDto(int orderId, LocalDateTime createdDate, String email, String status, String address, String company, int profileId) {
         this.orderId = orderId;
         this.createdDate = createdDate;
         this.email = email;
         this.status = status;
-        this.deliveryAddress = deliveryAddress;
+        this.address = address;
+        this.company = company;
+        this.profileId = profileId;
+    }
+
+    public int getProfileId() {
+        return profileId;
+    }
+
+    public void setProfileId(int profileId) {
+        this.profileId = profileId;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
     }
 
     public int getOrderId() {
@@ -57,11 +77,11 @@ public class FullOrderDto {
         this.status = status;
     }
 
-    public String getDeliveryAddress() {
-        return deliveryAddress;
+    public String getAddress() {
+        return address;
     }
 
-    public void setDeliveryAddress(String deliveryAddress) {
-        this.deliveryAddress = deliveryAddress;
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

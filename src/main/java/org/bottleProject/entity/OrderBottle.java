@@ -5,16 +5,26 @@ public class OrderBottle {
     private int orderId;
     private int bottleId;
     private int amountBottle;
+    private boolean bottleStatus;
 
-    public OrderBottle(long orderBottleId, int orderId, int bottleId, int amountBottle) {
+    public OrderBottle(long orderBottleId, int orderId, int bottleId, int amountBottle, boolean bottleStatus) {
         this.orderBottleId = orderBottleId;
         this.orderId = orderId;
         this.bottleId = bottleId;
         this.amountBottle = amountBottle;
+        this.bottleStatus = bottleStatus;
     }
 
     public OrderBottle() {
 
+    }
+
+    public boolean isBottleStatus() {
+        return bottleStatus;
+    }
+
+    public void setBottleStatus(boolean bottleStatus) {
+        this.bottleStatus = bottleStatus;
     }
 
     public long getOrderBottleId() {

@@ -14,7 +14,7 @@ public class InvoiceFIleOperationsFactoryImpl implements InvoiceFileOperationsFa
         } else if (configType.equalsIgnoreCase("LOCAL")) {
             return operationsWithFile = new LocalFileOperationServiceImpl();
         } else if (configType.equalsIgnoreCase("DRIVE")) {
-            return operationsWithFile = new DriveFileOperationServiceServiceImpl();
+            return operationsWithFile = new DriveFileOperationServiceImpl();
         }
         return null;
     }

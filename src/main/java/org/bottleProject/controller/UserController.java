@@ -21,12 +21,15 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/rest/api/user")
 public class UserController {
     //todo spring boot controller advices
     private final UserService userService;
+
+    private final static Logger logger = Logger.getLogger(UserController.class.getName());
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -57,12 +60,13 @@ public class UserController {
                 Files.copy(is, path);
 
             } catch (IOException e) {
+                logger.info(e.toString());
                 throw new RuntimeException(e);
             }
             is.close();
             return ResponseEntity.ok().body("http://localhost:8080/photos/" + filename);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.info(e.toString());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }

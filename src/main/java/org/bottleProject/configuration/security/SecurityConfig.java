@@ -45,6 +45,7 @@ public class SecurityConfig {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/photos/**").permitAll()
+                .antMatchers("/rest/api/customer/order/setOrderConfirmation/**").permitAll()
                 .antMatchers("/rest/api/auth/**").permitAll()
                 .anyRequest()
                 .authenticated()

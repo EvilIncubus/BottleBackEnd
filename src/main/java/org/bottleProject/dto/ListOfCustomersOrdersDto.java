@@ -2,17 +2,27 @@ package org.bottleProject.dto;
 
 public class ListOfCustomersOrdersDto {
     private int profileId;
+    private String operatorEmail;
     private int size;
     private int page;
 
-    public ListOfCustomersOrdersDto(int profileId, int size, int page) {
+    public ListOfCustomersOrdersDto(int profileId, String operatorEmail, int size, int page) {
         this.profileId = profileId;
+        this.operatorEmail = operatorEmail;
         this.size = size;
         this.page = page;
     }
 
     public ListOfCustomersOrdersDto() {
 
+    }
+
+    public String getOperatorEmail() {
+        return operatorEmail;
+    }
+
+    public void setOperatorEmail(String operatorEmail) {
+        this.operatorEmail = operatorEmail;
     }
 
     public int getProfileId() {

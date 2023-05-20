@@ -1,5 +1,7 @@
 package org.bottleProject.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -13,6 +15,8 @@ public class Bottle {
 
     private boolean sugar;
 
+    @JsonFormat
+            (shape = JsonFormat.Shape.STRING, pattern = ("dd:MM:yyyy hh:mm:ss"))
     private LocalDateTime createDate;
 
     private int volumeId;
@@ -29,11 +33,12 @@ public class Bottle {
 
     private String bottlePhoto;
 
+    private double price;
 
     public Bottle() {
     }
 
-    public Bottle(long bottleId, String nameBottle, boolean sugar, LocalDateTime createDate, int volumeId, int stock, String producer, int storageId, int bottleCategoryId, int bottlePackagingId, String bottlePhoto) {
+    public Bottle(long bottleId, String nameBottle, boolean sugar, LocalDateTime createDate, int volumeId, int stock, String producer, int storageId, int bottleCategoryId, int bottlePackagingId, String bottlePhoto, double price) {
         this.bottleId = bottleId;
         this.nameBottle = nameBottle;
         this.sugar = sugar;
@@ -45,6 +50,15 @@ public class Bottle {
         this.bottleCategoryId = bottleCategoryId;
         this.bottlePackagingId = bottlePackagingId;
         this.bottlePhoto = bottlePhoto;
+        this.price = price;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 
     public String getBottlePhoto() {

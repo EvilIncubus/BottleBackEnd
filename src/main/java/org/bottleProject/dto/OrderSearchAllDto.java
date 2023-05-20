@@ -1,30 +1,18 @@
 package org.bottleProject.dto;
 
-import java.time.LocalDateTime;
-
-public class OrderSearchDto {
+public class OrderSearchAllDto {
     private int page;
     private int size;
-    private String operatorEmail;
     private String company;
 
-    public OrderSearchDto(int page, int size, String operatorEmail, String company) {
+    public OrderSearchAllDto(int page, int size, String company) {
         this.page = page;
         this.size = size;
         this.company = company;
-        this.operatorEmail = operatorEmail;
     }
 
-    public OrderSearchDto() {
+    public OrderSearchAllDto() {
 
-    }
-
-    public String getOperatorEmail() {
-        return operatorEmail;
-    }
-
-    public void setOperatorEmail(String operatorEmail) {
-        this.operatorEmail = operatorEmail;
     }
 
     public String getCompany() {

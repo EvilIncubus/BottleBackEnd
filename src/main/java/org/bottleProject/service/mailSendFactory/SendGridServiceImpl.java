@@ -7,20 +7,20 @@ import com.sendgrid.SendGrid;
 import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
+import org.bottleProject.service.MailService;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
 @Service
-public class SendGridServiceImpl extends MailService{
+public class SendGridServiceImpl implements MailService{
 
     private final String API_KEY = "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";
 
-    public void sendEmail() throws IOException {
+    public String sendOrderConfirmation(String email, String messageBody, String subject){
         Email from = new Email("vladislav.odai@stefanini.com");
-        String subject = "Sending with SendGrid is Fun";
-        Email to = new Email("vladislav.odai@gmail.com");
-        Content content = new Content("text/plain", "and easy to do anywhere, even with Java");
+        Email to = new Email(email);
+        Content content = new Content("text/html", messageBody);
         Mail mail = new Mail(from, subject, to, content);
 
         SendGrid sg = new SendGrid("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");
@@ -29,12 +29,13 @@ public class SendGridServiceImpl extends MailService{
             request.setMethod(Method.POST);
             request.setEndpoint("mail/send");
             request.setBody(mail.build());
-            Response response = sg.api(request);
-            System.out.println(response.getStatusCode());
-            System.out.println(response.getBody());
-            System.out.println(response.getHeaders());
+            return String.valueOf(sg.api(request));
         } catch (IOException ex) {
-            throw ex;
+            try {
+                throw ex;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }

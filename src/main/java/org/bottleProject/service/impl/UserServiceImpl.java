@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
         profile.setFirstName(createUserDto.getFirstName());
         profile.setLastName(createUserDto.getLastName());
         profile.setPhoneNumber(createUserDto.getPhoneNumber());
-        profile.setAddress(createUserDto.getEmail());
+        profile.setAddress(createUserDto.getAddress());
         profile.setCompany(createUserDto.getCompany());
         profile.setUserId((int) user.getUserId());
         profile.setProfilePhotoPath(createUserDto.getProfilePhoto());

@@ -134,7 +134,6 @@ public class BottleDaoImpl extends AbstractDaoImpl<Bottle> implements BottleDao 
 
     @Override
     public Integer countAllFilterBottle(BottleFilterDto bottleFilterDto) {
-        List<Object> argsList = new ArrayList<>();
         StringBuilder query = new StringBuilder("SELECT count(*) FROM bottle " +
                 " inner join bottle_category on bottle_category.bottle_category_id = bottle.bottle_category_id " +
                 " inner join bottle_packaging on bottle_packaging.bottle_packaging_id = bottle.bottle_packaging_id " +

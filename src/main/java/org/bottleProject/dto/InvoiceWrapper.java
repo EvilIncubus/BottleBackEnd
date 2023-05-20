@@ -9,9 +9,11 @@ public class InvoiceWrapper {
     private long orderId;
     private String firstName;
     private String lastName;
+    private String email;
     private String phoneNumber;
     private String company;
     private String profilePhotoPath;
+    private String status;
     @JsonFormat
             (shape = JsonFormat.Shape.STRING, pattern = ("dd:MM:yyyy hh:mm:ss"))
     private LocalDateTime createdDate;
@@ -20,7 +22,7 @@ public class InvoiceWrapper {
     public InvoiceWrapper() {
     }
 
-    public InvoiceWrapper(long orderId, String firstName, String lastName, String phoneNumber, String company, String profilePhotoPath, LocalDateTime createdDate, String producer, List<BottleListWrapper> bottleListDtoList) {
+    public InvoiceWrapper(long orderId, String firstName, String lastName, String phoneNumber, String company, String profilePhotoPath, LocalDateTime createdDate, String email, String status, List<BottleListWrapper> bottleListDtoList) {
         this.orderId = orderId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -28,7 +30,17 @@ public class InvoiceWrapper {
         this.company = company;
         this.profilePhotoPath = profilePhotoPath;
         this.createdDate = createdDate;
+        this.status = status;
+        this.email = email;
         this.bottleListDtoList = bottleListDtoList;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getLastName() {
@@ -85,6 +97,14 @@ public class InvoiceWrapper {
 
     public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public List<BottleListWrapper> getBottleListDtoList() {

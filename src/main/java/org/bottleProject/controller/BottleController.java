@@ -9,13 +9,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/rest/api/bottles")
 public class BottleController {
 
     private final BottleService bottleService;
+    private final static Logger logger = Logger.getLogger(BottleController.class.getName());
+
 
     public BottleController(BottleService bottleService) {
         this.bottleService = bottleService;
@@ -28,6 +30,7 @@ public class BottleController {
             Bottle bottleResponse = bottleService.createBottle(bottle);
             return new ResponseEntity<>(bottleResponse, HttpStatus.CREATED);
         } catch (Exception e) {
+            logger.info(e.toString());
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -43,6 +46,7 @@ public class BottleController {
             }
             return new ResponseEntity<>(bottle, HttpStatus.OK);
         } catch (Exception e) {
+            logger.info(e.toString());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -59,6 +63,7 @@ public class BottleController {
             }
             return new ResponseEntity<>(bottles, HttpStatus.OK);
         } catch (Exception e) {
+            logger.info(e.toString());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -74,6 +79,7 @@ public class BottleController {
             }
             return new ResponseEntity<>(bottles, HttpStatus.OK);
         } catch (Exception e) {
+            logger.info(e.toString());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -90,6 +96,7 @@ public class BottleController {
             }
             return new ResponseEntity<>(bottles, HttpStatus.OK);
         } catch (Exception e) {
+            logger.info(e.toString());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
