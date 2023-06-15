@@ -2,11 +2,11 @@ package org.bottleProject.service.impl;
 
 import org.apache.poi.ss.usermodel.Workbook;
 import org.bottleProject.dao.ConfigurationDao;
-import org.bottleProject.entity.Configuration;
+import org.bottleProject.entity.DriveConfiguration;
 import org.bottleProject.entity.Order;
 import org.bottleProject.service.InvoiceFileOperationService;
 import org.bottleProject.service.InvoiceFileOperationsFactory;
-import org.bottleProject.service.invoiceSaveFactory.OperationsWithFile;
+import org.bottleProject.service.OperationsWithFile;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -17,14 +17,14 @@ public class InvoiceFileOperationServiceImpl implements InvoiceFileOperationServ
 
     private final ConfigurationDao configurationDao;
     private OperationsWithFile operationsWithFile;
-    private Configuration configuration;
+    private DriveConfiguration configuration;
     private final InvoiceFileOperationsFactory invoiceFileOperationsFactory;
 
     public InvoiceFileOperationServiceImpl(ConfigurationDao configurationDao, InvoiceFileOperationsFactory invoiceFileOperationsFactory) {
         this.configurationDao = configurationDao;
         this.invoiceFileOperationsFactory = invoiceFileOperationsFactory;
     }
-//todo: param for requset configuration from bd
+
     @Override
     public void fileToSave(Workbook workbook, Order order){
         String configType = configurationDao.getEnableStatus();

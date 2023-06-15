@@ -59,4 +59,24 @@ public class SettingsDaoImpl extends AbstractDaoImpl<MailConfiguration> implemen
                 "END\n" +
                 "WHERE mail_configuration IN('"+mailConfiguration+"', '"+offMailConfig+"');", mailConfiguration, offMailConfig);
     }
+
+    @Override
+    public String getSaveActiveConfiguration() {
+        return getJdbcTemplate().queryForObject("select drive_configuration from drive_configuration \n" +
+                        "Where active_configuration = 'ACTIVE' ",
+                String.class);
+    }
+
+    @Override
+    public void setNewSaveConfiguration(String saveConfiguration) {
+        String offDriveConfig = getJdbcTemplate().queryForObject("SELECT drive_configuration FROM drive_configuration Where active_configuration = 'INACTIVE';", String.class);
+        getJdbcTemplate().update("UPDATE drive_configuration\n" +
+                "SET drive_configuration \n" +
+                "= CASE drive_configuration \n" +
+                "WHEN ? THEN 'ACTIVE' \n" +
+                "WHEN ? THEN 'INACTIVE '\n" +
+                "ELSE active_configuration \n" +
+                "END \n" +
+                "WHERE drive_configuration IN('"+saveConfiguration+"', '"+offDriveConfig+"');", saveConfiguration, offDriveConfig);
+    }
 }

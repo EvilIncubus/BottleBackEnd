@@ -3,11 +3,12 @@ package org.bottleProject.service.invoiceSaveFactory;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.bottleProject.dao.InvoiceDao;
 import org.bottleProject.dao.UserDao;
-import org.bottleProject.entity.Configuration;
+import org.bottleProject.entity.DriveConfiguration;
 import org.bottleProject.entity.Invoice;
 import org.bottleProject.entity.Order;
 import org.bottleProject.entity.User;
 import org.bottleProject.service.GoogleApiService;
+import org.bottleProject.service.OperationsWithFile;
 import org.bottleProject.util.FileManager;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +18,7 @@ import java.nio.file.Path;
 import java.time.LocalDateTime;
 
 @Service
-public class DriveFileOperationServiceImpl extends OperationsWithFile {
+public class DriveFileOperationServiceImpl implements OperationsWithFile {
 
     private UserDao userDao;
     private InvoiceDao invoiceDao;
@@ -34,7 +35,7 @@ public class DriveFileOperationServiceImpl extends OperationsWithFile {
     }
 
     @Override
-    public void saveFile(Workbook workbook, Configuration configuration, Order order) {
+    public void saveFile(Workbook workbook, DriveConfiguration configuration, Order order) {
         User user = userDao.findById((long) order.getProfileId());
         LocalDateTime localDateTime = LocalDateTime.now();
         Path filePath = Path.of(user.getEmail() + "Invoice" + localDateTime.toLocalDate() + "xlsx");
@@ -61,7 +62,7 @@ public class DriveFileOperationServiceImpl extends OperationsWithFile {
     }
 
     @Override
-    public File getFile(Configuration configuration, long customerId, long orderId) {
+    public File getFile(DriveConfiguration configuration, long customerId, long orderId) {
         Invoice invoice = invoiceDao.findByOrderId(orderId);
         User user = userDao.findById(customerId);
         FileManager fileManager = new FileManager();

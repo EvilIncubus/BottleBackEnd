@@ -27,34 +27,26 @@ import java.security.GeneralSecurityException;
 import java.util.*;
 @Service
 public class GoogleApiServiceImpl implements GoogleApiService {
-    private static final String APPLICATION_NAME = "ExcelSave";
     /**
      * Global instance of the JSON factory.
      */
-    private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
-    /**
-     * Directory to store authorization tokens for this application.
-     */
-    private static final String TOKENS_DIRECTORY_PATH = "tokens";
+    private final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
 
     /**
      * Global instance of the scopes required by this quickstart.
      * If modifying these scopes, delete your previously saved tokens/ folder.
      */
-    private static final Set<String> SCOPES = DriveScopes.all();
-    private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
-
-    private final NetHttpTransport HTTP_TRANSPORT;
-    private final Drive DRIVE;
-
+    private final Set<String> SCOPES = DriveScopes.all();
+    private Drive DRIVE;
 
     public GoogleApiServiceImpl() {
-        try {
-            this.HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-            this.DRIVE = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT)).setApplicationName(APPLICATION_NAME).build();
-        } catch (GeneralSecurityException | IOException e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+//            String APPLICATION_NAME = "ExcelSave";
+//            this.DRIVE = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT)).setApplicationName(APPLICATION_NAME).build();
+//        } catch (GeneralSecurityException | IOException e) {
+//            throw new RuntimeException(e);
+//        }
     }
 
     private void saveProperty(String key, String value) throws IOException {
@@ -68,6 +60,7 @@ public class GoogleApiServiceImpl implements GoogleApiService {
 
     public Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT)
             throws IOException {
+        String CREDENTIALS_FILE_PATH = "/credentials.json";
         InputStream in = GoogleApiServiceImpl.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
         if (in == null) {
             throw new FileNotFoundException("Resource not found: " + CREDENTIALS_FILE_PATH);
@@ -75,6 +68,10 @@ public class GoogleApiServiceImpl implements GoogleApiService {
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
 
         // Build flow and trigger user authorization request.
+        /**
+         * Directory to store authorization tokens for this application.
+         */
+        String TOKENS_DIRECTORY_PATH = "tokens";
         GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, SCOPES)
                 .setDataStoreFactory(new FileDataStoreFactory(new java.io.File(TOKENS_DIRECTORY_PATH)))
                 .setAccessType("online")

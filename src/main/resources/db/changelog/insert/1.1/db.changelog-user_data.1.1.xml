@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <property name="now" value="now()" dbms="mysql"/>
+    <changeSet author="vodai (generated)" id="1674563226619-1">
+        <insert
+                tableName="address">
+            <column  name="profile_id"  value="1"/>
+            <column  name="address"  value="str. Puskin 52"/>
+        </insert>
+    </changeSet>
+    <changeSet author="vodai (generated)" id="1674563226619-2">
+        <insert
+                tableName="address">
+            <column  name="profile_id"  value="2"/>
+            <column  name="address"  value="str. Ciuflea 32"/>
+        </insert>
+    </changeSet>
+    <changeSet author="vodai (generated)" id="1674563226619-3">
+        <insert
+                tableName="address">
+            <column  name="profile_id"  value="3"/>
+            <column  name="address"  value="str. Pavlov 12"/>
+        </insert>
+    </changeSet>
+    <changeSet author="vodai (generated)" id="1674563226619-4">
+        <insert
+                tableName="address">
+            <column  name="profile_id"  value="4"/>
+            <column  name="address"  value="str. Zaikin 58"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

@@ -8,5 +8,9 @@
             <column name="role_name" value="CUSTOMER" />
             <where>role_id = 6</where>
         </update>
+        <update tableName="role">
+            <column name="role_name" value="ADMIN" />
+            <where>role_id = 5</where>
+        </update>
     </changeSet>
 </databaseChangeLog>

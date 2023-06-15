@@ -38,12 +38,8 @@ public class InvoiceControllerTest {
 
     @Test
     public void downloadInvoiceTest(){
-        try {
-            ResponseEntity<Resource> response = invoiceController.download(1L, 1L);
-            assertNotNull(response.getBody());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        ResponseEntity<Resource> response = invoiceController.download(1L, 1L);
+        assertNotNull(response.getBody());
 
     }
 }

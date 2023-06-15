@@ -69,4 +69,25 @@ public class RoleDaoImpl extends AbstractDaoImpl<Role> implements RoleDao {
                     user.getUserId(), roleId, userRoleId);
         }
     }
+
+    @Override
+    public List<User> getUsersByRole(String role) {
+        return getJdbcTemplate().query("Select * from user join user_role on user_role.user_id = user.user_id join role on role.role_id = user_role.role_id Where role.role_name = ?;",
+                BeanPropertyRowMapper.newInstance(User.class), role);
+    }
+
+    @Override
+    public List<User> getUsersByRoles(List<String> roles) {
+        StringBuilder queryString = new StringBuilder("Select * from user join user_role on user_role.user_id = user.user_id join role on role.role_id = user_role.role_id Where role.role_name IN (");
+        for (String role : roles) {
+            if (!role.isEmpty()) {
+                queryString.append(" '").append(role).append("',");
+            }
+        }
+        queryString.deleteCharAt(queryString.length() - 1);
+        queryString.append(");");
+        return getJdbcTemplate().query(queryString.toString(),
+                BeanPropertyRowMapper.newInstance(User.class));
+    }
+
 }

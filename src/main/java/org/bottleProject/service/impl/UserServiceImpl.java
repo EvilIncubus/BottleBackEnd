@@ -21,13 +21,12 @@ public class UserServiceImpl implements UserService {
     private final UserDao userDao;
     private final RoleDao roleDao;
     private final ProfileDao profileDao;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public UserServiceImpl(UserDao userDao,ProfileDao profileDao, RoleDao roleDao, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserServiceImpl(UserDao userDao,ProfileDao profileDao, RoleDao roleDao) {
         this.userDao = userDao;
         this.roleDao = roleDao;
         this.profileDao = profileDao;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @Override

@@ -22,8 +22,8 @@ public class MailSendigTest {
 
     @Test
     void sendMailByMailGunTest(){
-        MessageResponse messageResponse = mailGunService.sendOrderConfirmation("vladislav.odai@gmail.com", "localhost:3000/confirmOrder", "hi customer");
-        System.out.println(messageResponse.getMessage());
+        String messageResponse = mailGunService.sendOrderConfirmation("vladislav.odai@gmail.com", "localhost:3000/confirmOrder", "hi customer");
+        System.out.println(messageResponse);
     }
 
     @Test

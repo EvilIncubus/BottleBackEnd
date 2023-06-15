@@ -42,4 +42,28 @@ public class SettingsController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PostMapping("/changeActiveDrive")
+    public ResponseEntity<String> changeActiveDrive(@RequestParam String driveConfiguration) {
+        try {
+            settingsService.setNewDriveConfiguration(driveConfiguration);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (Exception e) {
+            logger.info(e.toString());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @GetMapping("/getActiveDrive")
+    public ResponseEntity<String> getActiveDrive(){
+        try {
+            String mailSetting = settingsService.getDriveActiveConfiguration();
+            return new ResponseEntity<>(mailSetting, HttpStatus.CREATED);
+        } catch (Exception e) {
+            logger.info(e.toString());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

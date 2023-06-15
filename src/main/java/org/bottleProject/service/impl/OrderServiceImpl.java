@@ -5,6 +5,7 @@ import org.bottleProject.dto.*;
 import org.bottleProject.entity.Order;
 import org.bottleProject.entity.OrderBottle;
 import org.bottleProject.entity.Page;
+import org.bottleProject.service.NotificationService;
 import org.bottleProject.service.OrderService;
 import org.springframework.stereotype.Service;
 
@@ -21,9 +22,11 @@ public class OrderServiceImpl implements OrderService {
     private final static Logger logger = Logger.getLogger(OrderServiceImpl.class.getName());
 
     private final OrderDao orderDao;
+    private final NotificationService notificationService;
 
-    public OrderServiceImpl(OrderDao orderDao) {
+    public OrderServiceImpl(OrderDao orderDao, NotificationService notificationService) {
         this.orderDao = orderDao;
+        this.notificationService = notificationService;
     }
 
     @Override
@@ -134,7 +137,9 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public String submitCreatedOrderByCustomer(int orderId, String status) {
         orderDao.updateOrderStatus(orderId, status);
-        return "Order Status Updated!";
+        String message = "Order Status Updated!";
+        notificationService.createNotification(orderId, status, message);
+        return message;
     }
 
 
