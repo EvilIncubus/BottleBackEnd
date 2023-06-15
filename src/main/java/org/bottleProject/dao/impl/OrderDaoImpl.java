@@ -118,7 +118,7 @@ public class OrderDaoImpl extends AbstractDaoImpl<Order> implements OrderDao {
                 "                inner join profile p on p.profile_id = o.profile_id \n" +
                 "                inner join user u on u.user_id = p.user_id \n" +
                 "                Inner Join address as a on o.delivery_address_id = a.address_id \n" +
-                "                Inner Join Status as s on o.status_id = s.status_id \n" +
+                "                Inner Join status as s on o.status_id = s.status_id \n" +
                 "                where o.order_id = ?;", BeanPropertyRowMapper.newInstance(InvoiceWrapper.class), order.getOrderId());
 
         assert orderDto != null;
@@ -130,7 +130,7 @@ public class OrderDaoImpl extends AbstractDaoImpl<Order> implements OrderDao {
     public List<FullOrderDto> filterOrders(OrderFilterDto orderSearchDto) {
         StringBuilder queryString = new StringBuilder("Select * From orders as o Inner Join profile as p on o.profile_id = p.profile_id\n" +
                 "Inner Join user as u on p.user_id = u.user_id \n" +
-                "Inner Join Status as s on o.status_id = s.status_id where 1=1 \n");
+                "Inner Join status as s on o.status_id = s.status_id where 1=1 \n");
         if (!orderSearchDto.getStatus().isEmpty()) {
             queryString.append(" And s.status IN (");
             for (String status : orderSearchDto.getStatus()) {
@@ -156,7 +156,7 @@ public class OrderDaoImpl extends AbstractDaoImpl<Order> implements OrderDao {
     public Integer countFilterCustomerOrder(OrderFilterDto orderSearchDto) {
         StringBuilder queryString = new StringBuilder("Select count(*) From orders as o Inner Join profile as p on o.profile_id = p.profile_id\n" +
                 "Inner Join user as u on p.user_id = u.user_id \n" +
-                "Inner Join Status as s on o.status_id = s.status_id where 1=1 \n");
+                "Inner Join status as s on o.status_id = s.status_id where 1=1 \n");
         if (!orderSearchDto.getStatus().isEmpty()) {
             queryString.append(" And s.status IN (");
             for (String status : orderSearchDto.getStatus()) {
@@ -164,8 +164,7 @@ public class OrderDaoImpl extends AbstractDaoImpl<Order> implements OrderDao {
                     queryString.append(" '").append(status).append("',");
                 }
             }
-            queryString.deleteCharAt(queryString.length() - 1);
-            queryString.append(")");
+
         }
         if (orderSearchDto.getFromDate() != null) {
             queryString.append(" And o.created_date > '").append(orderSearchDto.getFromDate()).append("' ");
@@ -183,7 +182,7 @@ public class OrderDaoImpl extends AbstractDaoImpl<Order> implements OrderDao {
                         "Inner Join profile as p on o.profile_id = p.profile_id\n" +
                         "Inner Join user as u on p.user_id = u.user_id \n" +
                         "Inner Join address as a on o.delivery_address_id = a.address_id \n" +
-                        "Inner Join Status as s on o.status_id = s.status_id\n" +
+                        "Inner Join status as s on o.status_id = s.status_id\n" +
                         "WHERE o.profile_id = ?",
                 Integer.class,
                 orderId
@@ -196,7 +195,7 @@ public class OrderDaoImpl extends AbstractDaoImpl<Order> implements OrderDao {
                         "Inner Join profile as p on o.profile_id = p.profile_id\n" +
                         "Inner Join user as u on p.user_id = u.user_id \n" +
                         "Inner Join address as a on o.delivery_address_id = a.address_id \n" +
-                        "Inner Join Status as s on o.status_id = s.status_id\n" +
+                        "Inner Join status as s on o.status_id = s.status_id\n" +
                         "WHERE o.profile_id = ? and o.operator_email = ? limit ? offset ?;",
                 BeanPropertyRowMapper.newInstance(FullOrderDto.class),
                 profileId,
@@ -211,7 +210,7 @@ public class OrderDaoImpl extends AbstractDaoImpl<Order> implements OrderDao {
                         "Inner Join profile as p on orders.profile_id = p.profile_id\n" +
                         "Inner Join user as u on p.user_id = u.user_id \n" +
                         "Inner Join address as a on orders.delivery_address_id = a.address_id \n" +
-                        "Inner Join Status on orders.status_id = status.status_id limit ? OFFSET ?;",
+                        "Inner Join status on orders.status_id = status.status_id limit ? OFFSET ?;",
                 BeanPropertyRowMapper.newInstance(FullOrderDto.class),
                 size,
                 page);
@@ -223,7 +222,7 @@ public class OrderDaoImpl extends AbstractDaoImpl<Order> implements OrderDao {
                         "Inner Join profile as p on orders.profile_id = p.profile_id\n" +
                         "Inner Join user as u on p.user_id = u.user_id \n" +
                         "Inner Join address as a on orders.delivery_address_id = a.address_id \n" +
-                        "Inner Join Status on orders.status_id = status.status_id",
+                        "Inner Join status on orders.status_id = status.status_id",
                 Integer.class);
     }
 
@@ -247,7 +246,7 @@ public class OrderDaoImpl extends AbstractDaoImpl<Order> implements OrderDao {
                         "Inner Join profile as p on orders.profile_id = p.profile_id\n" +
                         "Inner Join user as u on p.user_id = u.user_id \n" +
                         "Inner Join address as a on orders.delivery_address_id = a.address_id \n" +
-                        "Inner Join Status on orders.status_id = status.status_id where orders.operator_email = ? Order by orders.created_date DESC limit ? OFFSET ?;",
+                        "Inner Join status on orders.status_id = status.status_id where orders.operator_email = ? Order by orders.created_date DESC limit ? OFFSET ?;",
                 BeanPropertyRowMapper.newInstance(FullOrderDto.class),
                 email,
                 size,
@@ -260,7 +259,7 @@ public class OrderDaoImpl extends AbstractDaoImpl<Order> implements OrderDao {
                         "Inner Join profile as p on orders.profile_id = p.profile_id\n" +
                         "Inner Join user as u on p.user_id = u.user_id \n" +
                         "Inner Join address as a on orders.delivery_address_id = a.address_id \n" +
-                        "Inner Join Status on orders.status_id = status.status_id where orders.operator_email = ? ",
+                        "Inner Join status on orders.status_id = status.status_id where orders.operator_email = ? ",
                 Integer.class, email);
     }
 
@@ -275,7 +274,7 @@ public class OrderDaoImpl extends AbstractDaoImpl<Order> implements OrderDao {
                         "Inner Join profile as p on orders.profile_id = p.profile_id \n" +
                         "Inner Join user as u on p.user_id = u.user_id \n" +
                         "Inner Join address as a on orders.delivery_address_id = a.address_id \n" +
-                        "Inner Join Status on orders.status_id = status.status_id \n" +
+                        "Inner Join status on orders.status_id = status.status_id \n" +
                         "where orders.order_id = ?;",
                 BeanPropertyRowMapper.newInstance(FullOrderDto.class),
                 orderId);
@@ -293,7 +292,7 @@ public class OrderDaoImpl extends AbstractDaoImpl<Order> implements OrderDao {
                 "                        Inner Join profile as p on orders.profile_id = p.profile_id\n" +
                 "                        Inner Join user as u on p.user_id = u.user_id \n" +
                 "                        Inner Join address as a on orders.delivery_address_id = a.address_id \n" +
-                "                        Inner Join Status on orders.status_id = status.status_id where orders.operator_email = '" + searchOrderDto.getOperatorEmail() + "' and p.company like '%" + searchOrderDto.getCompany() + "%' Order by orders.created_date DESC limit " + searchOrderDto.getSize() + " offset " + searchOrderDto.getOffset() + ";", BeanPropertyRowMapper.newInstance(FullOrderDto.class));
+                "                        Inner Join status on orders.status_id = status.status_id where orders.operator_email = '" + searchOrderDto.getOperatorEmail() + "' and p.company like '%" + searchOrderDto.getCompany() + "%' Order by orders.created_date DESC limit " + searchOrderDto.getSize() + " offset " + searchOrderDto.getOffset() + ";", BeanPropertyRowMapper.newInstance(FullOrderDto.class));
     }
 
     @Override
@@ -302,7 +301,7 @@ public class OrderDaoImpl extends AbstractDaoImpl<Order> implements OrderDao {
                 "                        Inner Join profile as p on orders.profile_id = p.profile_id\n" +
                 "                        Inner Join user as u on p.user_id = u.user_id \n" +
                 "                        Inner Join address as a on orders.delivery_address_id = a.address_id \n" +
-                "                        Inner Join Status on orders.status_id = status.status_id where orders.operator_email = '" + searchOrderDto.getOperatorEmail() + "' and p.company like '%" + searchOrderDto.getCompany() + "%'", Integer.class);
+                "                        Inner Join status on orders.status_id = status.status_id where orders.operator_email = '" + searchOrderDto.getOperatorEmail() + "' and p.company like '%" + searchOrderDto.getCompany() + "%'", Integer.class);
     }
 
     @Override

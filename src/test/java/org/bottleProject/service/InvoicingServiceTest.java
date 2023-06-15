@@ -12,8 +12,6 @@ public class InvoicingServiceTest {
     @MockBean
     private OrderDao orderDao;
 
-    @Autowired
-    private InvoicingService invoicingService;
 
     @Test
     public void shouldPrepareInvoice(){

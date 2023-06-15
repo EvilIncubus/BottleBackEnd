@@ -1,19 +1,17 @@
 package org.bottleProject.entity;
 
-import org.bottleProject.entity.enums.RequestType;
-
-public class Configuration {
+public class DriveConfiguration {
     String configurationName;
     String detailsParams;
     String configValue;
 
-    public Configuration(String configurationName, String detailsParams, String configValue) {
+    public DriveConfiguration(String configurationName, String detailsParams, String configValue) {
         this.configurationName = configurationName;
         this.detailsParams = detailsParams;
         this.configValue = configValue;
     }
 
-    public Configuration() {
+    public DriveConfiguration() {
 
     }
 

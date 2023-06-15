@@ -1,10 +1,10 @@
 package org.bottleProject.dao;
 
-import org.bottleProject.entity.Configuration;
+import org.bottleProject.entity.DriveConfiguration;
 
-public interface ConfigurationDao extends Dao<Configuration> {
+public interface ConfigurationDao extends Dao<DriveConfiguration> {
 
     String getEnableStatus();
 
-    Configuration findConfigByType(String configType);
+    DriveConfiguration findConfigByType(String configType);
 }

@@ -13,7 +13,6 @@ public class SettingsServiceImpl implements SettingsService {
         this.settingsDao = settingsDao;
     }
 
-
     @Override
     public String getMailActiveConfiguration() {
         return settingsDao.getMailActiveConfiguration();
@@ -22,5 +21,15 @@ public class SettingsServiceImpl implements SettingsService {
     @Override
     public void setNewMailConfiguration(String mailConfiguration) {
         settingsDao.setNewMailConfiguration(mailConfiguration);
+    }
+
+    @Override
+    public void setNewDriveConfiguration(String driveConfiguration) {
+        settingsDao.setNewSaveConfiguration(driveConfiguration);
+    }
+
+    @Override
+    public String getDriveActiveConfiguration() {
+        return settingsDao.getSaveActiveConfiguration();
     }
 }

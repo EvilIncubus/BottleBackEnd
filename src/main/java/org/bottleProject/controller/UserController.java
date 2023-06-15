@@ -53,7 +53,7 @@ public class UserController {
             String originalFilename = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
             String filename = UUID.randomUUID() + "-" + originalFilename;
             System.out.println(uploadDir);
-            Path path = Paths.get("C:\\resources\\" + filename);
+            Path path = Paths.get(uploadDir + filename);
             InputStream is = file.getInputStream();
 
             try {

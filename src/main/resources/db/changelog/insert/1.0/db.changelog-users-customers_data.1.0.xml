@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <property name="now" value="now()" dbms="mysql"/>
+    <changeSet author="vodai (generated)" id="1674563226619-1">
+        <insert
+                tableName="user">
+            <column  name="email"  value="060010113v@gmail.com"/>
+            <column  name="password"  value="customer1"/>
+            <column  name="account_status"  value="ACTIVE"/>
+            <column  name="created_date" valueDate="${now}"/>
+        </insert>
+        <insert
+                tableName="profile">
+            <column  name="first_name"  value="Vladislav"/>
+            <column  name="last_name"  value="Odai"/>
+            <column  name="phone_number"  value="060010113"/>
+            <column  name="company"  value="Vianca"/>
+            <column  name="user_id"  value="5"/>
+            <column  name="profile_photo_path"  value="http://odaistore.md/photos/test.png"/>
+        </insert>
+        <insert
+                tableName="user_role">
+            <column  name="user_id"  value="5"/>
+            <column  name="role_id"  value="6"/>
+        </insert>
+    </changeSet>
+    <changeSet author="vodai (generated)" id="1674563226619-2">
+        <insert
+                tableName="user">
+            <column  name="email"  value="vladislav.odai@gmail.com"/>
+            <column  name="password"  value="customer2"/>
+            <column  name="account_status"  value="ACTIVE"/>
+            <column  name="created_date" valueDate="${now}"/>
+        </insert>
+        <insert
+                tableName="profile">
+            <column  name="first_name"  value="Vlad"/>
+            <column  name="last_name"  value="Mitu"/>
+            <column  name="phone_number"  value="060010101"/>
+            <column  name="company"  value="Linela"/>
+            <column  name="user_id"  value="6"/>
+            <column  name="profile_photo_path"  value="http://odaistore.md/photos/test.png"/>
+        </insert>
+        <insert
+                tableName="user_role">
+            <column  name="user_id"  value="6"/>
+            <column  name="role_id"  value="6"/>
+        </insert>
+    </changeSet>
+    <changeSet author="vodai (generated)" id="1674563226619-3">
+        <insert
+                tableName="user">
+            <column  name="email"  value="linelamanager@gmail.com"/>
+            <column  name="password"  value="customer3"/>
+            <column  name="account_status"  value="ACTIVE"/>
+            <column  name="created_date" valueDate="${now}"/>
+        </insert>
+        <insert
+                tableName="profile">
+            <column  name="first_name"  value="Vasilie"/>
+            <column  name="last_name"  value="Cebotari"/>
+            <column  name="phone_number"  value="060403040"/>
+            <column  name="company"  value="Nr1"/>
+            <column  name="user_id"  value="7"/>
+            <column  name="profile_photo_path"  value="http://odaistore.md/photos/test.png"/>
+        </insert>
+        <insert
+                tableName="user_role">
+            <column  name="user_id"  value="7"/>
+            <column  name="role_id"  value="6"/>
+        </insert>
+    </changeSet>
+    <changeSet author="vodai (generated)" id="1674563226619-4">
+        <insert
+                tableName="user">
+            <column  name="email"  value="stefanini@gmial.com"/>
+            <column  name="password"  value="customer4"/>
+            <column  name="account_status"  value="ACTIVE"/>
+            <column  name="created_date" valueDate="${now}"/>
+        </insert>
+        <insert
+                tableName="profile">
+            <column  name="first_name"  value="Stefan"/>
+            <column  name="last_name"  value="Ini"/>
+            <column  name="phone_number"  value="050505050"/>
+            <column  name="company"  value="Stefan_Ini"/>
+            <column  name="user_id"  value="8"/>
+            <column  name="profile_photo_path"  value="http://odaistore.md/photos/test.png"/>
+        </insert>
+        <insert
+                tableName="user_role">
+            <column  name="user_id"  value="8"/>
+            <column  name="role_id"  value="6"/>
+        </insert>
+    </changeSet>
+    <changeSet author="vodai (generated)" id="1674563226619-5">
+        <insert
+                tableName="user">
+            <column  name="email"  value="orangini@gmial.com"/>
+            <column  name="password"  value="customer5"/>
+            <column  name="account_status"  value="ACTIVE"/>
+            <column  name="created_date" valueDate="${now}"/>
+        </insert>
+        <insert
+                tableName="profile">
+            <column  name="first_name"  value="Orang"/>
+            <column  name="last_name"  value="Ini"/>
+            <column  name="phone_number"  value="050506050"/>
+            <column  name="company"  value="Orang_Ini"/>
+            <column  name="user_id"  value="9"/>
+            <column  name="profile_photo_path"  value="http://odaistore.md/photos/test.png"/>
+        </insert>
+        <insert
+                tableName="user_role">
+            <column  name="user_id"  value="9"/>
+            <column  name="role_id"  value="6"/>
+        </insert>
+    </changeSet>
+    <changeSet author="vodai (generated)" id="1674563226619-6">
+        <insert
+                tableName="user">
+            <column  name="email"  value="ciobotini@gmial.com"/>
+            <column  name="password"  value="customer6"/>
+            <column  name="account_status"  value="ACTIVE"/>
+            <column  name="created_date" valueDate="${now}"/>
+        </insert>
+        <insert
+                tableName="profile">
+            <column  name="first_name"  value="Ciobot"/>
+            <column  name="last_name"  value="Ini"/>
+            <column  name="phone_number"  value="050705050"/>
+            <column  name="company"  value="Ciobot_Ini"/>
+            <column  name="user_id"  value="10"/>
+            <column  name="profile_photo_path"  value="http://odaistore.md/photos/test.png"/>
+        </insert>
+        <insert
+                tableName="user_role">
+            <column  name="user_id"  value="10"/>
+            <column  name="role_id"  value="6"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

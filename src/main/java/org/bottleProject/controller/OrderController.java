@@ -201,7 +201,7 @@ public class OrderController {
         }
     }
 //todo when do refactor get rol from authorization
-    @PreAuthorize("hasAnyAuthority('OPERATOR' or hasAnyAuthority('STOREMAN'))")
+    @PreAuthorize("hasAnyAuthority('OPERATOR') or hasAnyAuthority('STOREMAN')")
     @PostMapping("/searchOrderForOperator")
     public ResponseEntity<Page<FullOrderDto>> searchOrderForOperator(@RequestBody OrderSearchDto searchOrderDto) {
         try {

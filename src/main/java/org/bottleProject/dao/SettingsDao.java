@@ -8,4 +8,8 @@ public interface SettingsDao extends Dao<MailConfiguration> {
 
     void setNewMailConfiguration(String mailConfiguration);
 
+    String getSaveActiveConfiguration();
+
+    void setNewSaveConfiguration(String saveConfiguration);
+
 }

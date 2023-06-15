@@ -26,6 +26,10 @@ public class createUserTest {
     PasswordEncoder bCryptPasswordEncoder;
     @Test
     public void createUser() {
-        System.out.println(bCryptPasswordEncoder.encode("password"));
+        System.out.println(bCryptPasswordEncoder.encode("customer1"));
+        System.out.println(bCryptPasswordEncoder.encode("customer2"));
+        System.out.println(bCryptPasswordEncoder.encode("customer3"));
+        System.out.println(bCryptPasswordEncoder.encode("customer4"));
+        System.out.println(bCryptPasswordEncoder.encode("customer5"));
     }
 }
