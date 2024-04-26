@@ -85,7 +85,7 @@ public class OrderController {
             return new ResponseEntity<>("error submit order.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @PreAuthorize("hasAnyAuthority('MANAGER') or hasAnyAuthority('OPERATOR') or hasAnyAuthority('STOREMAN')")
+    @PreAuthorize("hasAnyAuthority('MANAGER') or hasAnyAuthority('OPERATOR') or hasAnyAuthority('STOREMAN') or hasAnyAuthority('SHIPPER')")
     @GetMapping("/getOrderById")
     public ResponseEntity<InvoiceWrapper> getOrderById(@RequestParam long orderId) {
         try {
@@ -185,7 +185,7 @@ public class OrderController {
         }
     }
 
-    @PreAuthorize("hasAnyAuthority('OPERATOR') or hasAnyAuthority('STOREMAN')")
+    @PreAuthorize("hasAnyAuthority('OPERATOR') or hasAnyAuthority('STOREMAN') or hasAnyAuthority('SHIPPER')")
     @PostMapping("/filterOrderForOperator")
     public ResponseEntity<Page<FullOrderDto>> filterOrderForOperator(@RequestBody OrderFilterDto searchOrderDto) {
         try {

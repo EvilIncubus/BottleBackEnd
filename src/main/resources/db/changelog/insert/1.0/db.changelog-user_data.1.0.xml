@@ -116,4 +116,32 @@
             <column  name="role_id"  value="3"/>
         </insert>
     </changeSet>
+    <changeSet author="vodai (generated)" id="1674563226999-4">
+        <insert
+                tableName="user">
+            <column  name="email"  value="shipper"/>
+            <column  name="password"  value="$2a$10$mwLerUSgSIUF2.qDUbULNOg83Hki2A2FJIiYi.dT6sbvaRWa46lry"/>
+            <column  name="account_status"  value="ACTIVE"/>
+            <column  name="created_date" valueDate="${now}"/>
+        </insert>
+        <insert
+                tableName="profile">
+            <column  name="first_name"  value="shipper"/>
+            <column  name="last_name"  value="shipper"/>
+            <column  name="phone_number"  value="shipper"/>
+            <column  name="company"  value="Water Sale SRL"/>
+            <column  name="user_id"  value="5"/>
+            <column  name="profile_photo_path"  value="http://odaistore.md/photos/test.png"/>
+        </insert>
+        <insert
+                tableName="user_role">
+            <column  name="user_id"  value="5"/>
+            <column  name="role_id"  value="7"/>
+        </insert>
+        <insert
+                tableName="user_role">
+            <column  name="user_id"  value="5"/>
+            <column  name="role_id"  value="4"/>
+        </insert>
+    </changeSet>
 </databaseChangeLog>

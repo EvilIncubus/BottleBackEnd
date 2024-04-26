@@ -21,7 +21,7 @@ public class NotificationController {
         this.notificationService = notificationService;
     }
 
-    @PreAuthorize("hasAnyAuthority('OPERATOR') or hasAnyAuthority('STOREMAN') or hasAnyAuthority('MANAGER')")
+    @PreAuthorize("hasAnyAuthority('OPERATOR') or hasAnyAuthority('STOREMAN') or hasAnyAuthority('MANAGER') or hasAnyAuthority('SHIPPER')")
     @GetMapping("/getNumberOfActiveNotification")
     public ResponseEntity<Integer> getNumberOfActiveNotification(@RequestParam String email) {
         try {
@@ -33,7 +33,7 @@ public class NotificationController {
         }
     }
 
-    @PreAuthorize("hasAnyAuthority('OPERATOR') or hasAnyAuthority('STOREMAN') or hasAnyAuthority('MANAGER')")
+    @PreAuthorize("hasAnyAuthority('OPERATOR') or hasAnyAuthority('STOREMAN') or hasAnyAuthority('MANAGER') or hasAnyAuthority('SHIPPER')")
     @GetMapping("/getAllActiveNotification")
     public ResponseEntity<Page<Notification>> getAllActiveNotification(@RequestParam String email,
                                                                  @RequestParam int page,
@@ -47,7 +47,7 @@ public class NotificationController {
         }
     }
 
-    @PreAuthorize("hasAnyAuthority('OPERATOR') or hasAnyAuthority('STOREMAN') or hasAnyAuthority('MANAGER')")
+    @PreAuthorize("hasAnyAuthority('OPERATOR') or hasAnyAuthority('STOREMAN') or hasAnyAuthority('MANAGER') or hasAnyAuthority('SHIPPER')")
     @GetMapping("/getAllNotification")
     public ResponseEntity<Page<Notification>> getAllNotification(@RequestParam String email,
                                                      @RequestParam int page,
@@ -61,7 +61,7 @@ public class NotificationController {
         }
     }
 
-    @PreAuthorize("hasAnyAuthority('OPERATOR') or hasAnyAuthority('STOREMAN') or hasAnyAuthority('MANAGER')")
+    @PreAuthorize("hasAnyAuthority('OPERATOR') or hasAnyAuthority('STOREMAN') or hasAnyAuthority('MANAGER') or hasAnyAuthority('SHIPPER')")
     @GetMapping("/updateNotificationReadStatus")
     public ResponseEntity<String> getAllNotification(@RequestParam String email,
                                                      @RequestParam int orderId){

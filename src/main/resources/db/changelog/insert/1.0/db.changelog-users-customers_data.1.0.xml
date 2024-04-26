@@ -18,12 +18,12 @@
             <column  name="last_name"  value="Odai"/>
             <column  name="phone_number"  value="060010113"/>
             <column  name="company"  value="Vianca"/>
-            <column  name="user_id"  value="5"/>
+            <column  name="user_id"  value="6"/>
             <column  name="profile_photo_path"  value="http://odaistore.md/photos/test.png"/>
         </insert>
         <insert
                 tableName="user_role">
-            <column  name="user_id"  value="5"/>
+            <column  name="user_id"  value="6"/>
             <column  name="role_id"  value="6"/>
         </insert>
     </changeSet>
@@ -41,12 +41,12 @@
             <column  name="last_name"  value="Mitu"/>
             <column  name="phone_number"  value="060010101"/>
             <column  name="company"  value="Linela"/>
-            <column  name="user_id"  value="6"/>
+            <column  name="user_id"  value="7"/>
             <column  name="profile_photo_path"  value="http://odaistore.md/photos/test.png"/>
         </insert>
         <insert
                 tableName="user_role">
-            <column  name="user_id"  value="6"/>
+            <column  name="user_id"  value="7"/>
             <column  name="role_id"  value="6"/>
         </insert>
     </changeSet>
@@ -64,12 +64,12 @@
             <column  name="last_name"  value="Cebotari"/>
             <column  name="phone_number"  value="060403040"/>
             <column  name="company"  value="Nr1"/>
-            <column  name="user_id"  value="7"/>
+            <column  name="user_id"  value="8"/>
             <column  name="profile_photo_path"  value="http://odaistore.md/photos/test.png"/>
         </insert>
         <insert
                 tableName="user_role">
-            <column  name="user_id"  value="7"/>
+            <column  name="user_id"  value="8"/>
             <column  name="role_id"  value="6"/>
         </insert>
     </changeSet>
@@ -87,12 +87,12 @@
             <column  name="last_name"  value="Ini"/>
             <column  name="phone_number"  value="050505050"/>
             <column  name="company"  value="Stefan_Ini"/>
-            <column  name="user_id"  value="8"/>
+            <column  name="user_id"  value="9"/>
             <column  name="profile_photo_path"  value="http://odaistore.md/photos/test.png"/>
         </insert>
         <insert
                 tableName="user_role">
-            <column  name="user_id"  value="8"/>
+            <column  name="user_id"  value="9"/>
             <column  name="role_id"  value="6"/>
         </insert>
     </changeSet>
@@ -110,12 +110,12 @@
             <column  name="last_name"  value="Ini"/>
             <column  name="phone_number"  value="050506050"/>
             <column  name="company"  value="Orang_Ini"/>
-            <column  name="user_id"  value="9"/>
+            <column  name="user_id"  value="10"/>
             <column  name="profile_photo_path"  value="http://odaistore.md/photos/test.png"/>
         </insert>
         <insert
                 tableName="user_role">
-            <column  name="user_id"  value="9"/>
+            <column  name="user_id"  value="10"/>
             <column  name="role_id"  value="6"/>
         </insert>
     </changeSet>
@@ -133,12 +133,12 @@
             <column  name="last_name"  value="Ini"/>
             <column  name="phone_number"  value="050705050"/>
             <column  name="company"  value="Ciobot_Ini"/>
-            <column  name="user_id"  value="10"/>
+            <column  name="user_id"  value="11"/>
             <column  name="profile_photo_path"  value="http://odaistore.md/photos/test.png"/>
         </insert>
         <insert
                 tableName="user_role">
-            <column  name="user_id"  value="10"/>
+            <column  name="user_id"  value="11"/>
             <column  name="role_id"  value="6"/>
         </insert>
     </changeSet>

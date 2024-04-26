@@ -7,13 +7,37 @@
         <insert
                 tableName="status">
             <column  name="status"  value="ApprovedByCustomer"/>
+        </insert>
+        <insert
+                tableName="status">
             <column  name="status"  value="Created"/>
+        </insert>
+        <insert
+                tableName="status">
             <column  name="status"  value="Delivered"/>
+        </insert>
+        <insert
+                tableName="status">
             <column  name="status"  value="ProcessedByTheWarehouse"/>
+        </insert>
+        <insert
+                tableName="status">
             <column  name="status"  value="OnTheWay"/>
+        </insert>
+        <insert
+                tableName="status">
             <column  name="status"  value="WaitingForCustomerResponse"/>
+        </insert>
+        <insert
+                tableName="status">
             <column  name="status"  value="ReadyForPickUp"/>
+        </insert>
+        <insert
+                tableName="status">
             <column  name="status"  value="OrderRejectedByWarehouse"/>
+        </insert>
+        <insert
+                tableName="status">
             <column  name="status"  value="RejectByCustomer"/>
         </insert>
     </changeSet>

@@ -21,7 +21,6 @@ public class UserServiceImpl implements UserService {
     private final UserDao userDao;
     private final RoleDao roleDao;
     private final ProfileDao profileDao;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public UserServiceImpl(UserDao userDao,ProfileDao profileDao, RoleDao roleDao) {
         this.userDao = userDao;
@@ -33,7 +32,7 @@ public class UserServiceImpl implements UserService {
     public User addUser(CreateUserDto createUserDto) {
         User user = new User();
         user.setEmail(createUserDto.getEmail());
-        user.setPassword(bCryptPasswordEncoder.encode(createUserDto.getPassword()));
+        user.setPassword(new BCryptPasswordEncoder().encode(createUserDto.getPassword()));
         user.setAccountStatus("ACTIVE");
         user.setCreatedDate(LocalDateTime.now());
         user = userDao.create(user);
@@ -66,7 +65,7 @@ public class UserServiceImpl implements UserService {
     public User updateUser(CreateUserDto createUserDto) {
         User user = new User();
         user.setEmail(createUserDto.getEmail());
-        user.setPassword(bCryptPasswordEncoder.encode(createUserDto.getPassword()));
+        user.setPassword(new BCryptPasswordEncoder().encode(createUserDto.getPassword()));
         user.setAccountStatus("ACTIVE");
         user.setCreatedDate(LocalDateTime.now());
         user = userDao.updateUsers(user);
