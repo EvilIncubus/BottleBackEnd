@@ -45,13 +45,12 @@ public class ConfigurationDaoImpl extends AbstractDaoImpl<DriveConfiguration> im
     @Override
     public String getEnableStatus() {
         try {
-//            return getJdbcTemplate().queryForObject("SELECT request_type FROM request_type WHERE request_status = 'Enable'",
-//                    BeanPropertyRowMapper.newInstance(String.class));
+            return getJdbcTemplate().queryForObject("SELECT drive_configuration FROM drive_configuration WHERE active_configuration = 'ACTIVE'",
+                    String.class);
         } catch (
                 IncorrectResultSizeDataAccessException e) {
             return null;
         }
-        return null;
     }
 
     @Override

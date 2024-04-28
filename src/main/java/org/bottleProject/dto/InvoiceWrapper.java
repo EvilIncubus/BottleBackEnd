@@ -15,7 +15,7 @@ public class InvoiceWrapper {
     private String profilePhotoPath;
     private String status;
     @JsonFormat
-            (shape = JsonFormat.Shape.STRING, pattern = ("dd:MM:yyyy hh:mm:ss"))
+            (shape = JsonFormat.Shape.STRING, pattern = ("dd:MM:yyyy HH:mm:ss"))
     private LocalDateTime createdDate;
     private List<BottleListWrapper> bottleListDtoList;
 

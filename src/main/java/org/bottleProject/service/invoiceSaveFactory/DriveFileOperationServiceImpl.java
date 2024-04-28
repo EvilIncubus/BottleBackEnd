@@ -20,9 +20,9 @@ import java.time.LocalDateTime;
 @Service
 public class DriveFileOperationServiceImpl implements OperationsWithFile {
 
-    private UserDao userDao;
-    private InvoiceDao invoiceDao;
-    private GoogleApiService googleApiService;
+    private final UserDao userDao;
+    private final InvoiceDao invoiceDao;
+    private final GoogleApiService googleApiService;
 
     public DriveFileOperationServiceImpl(UserDao userDao, InvoiceDao invoiceDao, GoogleApiService googleApiService) {
         this.userDao = userDao;
@@ -30,22 +30,13 @@ public class DriveFileOperationServiceImpl implements OperationsWithFile {
         this.googleApiService = googleApiService;
     }
 
-    public DriveFileOperationServiceImpl() {
-
-    }
-
     @Override
-    public void saveFile(Workbook workbook, DriveConfiguration configuration, Order order) {
+    public void saveFile(Workbook workbook, Order order) {
         User user = userDao.findById((long) order.getProfileId());
         LocalDateTime localDateTime = LocalDateTime.now();
-        Path filePath = Path.of(user.getEmail() + "Invoice" + localDateTime.toLocalDate() + "xlsx");
-        FileManager fileManager = new FileManager(filePath);
+        FileManager fileManager = new FileManager(user.getEmail(), "Invoice" + localDateTime.toLocalDate(), "xlsx");
         File file;
-        try {
-            fileManager.writeExcelFileLocal(workbook);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        fileManager.writeExcelFile(workbook);
         try {
             file = fileManager.getExcelFile(user.getEmail(), "Invoice" + localDateTime.toLocalDate() + "xlsx");
         } catch (IOException e) {
@@ -62,9 +53,9 @@ public class DriveFileOperationServiceImpl implements OperationsWithFile {
     }
 
     @Override
-    public File getFile(DriveConfiguration configuration, long customerId, long orderId) {
+    public File getFile(long orderId) {
         Invoice invoice = invoiceDao.findByOrderId(orderId);
-        User user = userDao.findById(customerId);
+        User user = userDao.findByOrderId(orderId);
         FileManager fileManager = new FileManager();
         File file;
         try {

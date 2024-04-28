@@ -85,6 +85,20 @@ public class OrderController {
             return new ResponseEntity<>("error submit order.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PreAuthorize("hasAnyAuthority('MANAGER') or hasAnyAuthority('OPERATOR') or hasAnyAuthority('STOREMAN') or hasAnyAuthority('SHIPPER')")
+    @GetMapping("/updateOrderStatus")
+    public ResponseEntity<String> updateOrderStatus(@RequestParam String orderId, @RequestParam String status) {
+        try {
+            int setOrderId = Integer.parseInt(orderId);
+            String info = orderService.submitCreatedOrderByCustomer(setOrderId, status);
+            return new ResponseEntity<>(info, HttpStatus.CREATED);
+        } catch (Exception e) {
+            logger.info(e.toString());
+            return new ResponseEntity<>("error update status order.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PreAuthorize("hasAnyAuthority('MANAGER') or hasAnyAuthority('OPERATOR') or hasAnyAuthority('STOREMAN') or hasAnyAuthority('SHIPPER')")
     @GetMapping("/getOrderById")
     public ResponseEntity<InvoiceWrapper> getOrderById(@RequestParam long orderId) {

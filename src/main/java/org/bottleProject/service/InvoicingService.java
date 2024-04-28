@@ -9,6 +9,6 @@ import java.time.LocalDateTime;
 
 public interface InvoicingService {
 
-    void invoicing(Order order);
+    void invoicing(InvoiceWrapper invoiceWrapper);
 
 }

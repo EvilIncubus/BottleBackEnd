@@ -43,10 +43,21 @@ public class NotificationServiceImpl implements NotificationService {
                 roles.add("MANAGER");
                 break;
             case "OrderRejectedByWarehouse":
+                roles.add("MANAGER");
+                roles.add("OPERATOR");
             case "RejectByCustomer":
                 roles.add("OPERATOR");
                 roles.add("MANAGER");
                 break;
+            case "ReadyForPickUp":
+                roles.add("MANAGER");
+                roles.add("SHIPPER");
+                break;
+            case "OnTheWay":
+                roles.add("MANAGER");
+                break;
+            case "Delivered":
+                roles.add("MANAGER");
             default:
                 System.out.println("Status is not Allowed");
         }

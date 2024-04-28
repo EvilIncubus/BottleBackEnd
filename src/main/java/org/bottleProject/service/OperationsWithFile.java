@@ -7,6 +7,6 @@ import org.bottleProject.entity.Order;
 import java.io.File;
 
 public interface OperationsWithFile {
-    void saveFile(Workbook workbook, DriveConfiguration configuration, Order order);
-    File getFile(DriveConfiguration configuration, long customerId, long orderId);
+    void saveFile(Workbook workbook, Order order);
+    File getFile(long orderId);
 }

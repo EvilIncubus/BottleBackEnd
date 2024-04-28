@@ -26,8 +26,7 @@ public class InvoiceServiceImpl implements InvoicingService {
     }
 
     @Override
-    public void invoicing(Order order) {
-        InvoiceWrapper invoiceWrapper = orderDao.getOrderInvoice(order);
+    public void invoicing(InvoiceWrapper invoiceWrapper) {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Invoice");
         createHeader(workbook, sheet);
@@ -45,6 +44,7 @@ public class InvoiceServiceImpl implements InvoicingService {
         for (int i = 0; i < 11; i++) {
             sheet.autoSizeColumn(i);
         }
+        Order order = orderDao.findById(invoiceWrapper.getOrderId());
         invoiceFileOperationService.fileToSave(workbook,order);
     }
 

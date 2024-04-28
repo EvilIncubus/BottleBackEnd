@@ -131,4 +131,13 @@ public class UserDaoImpl extends AbstractDaoImpl<User> implements UserDao {
                 "inner join user_role ur on ur.user_id = u.user_id \n" +
                 "inner join role as r on r.role_id = ur.role_id where r.role_name = 'CUSTOMER' and p.company like '%"+ search +"%' limit "+5+" offset "+0+";", BeanPropertyRowMapper.newInstance(UserWithProfileDto.class));
     }
+
+    @Override
+    public User findByOrderId(long orderId) {
+        return getJdbcTemplate().queryForObject("SELECT u.*\n" +
+                "FROM orders o\n" +
+                "JOIN profile p ON o.profile_id = p.profile_id\n" +
+                "JOIN user u ON p.user_id = u.user_id\n" +
+                "WHERE o.order_id = ?;", BeanPropertyRowMapper.newInstance(User.class), orderId);
+    }
 }

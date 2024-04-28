@@ -373,8 +373,12 @@ public class OrderDaoImpl extends AbstractDaoImpl<Order> implements OrderDao {
 
     @Override
     public void updateOrderStatus(int orderId, String status) {
-        getJdbcTemplate().update("UPDATE orders as o inner join status as s on s.status_id = o.status_id SET o.status_id = ? WHERE s.status=?",
-                orderId, status);
+        getJdbcTemplate().update("UPDATE orders SET status_id = (\n" +
+                        "    SELECT status_id\n" +
+                        "    FROM status\n" +
+                        "    WHERE status = ?\n" +
+                        ") WHERE order_id = ?",
+                status, orderId);
     }
 
     @Override

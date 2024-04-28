@@ -1,5 +1,6 @@
 package org.bottleProject.controller;
 
+import org.bottleProject.dto.InvoiceWrapper;
 import org.bottleProject.entity.Order;
 import org.bottleProject.service.InvoiceFileOperationService;
 import org.bottleProject.service.InvoiceFileOperationsFactory;
@@ -32,11 +33,11 @@ public class InvoiceController {
         this.invoiceFileOperationService = invoiceFileOperationService;
     }
 
-    @PreAuthorize("hasAnyAuthority('STOREMAN')")
+    @PreAuthorize("hasAnyAuthority('SHIPPER')")
     @PostMapping("/generateInvoice")
-    public ResponseEntity<String> createInvoiceByOrder(@RequestBody Order order) {
+    public ResponseEntity<String> createInvoiceByOrder(@RequestBody InvoiceWrapper invoiceWrapper) {
         try {
-            invoicingService.invoicing(order);
+            invoicingService.invoicing(invoiceWrapper);
             return new ResponseEntity<>("invoice was created successfully.", HttpStatus.CREATED);
         } catch (Exception e) {
             logger.info(e.toString());
@@ -44,10 +45,10 @@ public class InvoiceController {
         }
     }
 
-    @PreAuthorize("hasAnyAuthority('STOREMAN')")
-    @GetMapping("/downloadInvoiceByOrderId/{downloadType}/{customerId}/{orderId}")
-    public ResponseEntity<Resource> download(@PathVariable Long customerId, @PathVariable Long orderId){
-        File foundFile = invoiceFileOperationService.getFile(customerId, orderId);
+    @PreAuthorize("hasAnyAuthority('SHIPPER')")
+    @GetMapping("/downloadInvoiceByOrderId")
+    public ResponseEntity<Resource> download(@RequestParam Long orderId){
+        File foundFile = invoiceFileOperationService.getFile(orderId);
         ByteArrayInputStream resource = null;
         try {
             resource = new ByteArrayInputStream(Files.readAllBytes(Paths.get(foundFile.getAbsolutePath())));

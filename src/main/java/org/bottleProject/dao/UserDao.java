@@ -23,4 +23,6 @@ public interface UserDao extends Dao<User>{
     List<UserWithProfileDto> getListOfCustomersForOperator();
 
     List<UserWithProfileDto> getSearchListOfCustomersForOperator(String search);
+
+    User findByOrderId(long orderId);
 }

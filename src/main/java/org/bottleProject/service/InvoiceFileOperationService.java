@@ -9,6 +9,6 @@ public interface InvoiceFileOperationService {
 
     void fileToSave(Workbook workbook, Order order);
 
-    File getFile(long customerId, long orderId);
+    File getFile(long orderId);
 
 }
