@@ -1,7 +1,9 @@
 package org.bottleProject.service.impl;
 
 import org.bottleProject.dao.NotificationDao;
+import org.bottleProject.dao.OrderDao;
 import org.bottleProject.dao.RoleDao;
+import org.bottleProject.dto.FullOrderDto;
 import org.bottleProject.entity.Notification;
 import org.bottleProject.entity.Page;
 import org.bottleProject.entity.User;
@@ -15,10 +17,12 @@ import java.util.List;
 public class NotificationServiceImpl implements NotificationService {
     private final NotificationDao notificationDao;
     private final RoleDao roleDao;
+    private final OrderDao orderDao;
 
-    public NotificationServiceImpl(NotificationDao notificationDao, RoleDao roleDao) {
+    public NotificationServiceImpl(NotificationDao notificationDao, RoleDao roleDao, OrderDao orderDao) {
         this.notificationDao = notificationDao;
         this.roleDao = roleDao;
+        this.orderDao = orderDao;
     }
 
     @Override
@@ -90,5 +94,11 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public void updateNotificationReadStatus(String email, int orderId) {
         notificationDao.updateUserNotificationReadStatus(email, orderId);
+    }
+
+    @Override
+    public Page<FullOrderDto> getNotificationOrders(int page, int size) {
+        List <Integer> orderIdList = notificationDao.getOrderIdByActiveNotification(page - 1, size);
+        return new Page<>(orderDao.searchOrdersById(orderIdList),size, page, size);
     }
 }

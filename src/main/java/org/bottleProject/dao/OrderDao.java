@@ -68,4 +68,6 @@ public interface OrderDao extends Dao<Order> {
     String setBottleStatus(OrderBottle orderBottle);
 
     void updateOrderStatus(int orderId, String status);
+
+    List<FullOrderDto> searchOrdersById(List<Integer> orderIdList);
 }

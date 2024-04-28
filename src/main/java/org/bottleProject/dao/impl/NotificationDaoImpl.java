@@ -137,4 +137,25 @@ public class NotificationDaoImpl extends AbstractDaoImpl<Notification> implement
                 Integer.class,
                 email);
     }
+
+    @Override
+    public List<Integer> getOrderIdByActiveNotification(int offset, int size) {
+        return getJdbcTemplate().queryForList("SELECT DISTINCT order_id \n" +
+                        " FROM notification, \n" +
+                        "    JSON_TABLE( \n" +
+                        "        user_notification_list_json, \n" +
+                        "        '$.userList[*]' \n" +
+                        "        COLUMNS ( \n" +
+                        "            readStatus BOOLEAN PATH '$.readStatus' \n" +
+                        "        ) \n" +
+                        "    ) AS users \n" +
+                        " WHERE readStatus = false limit ? offset ?;", Integer.class, size, offset);
+    }
+//    String updateQuery = "UPDATE notification " +
+//            "SET user_notification_list_json = JSON_SET(user_notification_list_json, '$.userList[?].readStatus', true) " +
+//            "WHERE JSON_EXTRACT(user_notification_list_json, '$.userList[*].email') = ? AND JSON_EXTRACT(user_notification_list_json, '$.userList[*].readStatus') = false";
+//
+//    getJdbcTemplate().update(updateQuery, "storeman");
+
+
 }

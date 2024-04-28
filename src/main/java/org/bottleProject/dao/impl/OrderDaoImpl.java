@@ -376,4 +376,18 @@ public class OrderDaoImpl extends AbstractDaoImpl<Order> implements OrderDao {
         getJdbcTemplate().update("UPDATE orders as o inner join status as s on s.status_id = o.status_id SET o.status_id = ? WHERE s.status=?",
                 orderId, status);
     }
+
+    @Override
+    public List<FullOrderDto> searchOrdersById(List<Integer> orderIdList) {
+        List<FullOrderDto> orderDtoList = new ArrayList<>();
+        for (Integer orderId : orderIdList) {
+        orderDtoList.add(getJdbcTemplate().queryForObject("SELECT orders.order_id, u.email, a.address , orders.created_date, status.status, p.company, p.profile_id FROM orders \n" +
+                "                        Inner Join profile as p on orders.profile_id = p.profile_id\n" +
+                "                        Inner Join user as u on p.user_id = u.user_id \n" +
+                "                        Inner Join address as a on orders.delivery_address_id = a.address_id \n" +
+                "                        Inner Join status on orders.status_id = status.status_id where orders.order_id = '" + orderId + "%' Order by orders.created_date DESC limit " + 5 + " offset " + 0 + ";", BeanPropertyRowMapper.newInstance(FullOrderDto.class)));
+        }
+        return orderDtoList;
+
+    }
 }

@@ -14,4 +14,6 @@ public interface NotificationDao extends Dao<Notification>{
     List<Notification> getAllNotificationForUser(String email, int size, int offset);
 
     Integer countAllNotificationForUser(String email);
+
+    List<Integer> getOrderIdByActiveNotification(int page, int size);
 }

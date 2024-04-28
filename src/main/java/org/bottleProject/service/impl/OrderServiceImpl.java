@@ -103,7 +103,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Double countYesterdayAmount(String operatorEmail) {
-        LocalDate yesterday = LocalDate.now().minus(1, ChronoUnit.DAYS);
+        LocalDate yesterday = LocalDate.now().minusDays(1);
         LocalDateTime start = LocalTime.MIN.atDate(yesterday);
         LocalDateTime end = LocalTime.MAX.atDate(yesterday);
         logger.info(start + "  " + end);
@@ -117,7 +117,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Double countAllYesterdayAmount() {
-        LocalDate yesterday = LocalDate.now().minus(1, ChronoUnit.DAYS);
+        LocalDate yesterday = LocalDate.now().minusDays(1);
         LocalDateTime start = LocalTime.MIN.atDate(yesterday);
         LocalDateTime end = LocalTime.MAX.atDate(yesterday);
         logger.info(start + "  " + end);
@@ -141,6 +141,7 @@ public class OrderServiceImpl implements OrderService {
         notificationService.createNotification(orderId, status, message);
         return message;
     }
+
 
 
 }

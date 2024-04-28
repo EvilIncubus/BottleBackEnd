@@ -1,5 +1,6 @@
 package org.bottleProject.controller;
 
+import org.bottleProject.dto.FullOrderDto;
 import org.bottleProject.entity.Notification;
 import org.bottleProject.entity.Page;
 import org.bottleProject.service.NotificationService;
@@ -68,6 +69,19 @@ public class NotificationController {
         try {
             notificationService.updateNotificationReadStatus(email, orderId);
             return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (Exception e) {
+            logger.info(e.toString());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PreAuthorize("hasAnyAuthority('OPERATOR') or hasAnyAuthority('STOREMAN') or hasAnyAuthority('MANAGER') or hasAnyAuthority('SHIPPER')")
+    @GetMapping("/getNotificationOrders")
+    public ResponseEntity<Page<FullOrderDto>> getNotificationOrders(@RequestParam int page,
+                                                                    @RequestParam int size){
+        try {
+            Page<FullOrderDto> notificationOrders = notificationService.getNotificationOrders(page, size);
+            return new ResponseEntity<>(notificationOrders, HttpStatus.CREATED);
         } catch (Exception e) {
             logger.info(e.toString());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
