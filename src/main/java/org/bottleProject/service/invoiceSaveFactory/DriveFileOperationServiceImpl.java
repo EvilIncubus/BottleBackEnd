@@ -60,7 +60,7 @@ public class DriveFileOperationServiceImpl implements OperationsWithFile {
         File file;
         try {
             fileManager.saveFileFromDrive(googleApiService.downloadFile(invoice.getFileId()), user.getEmail(),invoice.getFileName());
-            file = fileManager.getExcelFile(user.getEmail(), invoice.getFileName());
+            file = fileManager.getExcelFile(invoice.getFileName());
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
