@@ -37,7 +37,7 @@ public class InvoiceServiceImpl implements InvoicingService {
         for (BottleListWrapper bottleListWrapper : invoiceWrapper.getBottleListDtoList()) {
             createBottleOrderRows(workbook, sheet, bottleListWrapper, column);
             column++;
-            totalSum += bottleListWrapper.getPrice();
+            totalSum += bottleListWrapper.getPrice() * bottleListWrapper.getAmountBottle();
         }
 
         calcTotalSum(totalSum, column, workbook, sheet);
@@ -75,8 +75,8 @@ public class InvoiceServiceImpl implements InvoicingService {
         valuesToWrite = new ArrayList<>();
         valuesToWrite.add("BottleID");
         valuesToWrite.add("Bottle Name");
-        valuesToWrite.add("Size");
-        valuesToWrite.add("Soda");
+        valuesToWrite.add("Bottle Volume");
+        valuesToWrite.add("Sugar");
         valuesToWrite.add("Plastic/Glass Bottle");
         valuesToWrite.add("Amount Bottle");
         valuesToWrite.add("Price per Bottle");
@@ -149,17 +149,13 @@ public class InvoiceServiceImpl implements InvoicingService {
         List<String> valuesToWrite = new ArrayList<>();
         valuesToWrite.add(String.valueOf(finalOrderDto.getBottleId()));
         valuesToWrite.add(finalOrderDto.getNameBottle());
-//        valuesToWrite.add(String.valueOf(finalOrderDto.getSize()));
-//        if (finalOrderDto.isCO2()) {
-//            valuesToWrite.add("Yes");
-//        } else {
-//            valuesToWrite.add("No");
-//        }
-//        if (finalOrderDto.isPlastic()) {
-//            valuesToWrite.add("Plastic");
-//        } else {
-//            valuesToWrite.add("Glass");
-//        }
+        valuesToWrite.add(String.valueOf(finalOrderDto.getBottleVolume()));
+        if (finalOrderDto.isSugar()) {
+            valuesToWrite.add("Yes");
+        } else {
+            valuesToWrite.add("No");
+        }
+        valuesToWrite.add(finalOrderDto.getPackaging());
         valuesToWrite.add(String.valueOf(finalOrderDto.getAmountBottle()));
         valuesToWrite.add(String.valueOf(finalOrderDto.getPrice()));
         setValuesPlus(sheet, valuesToWrite, headerCellStyle, 1, i);
@@ -186,38 +182,3 @@ public class InvoiceServiceImpl implements InvoicingService {
         cell.setCellStyle(headerCellStyle);
     }
 }
-
-//    public void writeSheetData(Object[][] data, Sheet sheet) {
-//        CellStyle headerStyle = getCellStyle(sheet, true, true, (short) 300, HorizontalAlignment.CENTER);
-//        CellStyle dataStyle = getCellStyle(sheet, false, false, (short) 240, HorizontalAlignment.CENTER);
-//
-//        int rows = data.length;
-//        int columns = data[0].length;
-//        for (int i = 0; i < rows; i++) {
-//            Row row = sheet.createRow(i);
-//
-//            for (int j = 0; j < columns; j++) {
-//                Cell cell = row.createCell(j);
-//
-//                if (i == 0) {
-//                    cell.setCellStyle(headerStyle);
-//                } else {
-//                    cell.setCellStyle(dataStyle);
-//                }
-//
-//                Object value = data[i][j];
-//
-//                if (value instanceof String) {
-//                    cell.setCellValue((String) value);
-//                } else if (value instanceof Long) {
-//                    cell.setCellValue((Long) value);
-//                } else if (value instanceof Float) {
-//                    cell.setCellValue((Float) value);
-//                } else if (value instanceof Integer) {
-//                    cell.setCellValue((Integer) value);
-//                } else if (value instanceof LocalDate) {
-//                    cell.setCellValue((LocalDate) value);
-//                }
-//            }
-//        }
-//    }

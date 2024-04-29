@@ -21,14 +21,10 @@ public class InvoiceFileOperationServiceImpl implements InvoiceFileOperationServ
     private OperationsWithFile operationsWithFile;
     private DriveConfiguration configuration;
     private final InvoiceFileOperationsFactory invoiceFileOperationsFactory;
-    private UserDao userDao;
-    private InvoiceDao invoiceDao;
 
-    public InvoiceFileOperationServiceImpl(ConfigurationDao configurationDao, InvoiceFileOperationsFactory invoiceFileOperationsFactory, UserDao userDao, InvoiceDao invoiceDao) {
+    public InvoiceFileOperationServiceImpl(ConfigurationDao configurationDao, InvoiceFileOperationsFactory invoiceFileOperationsFactory) {
         this.configurationDao = configurationDao;
         this.invoiceFileOperationsFactory = invoiceFileOperationsFactory;
-        this.userDao = userDao;
-        this.invoiceDao = invoiceDao;
     }
 
     @Override
