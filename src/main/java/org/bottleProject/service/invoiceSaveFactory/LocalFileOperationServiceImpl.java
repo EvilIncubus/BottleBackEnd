@@ -44,11 +44,10 @@ public class LocalFileOperationServiceImpl implements OperationsWithFile {
     @Override
     public File getFile(long orderId) {
         Invoice invoice = invoiceDao.findByOrderId(orderId);
-        User customer = userDao.findByOrderId(orderId);
         FileManager fileManager = new FileManager();
-        File file = null;
+        File file;
         try {
-            file = fileManager.getExcelFile(customer.getEmail(), invoice.getFileName());
+            file = fileManager.getExcelFile(invoice.getFileName());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

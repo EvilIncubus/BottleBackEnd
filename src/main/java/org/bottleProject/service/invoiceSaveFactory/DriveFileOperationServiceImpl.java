@@ -34,11 +34,11 @@ public class DriveFileOperationServiceImpl implements OperationsWithFile {
     public void saveFile(Workbook workbook, Order order) {
         User user = userDao.findById((long) order.getProfileId());
         LocalDateTime localDateTime = LocalDateTime.now();
-        FileManager fileManager = new FileManager(user.getEmail(), "Invoice" + localDateTime.toLocalDate(), "xlsx");
+        FileManager fileManager = new FileManager();
         File file;
         fileManager.writeExcelFile(workbook);
         try {
-            file = fileManager.getExcelFile(user.getEmail(), "Invoice" + localDateTime.toLocalDate() + "xlsx");
+            file = fileManager.getExcelFile(user.getEmail()+ "\\Invoice" + localDateTime.toLocalDate() + ".xlsx");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

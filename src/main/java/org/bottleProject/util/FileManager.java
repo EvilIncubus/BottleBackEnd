@@ -43,8 +43,8 @@ public class FileManager {
         }
     }
 
-    public File getExcelFile(String userEmail, String fileName) throws IOException {
-        String path = "C:\\Users\\06001\\Documents\\" + userEmail + "\\" + fileName;
+    public File getExcelFile(String fileName) throws IOException {
+        String path = "C:\\Users\\06001\\Documents\\"  + fileName;
         return new File(path);
     }
 
